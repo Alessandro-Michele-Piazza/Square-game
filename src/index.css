@@ -183,4 +183,13 @@ h3,
   transform: translateY(0);
 }
 
+.Profile-navbar-custom-link {
+  color: var(--color-blue-primary);
+  font-family: var(--font-orbitron);
+  margin-right: 20px;
+  transition: color 0.3s ease;
+}
 
+.Profile-navbar-custom-link:hover {
+  color: var(--color-yellow-primary);
+}

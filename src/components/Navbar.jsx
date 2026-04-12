@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router";
 import routes from "../router/routes";
 import { useState, useContext } from "react";
-import { UserContext } from "../context/UserContext";
-import { FaArrowRightToBracket, FaArrowRightFromBracket, FaUser } from "react-icons/fa6";
+import { UserContext } from "../context/user-context";
+import { FaArrowRightFromBracket, FaUser } from "react-icons/fa6";
 
 export default function Navbar() {
   const [slug, setSlug] = useState("");
@@ -32,10 +32,22 @@ export default function Navbar() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
         {/* Logo */}
         <Link
-          className="font-orbitron text-2xl font-bold tracking-[0.25em] text-[#fef08a] drop-shadow-[0_0_8px_rgba(254,240,138,0.4)] transition-all hover:text-[#facc15] hover:drop-shadow-[0_0_12px_rgba(250,204,21,0.6)]"
+          className="flex items-center gap-3 transition-transform duration-300 hover:scale-[1.01]"
           to={routes.home}
         >
-          REHACKTOR
+          <img
+            src="/favicon.svg"
+            alt="Square Games logo"
+            className="h-11 w-11 rounded-2xl object-contain drop-shadow-[0_0_14px_rgba(254,240,138,0.24)]"
+          />
+          <span className="hidden sm:block">
+            <span className="block font-orbitron text-lg font-bold uppercase tracking-[0.24em] text-[#fef08a] drop-shadow-[0_0_8px_rgba(254,240,138,0.35)]">
+              Square Games
+            </span>
+            <span className="block text-[0.62rem] uppercase tracking-[0.34em] text-[#60a5fa]">
+              discover. rank. play.
+            </span>
+          </span>
         </Link>
 
         {/* Search */}
@@ -53,7 +65,7 @@ export default function Navbar() {
         {/* Nav links */}
         <div className="flex items-center gap-5 text-sm font-medium">
           <Link
-            className="text-[#94a3b8] transition-colors hover:text-[#fef08a]"
+            className="text-[#3b82f6] transition-colors hover:text-[#fef08a]"
             to={routes.home}
           >
             Home
@@ -62,7 +74,7 @@ export default function Navbar() {
           {!user ? (
             <>
               <Link
-                className="text-[#94a3b8] transition-colors hover:text-[#fef08a]"
+                className="text-[#3b82f6] transition-colors hover:text-[#fef08a]"
                 to={routes.login}
               >
                 Login
@@ -76,12 +88,14 @@ export default function Navbar() {
             </>
           ) : (
             <>
+             <Link to ={routes.profile} className="flex items-center gap-1.5 ">
               {profile?.username && (
-                <span className="flex items-center gap-1.5 text-[#94a3b8]">
-                  <FaUser className="text-[#fef08a]/70" />
+                <span className="flex items-center gap-1.5 Profile-navbar-custom-link">
+                  <FaUser className="text-[#94a3b8]/70" />
                   {profile.username}
                 </span>
               )}
+               </Link>
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-1.5 rounded-full bg-red-500/10 px-4 py-1.5 text-red-400 ring-1 ring-red-500/30 transition-all hover:bg-red-500/20 hover:text-red-300 hover:ring-red-500/50"

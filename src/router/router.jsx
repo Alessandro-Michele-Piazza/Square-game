@@ -9,6 +9,7 @@ import Register from "../views/Register";
 import ProfilePage from "../views/ProfilePage";
 import routes from "./routes";
 import Searchpage from "../views/Searchpage";
+import ProfileSettingsPage from "../views/ProfileSettingsPage";
 
 const router = createBrowserRouter([
   {
@@ -63,7 +64,11 @@ const router = createBrowserRouter([
         {
           path: routes.profile,
           Component: ProfilePage,
-        }
+        },
+          {
+            path: routes.profile_settings,
+            Component: ProfileSettingsPage,
+          }
         
       ]
   }

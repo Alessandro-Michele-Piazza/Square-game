@@ -1,7 +1,9 @@
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useContext } from "react";
-import { UserContext } from "../context/UserContext";
+import { UserContext } from "../context/user-context";
+import routes from "../router/routes";
+import "./Register.css";
 
 export default function Register() {
   const {
@@ -10,7 +12,7 @@ export default function Register() {
     formState: { errors },
   } = useForm();
 
-  const {signUp} = useContext(UserContext);
+  const { signUp } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -30,70 +32,97 @@ export default function Register() {
   };
 
   return (
-    <>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-100 ">
-        <h1 className="text-2xl font-bold mb-4  ">Register</h1>
-        <div className="flex  items-center justify-center">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col w-full max-w-sm"
-          >
-            <input
-              type="text"
-              placeholder="name"
-              className="input input-lg mb-5 w-full"
-              {...register("first_name", { required: true })}
-            />
-            {errors.first_name && (
-              <span className="text-red-500">First name is required</span>
-            )}
+    <section className="register-screen">
+      <div className="register-card">
+        <div className="register-card__brand">
+          <img
+            src="/favicon.svg"
+            alt="Square Games logo"
+            className="register-card__logo"
+          />
+          <div>
+            <p className="register-card__label">Square Games</p>
+            <p className="register-card__subcopy">Register</p>
+          </div>
+        </div>
 
-            <input
-              type="text"
-              placeholder="last name"
-              className="input input-lg mb-5 w-full"
-              {...register("last_name", { required: true })}
-            />
-            {errors.last_name && (
-              <span className="text-red-500">Last name is required</span>
-            )}
+        <form onSubmit={handleSubmit(onSubmit)} className="register-form">
+          <div className="register-form__split">
+            <div className="register-form__group">
+              <label htmlFor="first_name">First name</label>
+              <input
+                id="first_name"
+                type="text"
+                placeholder="Alex"
+                {...register("first_name", { required: true })}
+              />
+              {errors.first_name && (
+                <span className="register-form__error">First name is required</span>
+              )}
+            </div>
 
+            <div className="register-form__group">
+              <label htmlFor="last_name">Last name</label>
+              <input
+                id="last_name"
+                type="text"
+                placeholder="Player"
+                {...register("last_name", { required: true })}
+              />
+              {errors.last_name && (
+                <span className="register-form__error">Last name is required</span>
+              )}
+            </div>
+          </div>
+
+          <div className="register-form__group">
+            <label htmlFor="username">Username</label>
             <input
+              id="username"
               type="text"
-              placeholder="username"
-              className="input input-lg mb-5 w-full"
+              placeholder="square.runner"
               {...register("username", { required: true })}
             />
             {errors.username && (
-              <span className="text-red-500">Username is required</span>
+              <span className="register-form__error">Username is required</span>
             )}
+          </div>
 
+          <div className="register-form__group">
+            <label htmlFor="email">Email</label>
             <input
+              id="email"
               type="email"
-              placeholder="email"
-              className="input input-lg mb-5 w-full"
+              placeholder="you@example.com"
               {...register("email", { required: true })}
             />
             {errors.email && (
-              <span className="text-red-500">Email is required</span>
+              <span className="register-form__error">Email is required</span>
             )}
+          </div>
 
+          <div className="register-form__group">
+            <label htmlFor="password">Password</label>
             <input
+              id="password"
               type="password"
-              placeholder="password"
-              className="input input-lg mb-5 w-full"
+              placeholder="Choose a secure password"
               {...register("password", { required: true })}
             />
             {errors.password && (
-              <span className="text-red-500">Password is required</span>
+              <span className="register-form__error">Password is required</span>
             )}
+          </div>
 
-            <button type="submit" className="btn btn-primary">
-              Register
-            </button>
-          </form>
-        </div>
+          <button type="submit" className="register-form__submit">
+            Create account
+          </button>
+        </form>
+
+        <p className="register-card__footer">
+          Already have access? <Link to={routes.login}>Login now</Link>
+        </p>
       </div>
-    </>
+    </section>
   );
 }

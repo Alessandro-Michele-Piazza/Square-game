@@ -1,7 +1,9 @@
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useContext } from "react";
 import { useForm } from "react-hook-form";
-import { UserContext } from "../context/UserContext";
+import { UserContext } from "../context/user-context";
+import routes from "../router/routes";
+import "./Login.css";
 
 export default function Login() {
   const { login } = useContext(UserContext);
@@ -22,33 +24,54 @@ export default function Login() {
   };
 
   return (
-    <>
-      <div className="auth_page flex flex-col items-center justify-center min-h-screen bg-100 ">
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit(onSubmit)} className="auth_form">
-          <input
-            type="email"
-            placeholder="email"
-            className="input input-lg mb-5 w-full"
-            {...register("email", { required: true })}
+    <section className="login-screen">
+      <div className="login-card">
+        <div className="login-card__brand">
+          <img
+            src="/favicon.svg"
+            alt="Square Games logo"
+            className="login-card__logo"
           />
+          <div>
+            <p className="login-card__label">Square Games</p>
+            <p className="login-card__subcopy">Login</p>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="login-form">
+          <label className="login-form__field">
+            <span>Email</span>
+            <input
+              type="email"
+              placeholder="you@example.com"
+              {...register("email", { required: true })}
+            />
+          </label>
           {errors.email && (
-            <span className="text-red-500">Email is required</span>
+            <span className="login-form__error">Email is required</span>
           )}
-          <input
-            type="password"
-            placeholder="password"
-            className="input input-lg mb-5 w-full"
-            {...register("password", { required: true })}
-          />
+
+          <label className="login-form__field">
+            <span>Password</span>
+            <input
+              type="password"
+              placeholder="Your password"
+              {...register("password", { required: true })}
+            />
+          </label>
           {errors.password && (
-            <span className="text-red-500">Password is required</span>
+            <span className="login-form__error">Password is required</span>
           )}
-          <button type="submit" className="btn btn-primary">
+
+          <button type="submit" className="login-form__submit">
             Login
           </button>
         </form>
+
+        <p className="login-card__footer">
+          New here? <Link to={routes.register}>Create your account</Link>
+        </p>
       </div>
-    </>
+    </section>
   );
 }
