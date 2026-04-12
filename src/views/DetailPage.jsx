@@ -8,7 +8,13 @@ import {
   FaStar,
 } from "react-icons/fa6";
 
-const fallbackImage = "https://placehold.co/1400x900/081120/e2e8f0?text=No+Image";
+import { useContext } from "react";
+import { UserContext } from "../context/user-context";
+import BodySection from "../components/BodySection";
+
+
+const fallbackImage =
+  "https://placehold.co/1400x900/081120/e2e8f0?text=No+Image";
 
 function formatDate(value) {
   if (!value) {
@@ -55,6 +61,8 @@ function getFilterItems(
 export default function DetailPage() {
   const game = useLoaderData();
   const navigate = useNavigate();
+  const { user } = useContext(UserContext);
+
   const heroImage = game?.background_image || fallbackImage;
   const accentImage = game?.background_image_additional || heroImage;
   const genres = getFilterItems(game?.genres);
@@ -67,10 +75,12 @@ export default function DetailPage() {
   const developers = getFilterItems(game?.developers);
   const publishers = getFilterItems(game?.publishers);
   const releaseDate = formatDate(game?.released);
-  const rating = typeof game?.rating === "number" ? game.rating.toFixed(1) : "–";
-  const ratingsCount = typeof game?.ratings_count === "number"
-    ? new Intl.NumberFormat("it-IT").format(game.ratings_count)
-    : "0";
+  const rating =
+    typeof game?.rating === "number" ? game.rating.toFixed(1) : "–";
+  const ratingsCount =
+    typeof game?.ratings_count === "number"
+      ? new Intl.NumberFormat("it-IT").format(game.ratings_count)
+      : "0";
   const infoCards = [
     {
       label: "Metacritic",
@@ -106,7 +116,8 @@ export default function DetailPage() {
             Scheda gioco non disponibile
           </h1>
           <p className="max-w-xl text-base leading-8 text-[#94a3b8]">
-            Non sono riuscito a recuperare i dati del gioco. Controlla la API key RAWG o prova a ricaricare la pagina.
+            Non sono riuscito a recuperare i dati del gioco. Controlla la API
+            key RAWG o prova a ricaricare la pagina.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-5">
             <button
@@ -115,15 +126,15 @@ export default function DetailPage() {
               data-text="← Torna indietro"
             >
               ← Torna indietro
-              <span className="detail-link__hover" aria-hidden="true">← Torna indietro</span>
+              <span className="detail-link__hover" aria-hidden="true">
+                ← Torna indietro
+              </span>
             </button>
-            <Link
-              to="/"
-              className="detail-link"
-              data-text="Torna alla home →"
-            >
+            <Link to="/" className="detail-link" data-text="Torna alla home →">
               Torna alla home →
-              <span className="detail-link__hover" aria-hidden="true">Torna alla home →</span>
+              <span className="detail-link__hover" aria-hidden="true">
+                Torna alla home →
+              </span>
             </Link>
           </div>
         </main>
@@ -154,7 +165,9 @@ export default function DetailPage() {
               data-text="← Torna indietro"
             >
               ← Torna indietro
-              <span className="detail-link__hover" aria-hidden="true">← Torna indietro</span>
+              <span className="detail-link__hover" aria-hidden="true">
+                ← Torna indietro
+              </span>
             </button>
             <Link
               to="/"
@@ -162,7 +175,9 @@ export default function DetailPage() {
               data-text="Torna alla collezione →"
             >
               Torna alla collezione →
-              <span className="detail-link__hover" aria-hidden="true">Torna alla collezione →</span>
+              <span className="detail-link__hover" aria-hidden="true">
+                Torna alla collezione →
+              </span>
             </Link>
           </div>
 
@@ -329,6 +344,11 @@ export default function DetailPage() {
             </section>
           </section>
         </div>
+
+        {profile && <BodySection profile_id={profile.id} game={game} />}                
+
+
+
       </main>
     </div>
   );
