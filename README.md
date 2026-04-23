@@ -1,5 +1,7 @@
 Da zero a Full-Stack: ecco Square Games 🎮
+<br>
 Sono felice di presentare Square Games, il mio ultimo progetto web che mette insieme gaming, community e tecnologia.
+
 Non è solo una vetrina di videogiochi, ma una piattaforma interattiva completa dove l'utente può gestire il proprio profilo, recensire titoli e salvare i preferiti.
 Cosa ho imparato e implementato in questo progetto:
 🔹 Frontend Dinamico: Sviluppato con React e Vite, sfruttando i Loaders di React Router per una navigazione fluida e istantanea.
