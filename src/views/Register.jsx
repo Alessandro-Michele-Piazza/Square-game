@@ -3,7 +3,10 @@ import { Link, useLoaderData, useNavigate } from "react-router";
 import { useContext } from "react";
 import { UserContext } from "../context/user-context";
 import routes from "../router/routes";
+import { useState } from "react";
 import "./Register.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 export default function Register() {
   const {
@@ -11,6 +14,8 @@ export default function Register() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const { signUp } = useContext(UserContext);
 
@@ -53,86 +58,119 @@ export default function Register() {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="register-form">
-            <div className="register-form__split">
-              <div className="register-form__group">
-                <label htmlFor="first_name">Nome</label>
-                <input
-                  id="first_name"
-                  type="text"
-                  placeholder="Alex"
-                  {...register("first_name", {
-                    required: "Il nome è richiesto",
-                  })}
-                />
-                {errors.first_name && (
-                  <span className="register-form__error">{errors.first_name.message}</span>
-                )}
-              </div>
-
-              <div className="register-form__group">
-                <label htmlFor="last_name">Cognome</label>
-                <input
-                  id="last_name"
-                  type="text"
-                  placeholder="Player"
-                  {...register("last_name", {
-                    required: "Il cognome è richiesto",
-                    pattern: { value: /^\S+$/, message: "Il cognome non può contenere spazi" },
-                  })}
-                />
-                {errors.last_name && (
-                  <span className="register-form__error">{errors.last_name.message}</span>
-                )}
-              </div>
-            </div>
-
+          <div className="register-form__split">
             <div className="register-form__group">
-              <label htmlFor="username">Username</label>
+              <label htmlFor="first_name">Nome</label>
               <input
-                id="username"
+                id="first_name"
                 type="text"
-                placeholder="square.runner"
-                {...register("username", {
-                required: "Lo username è richiesto",
-                pattern: { value: /^\S+$/, message: "Lo username non può contenere spazi" },
-              })}
+                placeholder="Alex"
+                {...register("first_name", {
+                  required: "Il nome è richiesto",
+                })}
               />
-              {errors.username && (
-                <span className="register-form__error">{errors.username.message}</span>
+              {errors.first_name && (
+                <span className="register-form__error">
+                  {errors.first_name.message}
+                </span>
               )}
             </div>
 
             <div className="register-form__group">
-              <label htmlFor="email">Email</label>
+              <label htmlFor="last_name">Cognome</label>
               <input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                {...register("email", {
-                required: "L'email è richiesta",
-                pattern: { value: /^\S+$/, message: "L'email non può contenere spazi" },
-              })}
+                id="last_name"
+                type="text"
+                placeholder="Player"
+                {...register("last_name", {
+                  required: "Il cognome è richiesto",
+                  pattern: {
+                    value: /^\S+$/,
+                    message: "Il cognome non può contenere spazi",
+                  },
+                })}
               />
-              {errors.email && (
-                <span className="register-form__error">{errors.email.message}</span>
+              {errors.last_name && (
+                <span className="register-form__error">
+                  {errors.last_name.message}
+                </span>
               )}
             </div>
+          </div>
 
-            <div className="register-form__group">
-              <label htmlFor="password">Password</label>
+          <div className="register-form__group">
+            <label htmlFor="username">Username</label>
+            <input
+              id="username"
+              type="text"
+              placeholder="square.runner"
+              {...register("username", {
+                required: "Lo username è richiesto",
+                pattern: {
+                  value: /^\S+$/,
+                  message: "Lo username non può contenere spazi",
+                },
+              })}
+            />
+            {errors.username && (
+              <span className="register-form__error">
+                {errors.username.message}
+              </span>
+            )}
+          </div>
+
+          <div className="register-form__group">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              {...register("email", {
+                required: "L'email è richiesta",
+                pattern: {
+                  value: /^\S+$/,
+                  message: "L'email non può contenere spazi",
+                },
+              })}
+            />
+            {errors.email && (
+              <span className="register-form__error">
+                {errors.email.message}
+              </span>
+            )}
+          </div>
+
+          <div className="register-form__group">
+            <label htmlFor="password">Password</label>
+
+            <div className="register-form__password-wrapper">
               <input
                 id="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Scegli una password sicura"
                 {...register("password", {
-                required: "La password è richiesta",
-                pattern: { value: /^\S+$/, message: "La password non può contenere spazi" },
-              })}
+                  required: "La password è richiesta",
+                  pattern: {
+                    value: /^\S+$/,
+                    message: "La password non può contenere spazi",
+                  },
+                })}
               />
               {errors.password && (
-                <span className="register-form__error">{errors.password.message}</span>
+                <span className="register-form__error">
+                  {errors.password.message}
+                </span>
               )}
+              <button
+                type="button"
+                className="register-form__show-password"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {/* Molto più semplice e leggibile */}
+                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+              </button>
             </div>
+          </div>
 
           <button type="submit" className="register-form__submit">
             Crea account

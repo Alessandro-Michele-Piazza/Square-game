@@ -55,7 +55,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-[#fef08a]/10 bg-[#050a15]/90 text-white backdrop-blur-md shadow-lg shadow-black/20">
-      <nav className="mx-auto flex max-w-7xl items-center px-6 py-3">
+      <nav className="mx-auto flex max-w-full items-center px-6 py-3">
         {/* --- SINISTRA: LOGO --- */}
         <div className="flex flex-1 justify-start">
           <Link

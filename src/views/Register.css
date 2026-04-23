@@ -178,6 +178,30 @@
   color: var(--color-yellow-hover);
 }
 
+.register-form__password-wrapper {
+  position: relative;
+}
+
+.register-form__show-password {
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--color-yellow-primary);
+  cursor: pointer;
+  font-family: var(--font-orbitron);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.register-form__show-password:hover {
+  color: var(--color-yellow-hover);
+}
+
 @media (min-width: 720px) {
   .register-form__split {
     grid-template-columns: repeat(2, minmax(0, 1fr));

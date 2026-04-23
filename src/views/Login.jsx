@@ -4,9 +4,15 @@ import { useForm } from "react-hook-form";
 import { UserContext } from "../context/user-context";
 import routes from "../router/routes";
 import "./Login.css";
+import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+
 
 export default function Login() {
   const { login } = useContext(UserContext);
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -59,11 +65,21 @@ export default function Login() {
 
           <label className="login-form__field">
             <span>Password</span>
-            <input
-              type="password"
-              placeholder="La tua password"
-              {...register("password", { required: true })}
-            />
+            <div className="login-form__password-wrapper">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="La tua password"
+                {...register("password", { required: true })}
+              />
+              <button
+                type="button"
+                className="register-form__show-password"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {/* Molto più semplice e leggibile */}
+                <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+              </button>
+            </div>
           </label>
           {errors.password && (
             <span className="login-form__error">La password è richiesta</span>
