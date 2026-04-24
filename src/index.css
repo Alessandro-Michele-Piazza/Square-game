@@ -235,7 +235,7 @@ h3,
   box-sizing: border-box; /* Importante per la simmetria */
 
   /* AGGIUNGI QUESTA TRANSIZIONE: rende fluido il passaggio a trasparente */
-  transition: -webkit-text-stroke-color 0.3s ease;
+  transition: -webkit-text-stroke-color 0.5s ease;
 }
 
 .detail-link .detail-link__hover {
@@ -253,6 +253,7 @@ h3,
   padding-left: 5px; 
   box-sizing: border-box;
 }
+
 
 /* AZIONI ALL'HOVER */
 .detail-link:hover {
