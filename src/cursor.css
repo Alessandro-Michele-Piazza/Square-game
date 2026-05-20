@@ -1,0 +1,100 @@
+html,
+body {
+  cursor:
+    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="%23FFF" stroke="%23000" stroke-width="0.75" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L6.35 2.85a.5.5 0 0 0-.85.35Z"></path></svg>') 0 0,
+    auto;
+}
+
+a,
+button,
+[role="button"],
+.cliccabile,
+.btn-glow,
+.detail-link {
+  cursor:
+    url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="%23FFF" stroke="%23000" stroke-width="0.75" stroke-linejoin="round" d="M10 11V8.99c0-.88.59-1.64 1.44-1.86h.05A1.99 1.99 0 0 1 14 9.05V12v-2c0-.88.6-1.65 1.46-1.87h.05A1.98 1.98 0 0 1 18 10.06V13v-1.94a2 2 0 0 1 1.51-1.94h0A2 2 0 0 1 22 11.06V14c0 .6-.08 1.27-.21 1.97a7.96 7.96 0 0 1-7.55 6.48 54.98 54.98 0 0 1-4.48 0 7.96 7.96 0 0 1-7.55-6.48C2.08 15.27 2 14.59 2 14v-1.49c0-1.11.9-2.01 2.01-2.01h0a2 2 0 0 1 2.01 2.03l-.01.97v-10c0-1.1.9-2 2-2h0a2 2 0 0 1 2 2V11Z"></path></svg>') 0 0,
+    pointer;
+}   
+
+input,
+textarea,
+[contenteditable="true"] {
+  cursor: text;
+}
+
+select,
+option,
+label,
+summary {
+  cursor: auto;
+}
+
+.cursor-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.cursor-glow__tracker {
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform: translate3d(-9999px, -9999px, 0);
+  will-change: transform;
+}
+
+.cursor-glow__orb {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 80rem;
+  height: 80rem;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: radial-gradient(
+    circle,
+    rgba(34, 211, 238, 0.22) 0%,
+    rgba(29, 78, 216, 0.12) 34%,
+    rgba(12, 22, 44, 0.03) 58%,
+    transparent 76%
+  );
+}
+
+
+
+@media (max-width: 767.98px) {
+  .cursor-glow__orb {
+    width: 40vh;
+    height: 40vh;
+    background: radial-gradient(
+      circle,
+      rgba(34, 211, 238, 0.14) 0%,
+      rgba(29, 78, 216, 0.09) 32%,
+      transparent 72%
+    );
+  }
+
+ 
+}
+
+@media (hover: none) and (pointer: coarse) {
+  html,
+  body,
+  a,
+  button,
+  [role="button"],
+  .cliccabile,
+  .btn-glow,
+  .detail-link,
+  input,
+  textarea,
+  [contenteditable="true"] {
+    cursor: auto !important;
+  }
+
+  .cursor-glow {
+    display: none;
+  }
+}

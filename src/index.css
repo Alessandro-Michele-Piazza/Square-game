@@ -4,6 +4,7 @@
 @import "C:\Users\alexp\Progetti_Aulab\rehacktor\src\card_custom.css";
 @import "C:\Users\alexp\Progetti_Aulab\rehacktor\src\loading_page.css";
 @import "./scrollbar.css";
+@import "./cursor.css";
 
 
 /* --- VARIABILI E ROOT --- */
@@ -78,6 +79,11 @@ body {
   font-family: var(--font-exo2);
   background-color: var(--color-main-bg);
   color: var(--color-text-bright);
+}
+
+#root {
+  position: relative;
+  z-index: 1;
 }
 
 #card_login_failed {

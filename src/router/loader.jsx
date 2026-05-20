@@ -88,6 +88,7 @@ export async function getFilteredByPlatformGames({ params }) {
   return getFilteredGames("parent_platforms", params.slug);
 }
 
+
 export async function getGameDetails({ params }) {
   const promise = await fetch(
     `https://api.rawg.io/api/games/${params.id}?key=${import.meta.env.VITE_RAWG_KEY}`,
@@ -99,3 +100,68 @@ export async function getGameDetails({ params }) {
   }
   return json;
 }
+
+// Loader combinato per la DetailPage minimal/futuristica
+export async function getGameFullDetails({ params }) {
+  // Dettagli gioco
+  const detailsPromise = fetch(
+    `https://api.rawg.io/api/games/${params.id}?key=${import.meta.env.VITE_RAWG_KEY}`
+  ).then((r) => r.json());
+  // Trailer
+  const trailersPromise = fetch(
+    `https://api.rawg.io/api/games/${params.id}/movies?key=${import.meta.env.VITE_RAWG_KEY}`
+  ).then((r) => r.json());
+  // Screenshot
+  const screenshotsPromise = fetch(
+    `https://api.rawg.io/api/games/${params.id}/screenshots?key=${import.meta.env.VITE_RAWG_KEY}`
+  ).then((r) => r.json());
+
+  const [game, trailers, screenshots] = await Promise.all([
+    detailsPromise,
+    trailersPromise,
+    screenshotsPromise,
+  ]);
+
+  return {
+    game,
+    trailers: Array.isArray(trailers?.results) ? trailers.results : [],
+    screenshots: Array.isArray(screenshots?.results) ? screenshots.results : [],
+  };
+}
+
+export async function getGameTrailers({ params }) {
+  const promise = await fetch(
+    `https://api.rawg.io/api/games/${params.id}/movies?key=${import.meta.env.VITE_RAWG_KEY}`,
+  );
+  const json = await promise.json();
+  if (!promise.ok || !Array.isArray(json.results)) {
+    console.error("RAWG API error:", json);
+    return [];
+  }
+  return json.results;
+}
+
+export async function getGameScreenshots({ params }) {
+  const promise = await fetch(
+    `https://api.rawg.io/api/games/${params.id}/screenshots?key=${import.meta.env.VITE_RAWG_KEY}`,
+  );
+  const json = await promise.json();
+  if (!promise.ok || !Array.isArray(json.results)) {
+    console.error("RAWG API error:", json);
+    return [];
+  }
+  return json.results;
+}
+
+export async function getGameStores({ params }) {
+  const promise = await fetch(
+    `https://api.rawg.io/api/games/${params.id}/stores?key=${import.meta.env.VITE_RAWG_KEY}`,
+  );
+  const json = await promise.json();
+  if (!promise.ok || !Array.isArray(json.results)) {
+    console.error("RAWG API error:", json);
+    return [];
+  }
+  return json.results;
+}
+

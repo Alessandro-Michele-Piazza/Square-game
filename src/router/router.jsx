@@ -8,7 +8,7 @@ import {
   getFilteredByDeveloperGames,
   getFilteredByPublisherGames,
   getFilteredByPlatformGames,
-  getGameDetails,
+  getGameFullDetails,
 } from "./loader";
 import Layout from "../layouts/Layout";
 import AuthLayout from "../layouts/AuthLayout";
@@ -117,7 +117,7 @@ const router = createBrowserRouter([
   {
     path: routes.detail,
     Component: DetailPage,
-    loader: getGameDetails,
+    loader: getGameFullDetails,
     hydrateFallbackElement: (
       <div className=" loading_page">
         <div className="loading_spinner"></div>

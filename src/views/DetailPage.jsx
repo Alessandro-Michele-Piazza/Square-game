@@ -1,19 +1,23 @@
+import { useContext, useEffect, useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router";
-import Navbar from "../components/Navbar";
 import {
   FaArrowUpRightFromSquare,
   FaCalendarDays,
+  FaDesktop,
   FaGamepad,
-  FaGlobe,
   FaHeart,
+  FaMobileScreenButton,
   FaRegHeart,
   FaStar,
 } from "react-icons/fa6";
-
-import { useContext, useEffect, useState } from "react";
-import { UserContext } from "../context/user-context";
+import { FaPlaystation, FaSteam, FaXbox } from "react-icons/fa";
+import { BsNintendoSwitch } from "react-icons/bs";
+import Navbar from "../components/Navbar";
+import GameCarousel from "../components/GameCarousel";
 import BodySection from "../components/BodySection";
+import { UserContext } from "../context/user-context";
 import supabase from "../database/supabase";
+import "../components/GameCarousel.css";
 
 const fallbackImage =
   "https://placehold.co/1400x900/081120/e2e8f0?text=No+Image";
@@ -60,44 +64,117 @@ function getFilterItems(
     .filter(Boolean);
 }
 
+function formatCount(value) {
+  if (typeof value !== "number") {
+    return "0";
+  }
+
+  return new Intl.NumberFormat("it-IT").format(value);
+}
+
+function getPlatformIcon(platformName) {
+  const normalized = String(platformName ?? "").toLowerCase();
+
+  if (normalized.includes("playstation") || normalized.includes("sony")) {
+    return <FaPlaystation />;
+  }
+
+  if (normalized.includes("nintendo")) {
+    return <BsNintendoSwitch />;
+  }
+
+  if (normalized.includes("xbox")) {
+    return <FaXbox />;
+  }
+
+  if (normalized.includes("steam")) {
+    return <FaSteam />;
+  }
+
+  if (
+    normalized.includes("pc") ||
+    normalized.includes("windows") ||
+    normalized.includes("mac")
+  ) {
+    return <FaDesktop />;
+  }
+
+  if (
+    normalized.includes("android") ||
+    normalized.includes("ios") ||
+    normalized.includes("mobile")
+  ) {
+    return <FaMobileScreenButton />;
+  }
+
+  return <FaGamepad />;
+}
+
+function DetailLinks({ items, emptyLabel, toBuilder, iconForItem }) {
+  if (!items.length) {
+    return <span className="text-sm text-[#94a3b8]">{emptyLabel}</span>;
+  }
+
+  return (
+    <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
+      {items.map((item) => (
+        <Link
+          key={`${item.id}-${item.slug}`}
+          to={toBuilder(item)}
+          className="inline-flex items-center gap-2 text-sm text-[#dbe6f7] transition-colors duration-200 hover:text-[#67e8f9]"
+        >
+          {iconForItem && (
+            <span className="text-base text-[#67e8f9]">
+              {iconForItem(item)}
+            </span>
+          )}
+          {item.name}
+        </Link>
+      ))}
+    </div>
+  );
+}
+
 export default function DetailPage() {
-  const game = useLoaderData();
+  const data = useLoaderData();
+  const game = data?.game ?? null;
+  const trailers = Array.isArray(data?.trailers) ? data.trailers : [];
+  const screenshots = Array.isArray(data?.screenshots) ? data.screenshots : [];
   const navigate = useNavigate();
-  const { user, profile } = useContext(UserContext);
+
+  const { user } = useContext(UserContext);
   const ownerId = user?.id ?? null;
   const [isFavorite, setIsFavorite] = useState(false);
   const [favLoading, setFavLoading] = useState(false);
 
-  /* ── check if already favorited ── */
   useEffect(() => {
-    if (!ownerId || !game?.id) return;
+    if (!ownerId || !game?.id) {
+      return;
+    }
 
-    const check = async () => {
-      try {
-        const { data, error } = await supabase
-          .from("favorites")
-          .select("id")
-          .eq("profile_id", ownerId)
-          .eq("game_id", game.id)
-          .maybeSingle();
+    const checkFavorite = async () => {
+      const { data: favorite, error } = await supabase
+        .from("favorites")
+        .select("id")
+        .eq("profile_id", ownerId)
+        .eq("game_id", game.id)
+        .maybeSingle();
 
-        if (error) {
-          console.error("Favorite check error:", error);
-          return;
-        }
-
-        setIsFavorite(!!data);
-      } catch (err) {
-        console.error("Favorite check exception:", err);
+      if (error) {
+        console.error("Favorite check error:", error);
+        return;
       }
+
+      setIsFavorite(Boolean(favorite));
     };
 
-    void check();
-  }, [ownerId, game?.id]);
+    void checkFavorite();
+  }, [game?.id, ownerId]);
 
-  /* ── toggle favorite ── */
   const toggleFavorite = async () => {
-    if (!ownerId || !game?.id || favLoading) return;
+    if (!ownerId || !game?.id || favLoading) {
+      return;
+    }
 
     setFavLoading(true);
 
@@ -111,37 +188,70 @@ export default function DetailPage() {
 
         if (error) {
           console.error("Favorite delete error:", error);
-          alert("Errore nella rimozione: " + error.message);
         } else {
           setIsFavorite(false);
         }
-      } else {
-        const { data, error } = await supabase
-          .from("favorites")
-          .insert({
-            profile_id: ownerId,
-            game_id: Number(game.id),
-            game_name: game.name,
-          })
-          .select();
 
-        if (error) {
-          console.error("Favorite insert error:", error);
-          alert("Errore nell'aggiunta: " + error.message);
-        } else {
-          console.log("Favorite inserted:", data);
-          setIsFavorite(true);
-        }
+        return;
       }
-    } catch (err) {
-      console.error("Favorite toggle exception:", err);
-      alert("Errore imprevisto: " + err.message);
+
+      const { error } = await supabase.from("favorites").insert({
+        profile_id: ownerId,
+        game_id: Number(game.id),
+        game_name: game.name,
+      });
+
+      if (error) {
+        console.error("Favorite insert error:", error);
+      } else {
+        setIsFavorite(true);
+      }
+    } catch (error) {
+      console.error("Favorite toggle error:", error);
     } finally {
       setFavLoading(false);
     }
   };
 
-  const heroImage = game?.background_image || fallbackImage;
+  if (!game?.id) {
+    return (
+      <div className="min-h-screen bg-[#050a15] text-white">
+        <Navbar />
+        <main className="mx-auto flex min-h-[72vh] max-w-3xl flex-col items-center justify-center gap-6 px-6 text-center">
+          <h1 className="font-orbitron text-4xl font-black text-white">
+            Scheda gioco non disponibile
+          </h1>
+          <p className="max-w-xl text-base leading-8 text-[#94a3b8]">
+            Non sono riuscito a recuperare i dati del gioco. Controlla la API
+            key RAWG o prova a ricaricare la pagina.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4">
+            <button
+              onClick={() => navigate(-1)}
+              className="detail-link"
+              data-text="Torna indietro"
+            >
+              Torna indietro
+              <span className="detail-link__hover" aria-hidden="true">
+                Torna indietro
+              </span>
+            </button>
+            <Link to="/" className="detail-link" data-text="Vai alla home">
+              Vai alla home
+              <span className="detail-link__hover" aria-hidden="true">
+                Vai alla home
+              </span>
+            </Link>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  const heroImage =
+    game?.background_image ||
+    game?.background_image_additional ||
+    fallbackImage;
   const accentImage = game?.background_image_additional || heroImage;
   const genres = getFilterItems(game?.genres);
   const platforms = getFilterItems(
@@ -152,282 +262,207 @@ export default function DetailPage() {
   );
   const developers = getFilterItems(game?.developers);
   const publishers = getFilterItems(game?.publishers);
-  const releaseDate = formatDate(game?.released);
-  const rating =
-    typeof game?.rating === "number" ? game.rating.toFixed(1) : "–";
-  const ratingsCount =
-    typeof game?.ratings_count === "number"
-      ? new Intl.NumberFormat("it-IT").format(game.ratings_count)
-      : "0";
-  const infoCards = [
-    {
-      label: "Metacritic",
-      value: game?.metacritic ?? "–",
-      icon: <FaStar className="text-[#fef08a]" />,
-    },
-    {
-      label: "Rating medio",
-      value: rating,
-      icon: <FaGamepad className="text-[#7dd3fc]" />,
-    },
-    {
-      label: "Recensioni",
-      value: ratingsCount,
-      icon: <FaGlobe className="text-[#f59e0b]" />,
-    },
-    {
-      label: "Uscita",
-      value: releaseDate,
-      icon: <FaCalendarDays className="text-[#c084fc]" />,
-    },
-  ];
 
-  if (!game) {
-    return (
-      <div className="min-h-screen bg-[#050a15] text-white">
-        <Navbar />
-        <main className="mx-auto flex min-h-[70vh] max-w-3xl flex-col items-center justify-center gap-6 px-6 text-center">
-          <span className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.28em] text-[#7dd3fc]">
-            Game dossier
-          </span>
-          <h1 className="font-orbitron text-4xl font-black text-white">
-            Scheda gioco non disponibile
-          </h1>
-          <p className="max-w-xl text-base leading-8 text-[#94a3b8]">
-            Non sono riuscito a recuperare i dati del gioco. Controlla la API
-            key RAWG o prova a ricaricare la pagina.
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-5">
-            <button
-              onClick={() => navigate(-1)}
-              className="detail-link"
-              data-text="← Torna indietro"
-            >
-              ← Torna indietro
-              <span className="detail-link__hover" aria-hidden="true">
-                ← Torna indietro
-              </span>
-            </button>
-            <Link to="/" className="detail-link" data-text="Torna alla home →">
-              Torna alla home →
-              <span className="detail-link__hover" aria-hidden="true">
-                Torna alla home →
-              </span>
-            </Link>
-          </div>
-        </main>
-      </div>
-    );
-  }
+  const releaseDate = formatDate(game?.released);
+  const metacritic = game?.metacritic ?? "-";
+  const rating =
+    typeof game?.rating === "number" ? game.rating.toFixed(1) : "-";
+  const ratingsCount = formatCount(game?.ratings_count);
 
   return (
-    <div className="min-h-screen bg-[#050a15] text-white">
+    <div className="min-h-screen bg-[#040915] text-[#e2e8f0]">
       <Navbar />
 
       <main className="relative isolate overflow-hidden pb-16">
-        <div className="absolute inset-x-0 top-0 h-[34rem] overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-[30rem] overflow-hidden">
           <img
             src={accentImage}
             alt=""
-            className="h-full w-full object-cover opacity-30 blur-[2px]"
+            className="h-full w-full object-cover opacity-20 blur-[4px]"
           />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,10,21,0.3)_0%,rgba(5,10,21,0.82)_58%,#050a15_100%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,9,21,0.22)_0%,rgba(4,9,21,0.86)_58%,#040915_100%)]" />
         </div>
-        <div className="absolute left-1/2 top-36 h-80 w-80 -translate-x-1/2 rounded-full bg-[#38bdf8]/14 blur-[140px]" />
+        <div className="absolute left-1/2 top-44 h-72 w-72 -translate-x-1/2 rounded-full bg-[#22d3ee]/10 blur-[120px]" />
 
-        <div className="relative mx-auto flex max-w-7xl flex-col gap-8 px-4 pt-8 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-center justify-between gap-4">
+        <section className="relative mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+          <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
             <button
               onClick={() => navigate(-1)}
               className="detail-link"
-              data-text="← Torna indietro"
+              data-text="Torna indietro"
             >
-              ← Torna indietro
+              Torna indietro
               <span className="detail-link__hover" aria-hidden="true">
-                ← Torna indietro
+                Torna indietro
               </span>
             </button>
-            <Link
-              to="/"
-              className="detail-link"
-              data-text="Torna alla collezione →"
-            >
-              Torna alla collezione →
-              <span className="detail-link__hover" aria-hidden="true">
-                Torna alla collezione →
-              </span>
-            </Link>
+
+            <div className="flex flex-wrap items-center gap-3">
+              <Link
+                to="/"
+                className="detail-link"
+                data-text="Collezione giochi"
+              >
+                Collezione giochi
+                <span className="detail-link__hover" aria-hidden="true">
+                  Collezione giochi
+                </span>
+              </Link>
+            </div>
           </div>
 
-          <section className="grid gap-8 lg:grid-cols-[minmax(320px,430px)_1fr] lg:items-start">
-            <article className="relative overflow-hidden rounded-[32px] border border-white/10 bg-[#071121]/75 shadow-[0_30px_90px_rgba(5,10,21,0.45)] backdrop-blur-xl">
-              <img
-                src={heroImage}
-                alt={game?.name || "Game cover"}
-                className="h-[420px] w-full object-cover lg:h-[620px]"
+          <div className="grid gap-10 lg:grid-cols-[1.45fr_1.15fr] lg:items-start">
+            <section>
+              <GameCarousel
+                screenshots={screenshots}
+                trailers={trailers}
+                fallbackImage={heroImage}
+                title={game?.name}
               />
-              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,10,21,0.02)_15%,rgba(5,10,21,0.78)_100%)]" />
 
-              <div className="absolute inset-x-5 bottom-5 flex flex-wrap gap-2">
-                {genres.length > 0 ? (
-                  genres.slice(0, 3).map((genre) => (
-                    <Link
-                      key={genre.slug}
-                      to={`/genre/${genre.slug}`}
-                      className="rounded-full border border-white/12 bg-[#081120]/70 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#cbd5e1] backdrop-blur-md transition hover:border-[#fef08a]/35 hover:text-[#fef08a]"
-                    >
-                      {genre.name}
-                    </Link>
-                  ))
-                ) : (
-                  <span className="rounded-full border border-white/12 bg-[#081120]/70 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#cbd5e1] backdrop-blur-md">
-                    Esperienza narrativa
-                  </span>
-                )}
-              </div>
-            </article>
+              <dl className="mt-7 grid grid-cols-2 gap-x-4 gap-y-5 border-t border-white/10 pt-6 text-sm">
+                <div>
+                  <dt className="text-[0.7rem] uppercase tracking-[0.2em] text-[#94a3b8]">
+                    Metacritic
+                  </dt>
+                  <dd className="mt-1 inline-flex items-center gap-2 text-lg font-semibold text-white">
+                    <FaStar className="text-[#facc15]" />
+                    {metacritic}
+                  </dd>
+                </div>
+                <div>
+                  <dt className="text-[0.7rem] uppercase tracking-[0.2em] text-[#94a3b8]">
+                    Reviews
+                  </dt>
+                  <dd className="mt-1 text-lg font-semibold text-white">
+                    {ratingsCount}
+                  </dd>
+                </div>
+                <div className="col-span-2">
+                  <dt className="text-[0.7rem] uppercase tracking-[0.2em] text-[#94a3b8]">
+                    Generi
+                  </dt>
+                  {genres.length > 0 ? (
+                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2">
+                      {genres.map((genre) => (
+                        <Link
+                          key={genre.slug}
+                          to={`/genre/${genre.slug}`}
+                          className="text-sm text-[#dbe6f7] transition-colors duration-200 hover:text-[#67e8f9]"
+                        >
+                          {genre.name}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <span className="mt-2 block text-sm text-[#94a3b8]">
+                      Non disponibili
+                    </span>
+                  )}
+                </div>
+              </dl>
 
-            <section className="space-y-6 rounded-[32px] border border-white/10 bg-[#071121]/72 p-6 shadow-[0_30px_90px_rgba(5,10,21,0.4)] backdrop-blur-xl sm:p-8">
-              <div className="flex flex-wrap items-center gap-3">
-                <span className="rounded-full border border-[#7dd3fc]/30 bg-[#38bdf8]/10 px-4 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.3em] text-[#7dd3fc]">
-                  Game dossier
-                </span>
+              <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs uppercase tracking-[0.2em] text-[#9fb1cc]">
                 {game?.website && (
                   <a
                     href={game.website}
                     target="_blank"
                     rel="noreferrer"
-                    className="btn-glow"
+                    className="btn-glow btn-glow--yellow btn-glow--no-reflect"
                   >
-                    Sito ufficiale
+                    Visita sito ufficiale
                     <FaArrowUpRightFromSquare className="text-xs" />
                   </a>
                 )}
+              </div>
+            </section>
+
+            <section className="lg:pt-0">
+              <h1 className="font-orbitron text-4xl font-black leading-tight text-white sm:text-5xl">
+                {game?.name || "Titolo sconosciuto"}
+              </h1>
+
+              <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#a9b7cf]">
+                <span className="inline-flex items-center gap-2">
+                  <FaCalendarDays className="text-[#67e8f9]" />
+                  Release: {releaseDate}
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <FaGamepad className="text-[#67e8f9]" />
+                  Rating: {rating}
+                </span>
+              </div>
+
+              <p className="mt-6 text-sm leading-8 text-[#d1d9e8] sm:text-base">
+                {game?.description_raw || "Descrizione non disponibile"}
+              </p>
+
+              <div className="mt-8 flex flex-wrap items-center gap-3">
                 {ownerId && (
                   <button
                     onClick={toggleFavorite}
                     disabled={favLoading}
-                    className="group flex items-center gap-2 rounded-full border border-white/10 bg-[#071121]/80 px-4 py-2 text-sm font-semibold tracking-wide text-[#e2e8f0] backdrop-blur-xl transition-all duration-300 hover:border-red-500/40 hover:shadow-[0_0_20px_rgba(239,68,68,0.15)] disabled:opacity-50"
+                    className="group flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm font-semibold text-[#dbe6f7] transition-all duration-300 hover:border-red-400/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {isFavorite ? (
-                      <FaHeart className="text-base text-red-500 transition-transform duration-300 group-hover:scale-110" />
+                      <FaHeart className="text-red-500" />
                     ) : (
-                      <FaRegHeart className="text-base text-red-400/60 transition-all duration-300 group-hover:scale-110 group-hover:text-red-400" />
+                      <FaRegHeart className="text-red-300/80" />
                     )}
                     {favLoading
-                      ? "..."
+                      ? "Attendere..."
                       : isFavorite
-                        ? "Rimuovi dai preferiti"
+                        ? "Nei preferiti"
                         : "Aggiungi ai preferiti"}
                   </button>
                 )}
               </div>
-
-              <div className="space-y-4">
-                <h1 className="font-orbitron text-4xl font-black leading-tight text-white sm:text-5xl">
-                  {game?.name || "Titolo sconosciuto"}
-                </h1>
-                <p className="max-w-3xl text-sm leading-8 text-[#cbd5e1] sm:text-base">
-                  {game?.description_raw || "Descrizione non disponibile"}
-                </p>
-              </div>
-
-              <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                {infoCards.map((card) => (
-                  <article
-                    key={card.label}
-                    className="rounded-[24px] border border-white/10 bg-black/15 p-4"
-                  >
-                    <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-lg">
-                      {card.icon}
-                    </div>
-                    <span className="block text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-[#94a3b8]">
-                      {card.label}
-                    </span>
-                    <strong className="mt-2 block text-lg font-bold text-white">
-                      {card.value}
-                    </strong>
-                  </article>
-                ))}
-              </div>
-
-              <div className="grid gap-4 lg:grid-cols-[1.2fr_.8fr]">
-                <article className="rounded-[28px] border border-white/10 bg-black/15 p-5">
-                  <span className="text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-[#94a3b8]">
-                    Piattaforme disponibili
-                  </span>
-                  <div className="mt-4 flex flex-wrap gap-2">
-                    {platforms.length > 0 ? (
-                      platforms.map((platform) => (
-                        <Link
-                          key={`${platform.id}-${platform.slug}`}
-                          to={`/platform/${platform.id}/${platform.slug}`}
-                          className="rounded-full border border-white/10 bg-[#0d1b35] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#7dd3fc] transition hover:border-[#7dd3fc]/40 hover:bg-[#0f203f] hover:text-white"
-                        >
-                          {platform.name}
-                        </Link>
-                      ))
-                    ) : (
-                      <span className="text-sm text-[#94a3b8]">
-                        Nessuna piattaforma disponibile.
-                      </span>
-                    )}
-                  </div>
-                </article>
-
-                <article className="rounded-[28px] border border-white/10 bg-black/15 p-5">
-                  <span className="text-[0.7rem] font-semibold uppercase tracking-[0.28em] text-[#94a3b8]">
-                    Studio & pubblicazione
-                  </span>
-                  <dl className="mt-4 space-y-4 text-sm leading-7 text-[#cbd5e1]">
-                    <div>
-                      <dt className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#7dd3fc]">
-                        Developers
-                      </dt>
-                      <dd className="mt-2 flex flex-wrap gap-2">
-                        {developers.length > 0 ? (
-                          developers.map((developer) => (
-                            <Link
-                              key={developer.slug}
-                              to={`/developer/${developer.slug}`}
-                              className="rounded-full border border-white/10 bg-[#0d1b35] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#7dd3fc] transition hover:border-[#7dd3fc]/40 hover:bg-[#0f203f] hover:text-white"
-                            >
-                              {developer.name}
-                            </Link>
-                          ))
-                        ) : (
-                          <span>Non disponibile</span>
-                        )}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt className="text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#7dd3fc]">
-                        Publishers
-                      </dt>
-                      <dd className="mt-2 flex flex-wrap gap-2">
-                        {publishers.length > 0 ? (
-                          publishers.map((publisher) => (
-                            <Link
-                              key={publisher.slug}
-                              to={`/publisher/${publisher.slug}`}
-                              className="rounded-full border border-white/10 bg-[#0d1b35] px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.24em] text-[#7dd3fc] transition hover:border-[#7dd3fc]/40 hover:bg-[#0f203f] hover:text-white"
-                            >
-                              {publisher.name}
-                            </Link>
-                          ))
-                        ) : (
-                          <span>Non disponibile</span>
-                        )}
-                      </dd>
-                    </div>
-                  </dl>
-                </article>
-              </div>
             </section>
-          </section>
-        </div>
+          </div>
 
-        {game && <BodySection game={game} />}
+          <section className="mt-8 grid gap-6 lg:grid-cols-3">
+            <article className="rounded-[24px] border border-white/10 bg-[#071121]/60 p-5 backdrop-blur-xl">
+              <h2 className="inline-flex items-center gap-2 font-orbitron text-sm font-bold uppercase tracking-[0.2em] text-[#67e8f9]">
+                <FaGamepad className="text-base" />
+                Piattaforme
+              </h2>
+              <DetailLinks
+                items={platforms}
+                emptyLabel="Nessuna piattaforma disponibile"
+                iconForItem={(platform) => getPlatformIcon(platform.name)}
+                toBuilder={(platform) =>
+                  `/platform/${platform.id}/${platform.slug}`
+                }
+              />
+            </article>
+
+            <article className="rounded-[24px] border border-white/10 bg-[#071121]/60 p-5 backdrop-blur-xl">
+              <h2 className="font-orbitron text-sm font-bold uppercase tracking-[0.2em] text-[#67e8f9]">
+                Developers
+              </h2>
+              <DetailLinks
+                items={developers}
+                emptyLabel="Non disponibili"
+                toBuilder={(developer) => `/developer/${developer.slug}`}
+              />
+            </article>
+
+            <article className="rounded-[24px] border border-white/10 bg-[#071121]/60 p-5 backdrop-blur-xl">
+              <h2 className="font-orbitron text-sm font-bold uppercase tracking-[0.2em] text-[#67e8f9]">
+                Publishers
+              </h2>
+              <DetailLinks
+                items={publishers}
+                emptyLabel="Non disponibili"
+                toBuilder={(publisher) => `/publisher/${publisher.slug}`}
+              />
+            </article>
+          </section>
+
+          <div className="mt-12">
+            <BodySection game={game} />
+          </div>
+        </section>
       </main>
     </div>
   );

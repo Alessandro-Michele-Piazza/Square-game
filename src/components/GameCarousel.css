@@ -1,0 +1,143 @@
+.carousel-root {
+  width: 100%;
+}
+
+.carousel-main {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.35rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: radial-gradient(circle at 20% 20%, #17263f 0%, #071121 65%);
+  aspect-ratio: 16 / 9;
+}
+
+.carousel-img,
+.carousel-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.carousel-fade {
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 28%;
+  background: linear-gradient(
+    180deg,
+    rgba(4, 9, 21, 0) 0%,
+    rgba(4, 9, 21, 0.75) 100%
+  );
+  pointer-events: none;
+}
+
+.carousel-topbar {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  right: 0.85rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  color: #d8e2f2;
+  font-size: 0.68rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(2, 6, 23, 0.8);
+}
+
+.carousel-nav {
+  margin-top: 0.95rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.carousel-arrow {
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: rgba(10, 18, 34, 0.78);
+  color: #cbd5e1;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 0.45rem 0.8rem;
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.carousel-arrow:hover {
+  color: #67e8f9;
+  border-color: rgba(103, 232, 249, 0.45);
+}
+
+.carousel-thumbs {
+  display: flex;
+  gap: 0.45rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.carousel-thumbs::-webkit-scrollbar {
+  height: 6px;
+}
+
+.carousel-thumbs::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.35);
+}
+
+.carousel-thumb {
+  flex: 0 0 auto;
+  width: 5rem;
+  height: 3.1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  padding: 0;
+  overflow: hidden;
+  background: #0a1427;
+  cursor: pointer;
+  transition: all 160ms ease;
+}
+
+.carousel-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-thumb:hover {
+  border-color: rgba(103, 232, 249, 0.45);
+}
+
+.carousel-thumb.is-active {
+  border-color: #67e8f9;
+  box-shadow: 0 0 0 1px rgba(103, 232, 249, 0.35);
+}
+
+.carousel-empty {
+  aspect-ratio: 16 / 9;
+  border-radius: 1.35rem;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  background: linear-gradient(135deg, #0b162c 0%, #08101d 100%);
+  display: grid;
+  place-items: center;
+  color: #94a3b8;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+@media (max-width: 640px) {
+  .carousel-topbar {
+    font-size: 0.62rem;
+    letter-spacing: 0.16em;
+  }
+
+  .carousel-thumb {
+    width: 4.4rem;
+    height: 2.8rem;
+  }
+}
