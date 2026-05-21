@@ -2,11 +2,13 @@ import { useContext, useEffect, useState } from "react";
 import { Link, useLoaderData, useNavigate } from "react-router";
 import {
   FaArrowUpRightFromSquare,
+  FaBookmark,
   FaCalendarDays,
   FaDesktop,
   FaGamepad,
   FaHeart,
   FaMobileScreenButton,
+  FaRegBookmark,
   FaRegHeart,
   FaStar,
 } from "react-icons/fa6";
@@ -146,29 +148,49 @@ export default function DetailPage() {
   const ownerId = user?.id ?? null;
   const [isFavorite, setIsFavorite] = useState(false);
   const [favLoading, setFavLoading] = useState(false);
+  const [isWantToPlay, setIsWantToPlay] = useState(false);
+  const [wantToPlayLoading, setWantToPlayLoading] = useState(false);
 
   useEffect(() => {
     if (!ownerId || !game?.id) {
+      setIsFavorite(false);
+      setIsWantToPlay(false);
       return;
     }
 
-    const checkFavorite = async () => {
-      const { data: favorite, error } = await supabase
-        .from("favorites")
-        .select("id")
-        .eq("profile_id", ownerId)
-        .eq("game_id", game.id)
-        .maybeSingle();
+    const checkCollections = async () => {
+      const [favoriteResult, wantToPlayResult] = await Promise.all([
+        supabase
+          .from("favorites")
+          .select("id")
+          .eq("profile_id", ownerId)
+          .eq("game_id", game.id)
+          .maybeSingle(),
+        supabase
+          .from("want_to_play")
+          .select("id")
+          .eq("profile_id", ownerId)
+          .eq("game_id", game.id)
+          .maybeSingle(),
+      ]);
 
-      if (error) {
-        console.error("Favorite check error:", error);
-        return;
+      const { data: favorite, error: favoriteError } = favoriteResult;
+      const { data: wanted, error: wantedError } = wantToPlayResult;
+
+      if (favoriteError) {
+        console.error("Favorite check error:", favoriteError);
+      } else {
+        setIsFavorite(Boolean(favorite));
       }
 
-      setIsFavorite(Boolean(favorite));
+      if (wantedError) {
+        console.error("Want to play check error:", wantedError);
+      } else {
+        setIsWantToPlay(Boolean(wanted));
+      }
     };
 
-    void checkFavorite();
+    void checkCollections();
   }, [game?.id, ownerId]);
 
   const toggleFavorite = async () => {
@@ -210,6 +232,48 @@ export default function DetailPage() {
       console.error("Favorite toggle error:", error);
     } finally {
       setFavLoading(false);
+    }
+  };
+
+  const toggleWantToPlay = async () => {
+    if (!ownerId || !game?.id || wantToPlayLoading) {
+      return;
+    }
+
+    setWantToPlayLoading(true);
+
+    try {
+      if (isWantToPlay) {
+        const { error } = await supabase
+          .from("want_to_play")
+          .delete()
+          .eq("profile_id", ownerId)
+          .eq("game_id", game.id);
+
+        if (error) {
+          console.error("Want to play delete error:", error);
+        } else {
+          setIsWantToPlay(false);
+        }
+
+        return;
+      }
+
+      const { error } = await supabase.from("want_to_play").insert({
+        profile_id: ownerId,
+        game_id: Number(game.id),
+        game_name: game.name,
+      });
+
+      if (error) {
+        console.error("Want to play insert error:", error);
+      } else {
+        setIsWantToPlay(true);
+      }
+    } catch (error) {
+      console.error("Want to play toggle error:", error);
+    } finally {
+      setWantToPlayLoading(false);
     }
   };
 
@@ -399,22 +463,41 @@ export default function DetailPage() {
 
               <div className="mt-8 flex flex-wrap items-center gap-3">
                 {ownerId && (
-                  <button
-                    onClick={toggleFavorite}
-                    disabled={favLoading}
-                    className="group flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm font-semibold text-[#dbe6f7] transition-all duration-300 hover:border-red-400/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    {isFavorite ? (
-                      <FaHeart className="text-red-500" />
-                    ) : (
-                      <FaRegHeart className="text-red-300/80" />
-                    )}
-                    {favLoading
-                      ? "Attendere..."
-                      : isFavorite
-                        ? "Nei preferiti"
-                        : "Aggiungi ai preferiti"}
-                  </button>
+                  <>
+                    <button
+                      onClick={toggleFavorite}
+                      disabled={favLoading}
+                      className="group flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm font-semibold text-[#dbe6f7] transition-all duration-300 hover:border-red-400/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                      {isFavorite ? (
+                        <FaHeart className="text-red-500" />
+                      ) : (
+                        <FaRegHeart className="text-red-300/80" />
+                      )}
+                      {favLoading
+                        ? "Attendere..."
+                        : isFavorite
+                          ? "Nei preferiti"
+                          : "Aggiungi ai preferiti"}
+                    </button>
+
+                    <button
+                      onClick={toggleWantToPlay}
+                      disabled={wantToPlayLoading}
+                      className="group flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm font-semibold text-[#dbe6f7] transition-all duration-300 hover:border-amber-400/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                      {isWantToPlay ? (
+                        <FaBookmark className="text-amber-400" />
+                      ) : (
+                        <FaRegBookmark className="text-amber-200/90" />
+                      )}
+                      {wantToPlayLoading
+                        ? "Attendere..."
+                        : isWantToPlay
+                          ? "In Want to play"
+                          : "Aggiungi a Want to play"}
+                    </button>
+                  </>
                 )}
               </div>
             </section>

@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from "react";
+import { startTransition, useContext, useEffect, useState } from "react";
 import { Link } from "react-router";
 import { UserContext } from "../context/user-context";
-import { FaHeart, FaTrash } from "react-icons/fa6";
+import { FaBookmark, FaHeart, FaTrash } from "react-icons/fa6";
 import supabase from "../database/supabase";
 import routes from "../router/routes";
 import Placeholder from "../assets/Portrait_Placeholder.png";
@@ -16,43 +16,63 @@ export default function ProfilePage() {
   const { user, profile } = useContext(UserContext);
   const [avatarSource, setAvatarSource] = useState(Placeholder);
   const [userFavorites, setUserFavorites] = useState([]);
+  const [userWantToPlay, setUserWantToPlay] = useState([]);
   const ownerId = profile?.id ?? user?.id ?? null;
 
-  const get_favorites = async () => {
-    if (!ownerId) {
-      setUserFavorites([]);
-      return;
-    }
-
-    const { data: favorites, error } = await supabase
-      .from("favorites")
-      .select("*")
-      .eq("profile_id", ownerId)
-      .order("id", { ascending: false });
-
-    if (error) {
-      console.error("Favorites fetch error:", error.message);
-      setUserFavorites([]);
-      return;
-    }
-
-    if (favorites) {
-      setUserFavorites(favorites);
-    }
-  };
-
   useEffect(() => {
-    void get_favorites();
+    const loadCollections = async () => {
+      if (!ownerId) {
+        setUserFavorites([]);
+        setUserWantToPlay([]);
+        return;
+      }
+
+      const [favoritesResult, wantToPlayResult] = await Promise.all([
+        supabase
+          .from("favorites")
+          .select("*")
+          .eq("profile_id", ownerId)
+          .order("id", { ascending: false }),
+        supabase
+          .from("want_to_play")
+          .select("*")
+          .eq("profile_id", ownerId)
+          .order("id", { ascending: false }),
+      ]);
+
+      const { data: favorites, error: favoritesError } = favoritesResult;
+      const { data: wantToPlay, error: wantToPlayError } = wantToPlayResult;
+
+      if (favoritesError) {
+        console.error("Favorites fetch error:", favoritesError.message);
+        setUserFavorites([]);
+      } else {
+        setUserFavorites(favorites ?? []);
+      }
+
+      if (wantToPlayError) {
+        console.error("Want to play fetch error:", wantToPlayError.message);
+        setUserWantToPlay([]);
+      } else {
+        setUserWantToPlay(wantToPlay ?? []);
+      }
+    };
+
+    void loadCollections();
   }, [ownerId]);
 
   useEffect(() => {
     if (!profile?.avatar_url) {
-      setAvatarSource(Placeholder);
+      startTransition(() => {
+        setAvatarSource(Placeholder);
+      });
       return;
     }
 
     if (profile.avatar_url.startsWith("http")) {
-      setAvatarSource(profile.avatar_url);
+      startTransition(() => {
+        setAvatarSource(profile.avatar_url);
+      });
       return;
     }
 
@@ -61,9 +81,13 @@ export default function ProfilePage() {
       .createSignedUrl(profile.avatar_url, 3600)
       .then(({ data, error }) => {
         if (error || !data?.signedUrl) {
-          setAvatarSource(Placeholder);
+          startTransition(() => {
+            setAvatarSource(Placeholder);
+          });
         } else {
-          setAvatarSource(data.signedUrl);
+          startTransition(() => {
+            setAvatarSource(data.signedUrl);
+          });
         }
       });
   }, [profile?.avatar_url]);
@@ -239,6 +263,78 @@ export default function ProfilePage() {
               <FaHeart className="mx-auto mb-3 text-2xl text-[#475569]" />
               <p className="text-sm font-semibold text-[#94a3b8]">
                 Nessun gioco salvato nei preferiti.
+              </p>
+              <Link
+                to={routes.home}
+                className="mt-3 inline-block text-xs font-semibold text-[#7dd3fc] transition hover:text-white"
+              >
+                Esplora i giochi →
+              </Link>
+            </article>
+          )}
+        </section>
+
+        <section className="mt-12" aria-label="Giochi want to play">
+          <div className="mb-6 flex items-center gap-3">
+            <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-amber-300">
+              <FaBookmark className="mr-1.5 inline-block text-xs" />
+              Want to play
+            </span>
+            <span className="text-sm text-[#94a3b8]">
+              {userWantToPlay.length}{" "}
+              {userWantToPlay.length === 1 ? "gioco" : "giochi"}
+            </span>
+          </div>
+
+          {userWantToPlay.length > 0 ? (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+              {userWantToPlay.map((item) => (
+                <article
+                  key={item.id}
+                  className="group flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-[#071121]/60 p-5 backdrop-blur-xl transition-all duration-300 hover:border-amber-300/30 hover:shadow-[0_8px_32px_rgba(251,191,36,0.08)]"
+                >
+                  <div className="flex items-center gap-4 overflow-hidden">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-amber-400/25 bg-amber-500/10">
+                      <FaBookmark className="text-amber-300" />
+                    </div>
+                    <div className="min-w-0">
+                      <h3 className="truncate text-sm font-bold text-white">
+                        {item.game_name}
+                      </h3>
+                      <Link
+                        to={`/detail/${item.game_id}`}
+                        className="text-xs font-medium text-[#7dd3fc] transition hover:text-white"
+                      >
+                        Visualizza dettagli →
+                      </Link>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={async () => {
+                      const { error } = await supabase
+                        .from("want_to_play")
+                        .delete()
+                        .eq("id", item.id);
+                      if (!error) {
+                        setUserWantToPlay((prev) =>
+                          prev.filter((entry) => entry.id !== item.id),
+                        );
+                      }
+                    }}
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-[#94a3b8] opacity-0 transition-all duration-200 hover:border-amber-400/35 hover:bg-amber-500/10 hover:text-amber-300 group-hover:opacity-100"
+                    title="Rimuovi da want to play"
+                  >
+                    <FaTrash className="text-xs" />
+                  </button>
+                </article>
+              ))}
+            </div>
+          ) : (
+            <article className="rounded-2xl border border-white/10 bg-[#071121]/60 p-8 text-center backdrop-blur-xl">
+              <FaBookmark className="mx-auto mb-3 text-2xl text-[#475569]" />
+              <p className="text-sm font-semibold text-[#94a3b8]">
+                Nessun gioco salvato in Want to play.
               </p>
               <Link
                 to={routes.home}
