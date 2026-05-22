@@ -2,6 +2,17 @@ import { useEffect, useMemo, useState } from "react";
 import "./GameCarousel.css";
 
 function buildSlides({ trailers, screenshots, fallbackImage, title }) {
+  const coverSlide = fallbackImage
+    ? {
+        id: "cover-image",
+        type: "image",
+        url: fallbackImage,
+        thumb: fallbackImage,
+        poster: fallbackImage,
+        label: `${title || "Game"} - Cover`,
+      }
+    : null;
+
   const trailerSlides = (trailers ?? [])
     .map((trailer, index) => {
       const videoUrl =
@@ -28,6 +39,10 @@ function buildSlides({ trailers, screenshots, fallbackImage, title }) {
         return null;
       }
 
+      if (fallbackImage && shot.image === fallbackImage) {
+        return null;
+      }
+
       return {
         id: shot?.id ?? `shot-${index}`,
         type: "image",
@@ -39,20 +54,9 @@ function buildSlides({ trailers, screenshots, fallbackImage, title }) {
     })
     .filter(Boolean);
 
-  const combinedSlides = [...trailerSlides, ...screenshotSlides];
-
-  if (!combinedSlides.length && fallbackImage) {
-    return [
-      {
-        id: "fallback-image",
-        type: "image",
-        url: fallbackImage,
-        thumb: fallbackImage,
-        poster: fallbackImage,
-        label: `${title || "Game"} - Cover`,
-      },
-    ];
-  }
+  const combinedSlides = [coverSlide, ...trailerSlides, ...screenshotSlides].filter(
+    Boolean,
+  );
 
   return combinedSlides;
 }

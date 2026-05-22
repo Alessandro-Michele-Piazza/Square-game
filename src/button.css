@@ -1,0 +1,111 @@
+.next-btn-container {
+  display: flex;
+  justify-content: center;
+  /* Mappatura delle variabili locali sulla tua palette globale */
+  --color-text: var(--color-yellow-primary);
+  --color-background: var(--color-card-bg); /* Blu scuro per la base del bottone */
+  --color-outline: var(--color-blue-primary); /* Accento blu per i contorni */
+  --color-shadow: var(--shadow-lightning); /* Il tuo bagliore giallo neon */
+}
+
+.next-btn-content {
+  display: flex;
+  align-items: center;
+  padding: 8px 24px; /* Un po' più di respiro, perfetto per lo stile gaming */
+  text-decoration: none;
+  font-family: var(--font-orbitron); /* Font per titoli/pulsanti principali */
+  font-size: 22px; /* Leggermente ridimensionato per l'Orbitron che è molto largo */
+  text-transform: uppercase; /* Ci sta benissimo con lo stile Orbitron/Gaming */
+  letter-spacing: 1px;
+  color: var(--color-text);
+  background: var(--color-background);
+  transition: all 0.5s ease; /* Transizione più fluida, 1s era un po' lento */
+  border-radius: var(--radius-gaming); /* Bordi squadrati da gaming (4px) */
+  border: 1px solid var(--color-blue-dark); /* Sottile bordo blu scuro di base */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+.next-btn-content:hover,
+.next-btn-content:focus {
+  transition: 0.3s;
+  -webkit-animation: next-btn-animation 0.8s;
+  animation: next-btn-animation 0.8s;
+  outline: 2px solid transparent;
+  outline-offset: 4px;
+  color: var(--color-yellow-hover); /* Il giallo si intensifica all'hover */
+  background: #112546; /* Sfondo leggermente più chiaro per il feedback */
+  border-color: var(--color-blue-light); /* Il bordo si accende */
+  box-shadow: var(--shadow-lightning); /* Attiva il tuo effetto neon giallo */
+}
+
+.next-btn-content .next-btn-icon-arrow {
+  transition: 0.4s ease;
+  margin-right: 0px;
+  transform: scale(0.7);
+}
+
+.next-btn-content:hover .next-btn-icon-arrow {
+  margin-right: 15px; /* Ridotto leggermente per non farlo scattare troppo lontano */
+}
+
+.next-btn-icon-arrow {
+  width: 20px;
+  margin-left: 12px;
+  position: relative;
+  top: 2%;
+}
+
+/* SVG Frecce */
+#next-btn-arrow-one {
+  transition: 0.4s;
+  transform: translateX(-60%);
+}
+
+#next-btn-arrow-two {
+  transition: 0.5s;
+  transform: translateX(-30%);
+}
+
+.next-btn-content:hover #next-btn-arrow-three {
+  animation: next-btn-color-anim 1s infinite 0.2s;
+}
+
+.next-btn-content:hover #next-btn-arrow-one {
+  transform: translateX(0%);
+  animation: next-btn-color-anim 1s infinite 0.6s;
+}
+
+.next-btn-content:hover #next-btn-arrow-two {
+  transform: translateX(0%);
+  animation: next-btn-color-anim 1s infinite 0.4s;
+}
+
+/* SVG animations (Effetto scorrimento della luce sulle frecce) */
+@keyframes next-btn-color-anim {
+  0% {
+    fill: var(--color-text-bright); /* Bianco lucido */
+  }
+
+  50% {
+    fill: var(--color-blue-primary); /* Passa dal blu elettrico */
+  }
+
+  100% {
+    fill: var(--color-yellow-primary); /* Finisce sul tuo giallo fulmine */
+  }
+}
+
+/* Button animations (L'effetto onda del contorno al click/focus) */
+@-webkit-keyframes next-btn-animation {
+  0% {
+    outline: 2px solid var(--color-blue-light);
+    outline-offset: 0;
+  }
+}
+
+@keyframes next-btn-animation {
+  0% {
+    outline: 2px solid var(--color-blue-light);
+    outline-offset: 0;
+  }
+}
