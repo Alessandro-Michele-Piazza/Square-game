@@ -19,6 +19,7 @@ import GameCarousel from "../components/GameCarousel";
 import BodySection from "../components/BodySection";
 import { UserContext } from "../context/user-context";
 import supabase from "../database/supabase";
+import useAos from "../hooks/useAos";
 import "../components/GameCarousel.css";
 
 const fallbackImage =
@@ -143,6 +144,7 @@ export default function DetailPage() {
   const trailers = Array.isArray(data?.trailers) ? data.trailers : [];
   const screenshots = Array.isArray(data?.screenshots) ? data.screenshots : [];
   const navigate = useNavigate();
+  useAos();
 
   const { user } = useContext(UserContext);
   const ownerId = user?.id ?? null;
@@ -279,9 +281,9 @@ export default function DetailPage() {
 
   if (!game?.id) {
     return (
-      <div className="min-h-screen bg-[#050a15] text-white">
+      <div className="min-h-screen bg-[rgba(5,10,21,0.84)] text-white">
         <Navbar />
-        <main className="mx-auto flex min-h-[72vh] max-w-3xl flex-col items-center justify-center gap-6 px-6 text-center">
+        <main className="mx-auto flex min-h-[72vh] max-w-3xl flex-col items-center justify-center gap-6 px-6 text-center" data-aos="fade-up">
           <h1 className="font-orbitron text-4xl font-black text-white">
             Scheda gioco non disponibile
           </h1>
@@ -334,7 +336,7 @@ export default function DetailPage() {
   const ratingsCount = formatCount(game?.ratings_count);
 
   return (
-    <div className="min-h-screen bg-[#040915] text-[#e2e8f0]">
+    <div className="min-h-screen bg-[rgba(4,9,21,0.84)] text-[#e2e8f0]">
       <Navbar />
 
       <main className="relative isolate overflow-hidden pb-16">
@@ -344,12 +346,12 @@ export default function DetailPage() {
             alt=""
             className="h-full w-full object-cover opacity-20 blur-[4px]"
           />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,9,21,0.22)_0%,rgba(4,9,21,0.86)_58%,#040915_100%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,9,21,0.16)_0%,rgba(4,9,21,0.74)_58%,rgba(4,9,21,0.94)_100%)]" />
         </div>
         <div className="absolute left-1/2 top-44 h-72 w-72 -translate-x-1/2 rounded-full bg-[#22d3ee]/10 blur-[120px]" />
 
-        <section className="relative mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
-          <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
+        <section className="relative mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8" data-aos="fade-up">
+          <div className="mb-8 flex flex-wrap items-center justify-between gap-4" data-aos="fade-up" data-aos-delay="60">
             <button
               onClick={() => navigate(-1)}
               className="detail-link"
@@ -375,8 +377,8 @@ export default function DetailPage() {
             </div>
           </div>
 
-          <div className="grid gap-10 lg:grid-cols-[1.45fr_1.15fr] lg:items-start">
-            <section>
+          <div className="grid gap-10 lg:grid-cols-[1.45fr_1.15fr] lg:items-start" data-aos="fade-up" data-aos-delay="100">
+            <section data-aos="fade-right" data-aos-delay="140">
               <GameCarousel
                 screenshots={screenshots}
                 trailers={trailers}
@@ -441,7 +443,7 @@ export default function DetailPage() {
               </div>
             </section>
 
-            <section className="lg:pt-0">
+            <section className="lg:pt-0" data-aos="fade-left" data-aos-delay="160">
               <h1 className="font-orbitron text-4xl font-black leading-tight text-white sm:text-5xl">
                 {game?.name || "Titolo sconosciuto"}
               </h1>
@@ -503,8 +505,8 @@ export default function DetailPage() {
             </section>
           </div>
 
-          <section className="mt-8 grid gap-6 lg:grid-cols-3">
-            <article className="rounded-[24px] border border-white/10 bg-[#071121]/60 p-5 backdrop-blur-xl">
+          <section className="mt-8 grid gap-6 lg:grid-cols-3" data-aos="fade-up" data-aos-delay="200">
+            <article className="rounded-[24px] border border-white/10 bg-[#071121]/60 p-5 backdrop-blur-xl" data-aos="zoom-in" data-aos-delay="240">
               <h2 className="inline-flex items-center gap-2 font-orbitron text-sm font-bold uppercase tracking-[0.2em] text-[#67e8f9]">
                 <FaGamepad className="text-base" />
                 Piattaforme
@@ -519,7 +521,7 @@ export default function DetailPage() {
               />
             </article>
 
-            <article className="rounded-[24px] border border-white/10 bg-[#071121]/60 p-5 backdrop-blur-xl">
+            <article className="rounded-[24px] border border-white/10 bg-[#071121]/60 p-5 backdrop-blur-xl" data-aos="zoom-in" data-aos-delay="280">
               <h2 className="font-orbitron text-sm font-bold uppercase tracking-[0.2em] text-[#67e8f9]">
                 Developers
               </h2>
@@ -530,7 +532,7 @@ export default function DetailPage() {
               />
             </article>
 
-            <article className="rounded-[24px] border border-white/10 bg-[#071121]/60 p-5 backdrop-blur-xl">
+            <article className="rounded-[24px] border border-white/10 bg-[#071121]/60 p-5 backdrop-blur-xl" data-aos="zoom-in" data-aos-delay="320">
               <h2 className="font-orbitron text-sm font-bold uppercase tracking-[0.2em] text-[#67e8f9]">
                 Publishers
               </h2>
@@ -542,7 +544,7 @@ export default function DetailPage() {
             </article>
           </section>
 
-          <div className="mt-12">
+          <div className="mt-12" data-aos="fade-up" data-aos-delay="360">
             <BodySection game={game} />
           </div>
         </section>

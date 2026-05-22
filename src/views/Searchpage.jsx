@@ -27,7 +27,10 @@ export default function Searchpage() {
 
   return (
     <>
-      <h1 className="font-orbitron text-3xl font-bold text-center my-8 text-[#fef08a] drop-shadow-[0_0_18px_rgba(254,240,138,0.45)]">
+      <h1
+        className="font-orbitron text-3xl font-bold text-center my-8 text-[#fef08a] drop-shadow-[0_0_18px_rgba(254,240,138,0.45)]"
+        data-aos="fade-up"
+      >
         {formatFilterHeading(pathname, slug)}
       </h1>
       {games.length === 0 && (

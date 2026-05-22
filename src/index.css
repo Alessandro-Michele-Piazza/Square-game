@@ -37,7 +37,7 @@
   --color-text-dim: #94a3b8; /* Testo secondario/muted */
   --color-text-dark: #1e293b; /* Testo scuro per elementi chiari */
 
-  --auth-header-height: 4.25rem;
+  --auth-header-height: 5.1rem;
 
   /* UI ELEMENTI */
   --radius-gaming: 4px; /* Bordi più squadrati tipici del gaming */
@@ -349,4 +349,140 @@ aside .detail-link {
 
 .navbar-home-link:hover {
   color: #fef08a;
+}
+
+
+
+.topbar-search-input {
+  width: 100%;
+  border-radius: 999px;
+  border: 1px solid rgba(59, 130, 246, 0.32);
+  background: rgba(2, 6, 23, 0.44);
+  padding: 0.65rem 1rem;
+  color: var(--color-text-bright);
+  font-size: 0.88rem;
+  transition: border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+}
+
+.topbar-search-input::placeholder {
+  color: #64748b;
+}
+
+.topbar-search-input:focus {
+  outline: none;
+  border-color: rgba(254, 240, 138, 0.65);
+  background: rgba(2, 6, 23, 0.62);
+  box-shadow: 0 0 0 3px rgba(254, 240, 138, 0.16);
+}
+
+.topbar-pill-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  border: 1px solid rgba(59, 130, 246, 0.32);
+  background: rgba(15, 23, 42, 0.64);
+  padding: 0.5rem 0.9rem;
+  font-family: var(--font-orbitron);
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #7dd3fc;
+  text-decoration: none;
+  transition: border-color 0.22s ease, color 0.22s ease, background 0.22s ease,
+    transform 0.22s ease;
+}
+
+.topbar-pill-link:hover {
+  border-color: rgba(254, 240, 138, 0.42);
+  color: #fef08a;
+  background: rgba(15, 23, 42, 0.9);
+  transform: translateY(-1px);
+}
+
+.topbar-pill-link--accent {
+  border-color: rgba(254, 240, 138, 0.35);
+  color: #fef08a;
+}
+
+.topbar-pill-link--danger {
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+.topbar-pill-link--danger:hover {
+  border-color: rgba(239, 68, 68, 0.6);
+  color: #fda4af;
+}
+
+.topbar-profile-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: rgba(15, 23, 42, 0.72);
+  padding: 0.42rem 0.75rem;
+  text-decoration: none;
+  color: #e2e8f0;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.topbar-profile-chip span {
+  font-family: var(--font-orbitron);
+  font-size: 0.68rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.topbar-profile-chip:hover {
+  border-color: rgba(125, 211, 252, 0.5);
+  color: #7dd3fc;
+}
+
+.topbar-icon-button {
+  height: 2.3rem;
+  width: 2.3rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(254, 240, 138, 0.32);
+  background: rgba(15, 23, 42, 0.74);
+  color: #fef08a;
+  font-size: 1.1rem;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.topbar-icon-button:hover {
+  border-color: rgba(125, 211, 252, 0.55);
+  color: #7dd3fc;
+}
+
+.topbar-mobile-panel {
+  border-radius: 1rem;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background:
+    radial-gradient(circle at top, rgba(125, 211, 252, 0.1), transparent 50%),
+    linear-gradient(160deg, rgba(8, 18, 36, 0.88), rgba(5, 10, 21, 0.76));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 20px 45px rgba(2, 6, 23, 0.42);
+}
+
+.topbar-subtle-link {
+  margin-top: 0.8rem;
+  display: block;
+  text-align: center;
+  font-size: 0.66rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #64748b;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.topbar-subtle-link:hover {
+  color: #7dd3fc;
 }

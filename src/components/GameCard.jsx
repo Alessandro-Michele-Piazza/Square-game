@@ -15,6 +15,7 @@ function slugify(value) {
 export default function Gamecard({ game }) {
   const rating =
     typeof game?.rating === "number" ? game.rating.toFixed(1) : "–";
+  const cardDelay = (Number(game?.id ?? 0) % 8) * 35;
   const platforms = (game?.parent_platforms ?? game?.platforms ?? [])
     .map((entry) => {
       const platform = entry?.platform ?? entry;
@@ -32,7 +33,11 @@ export default function Gamecard({ game }) {
     .slice(0, 3);
 
   return (
-    <article className="group relative rounded-2xl bg-[#1a2f52] p-[1px] transition duration-300 hover:-translate-y-1 hover:bg-[#fef08a]/35 hover:shadow-[0_16px_48px_rgba(254,240,138,0.08)]">
+    <article
+      className="group relative rounded-2xl bg-[#1a2f52] p-[1px] transition duration-300 hover:-translate-y-1 hover:bg-[#fef08a]/35 hover:shadow-[0_16px_48px_rgba(254,240,138,0.08)]"
+      data-aos="fade-up"
+      data-aos-delay={cardDelay}
+    >
       <div className="relative aspect-[3/4] w-full overflow-hidden rounded-[15px] bg-[#081120]">
         <Link to={`/detail/${game?.id}`} className="absolute inset-0">
           <img

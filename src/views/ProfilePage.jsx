@@ -7,9 +7,17 @@ import routes from "../router/routes";
 import Placeholder from "../assets/Portrait_Placeholder.png";
 import "./profile_update.css";
 
+const GAME_PREVIEW_FALLBACK =
+  "https://placehold.co/240x135/081120/e2e8f0?text=No+Image";
+
 function handleAvatarError(event) {
   event.currentTarget.onerror = null;
   event.currentTarget.src = Placeholder;
+}
+
+function handleGamePreviewError(event) {
+  event.currentTarget.onerror = null;
+  event.currentTarget.src = GAME_PREVIEW_FALLBACK;
 }
 
 export default function ProfilePage() {
@@ -17,6 +25,7 @@ export default function ProfilePage() {
   const [avatarSource, setAvatarSource] = useState(Placeholder);
   const [userFavorites, setUserFavorites] = useState([]);
   const [userWantToPlay, setUserWantToPlay] = useState([]);
+  const [gamePreviewById, setGamePreviewById] = useState({});
   const ownerId = profile?.id ?? user?.id ?? null;
 
   useEffect(() => {
@@ -92,24 +101,89 @@ export default function ProfilePage() {
       });
   }, [profile?.avatar_url]);
 
+  useEffect(() => {
+    const rawgKey = import.meta.env.VITE_RAWG_KEY;
+
+    if (!rawgKey) {
+      return;
+    }
+
+    const allGameIds = [...userFavorites, ...userWantToPlay]
+      .map((entry) => Number(entry?.game_id))
+      .filter((id) => Number.isFinite(id));
+
+    const uniqueIds = [...new Set(allGameIds)];
+    const idsToFetch = uniqueIds.filter(
+      (id) => !Object.prototype.hasOwnProperty.call(gamePreviewById, id),
+    );
+
+    if (idsToFetch.length === 0) {
+      return;
+    }
+
+    let isCancelled = false;
+
+    const loadGamePreviews = async () => {
+      const previewEntries = await Promise.all(
+        idsToFetch.map(async (gameId) => {
+          try {
+            const response = await fetch(
+              `https://api.rawg.io/api/games/${gameId}?key=${rawgKey}`,
+            );
+
+            if (!response.ok) {
+              return [gameId, null];
+            }
+
+            const game = await response.json();
+            const previewUrl =
+              game?.background_image || game?.background_image_additional || null;
+
+            return [gameId, previewUrl];
+          } catch {
+            return [gameId, null];
+          }
+        }),
+      );
+
+      if (isCancelled) {
+        return;
+      }
+
+      setGamePreviewById((prev) => {
+        const next = { ...prev };
+
+        previewEntries.forEach(([gameId, previewUrl]) => {
+          next[gameId] = previewUrl;
+        });
+
+        return next;
+      });
+    };
+
+    void loadGamePreviews();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [gamePreviewById, userFavorites, userWantToPlay]);
+
   if (!user) {
     return (
       <main className="profile-shell">
         <section className="profile-panel profile-panel--empty">
-          <span className="profile-badge mb-5">Account area</span>
-          <h1 className="profile-title mb-5">Sessione non disponibile</h1>
-          <div className="profile-lead mb-5" id="card_login_failed">
+          <h1 className="profile-title">Sessione non disponibile</h1>
+          <p className="profile-lead" id="card_login_failed">
             Effettua l&apos;accesso per vedere il tuo profilo e modificare i
             dati.
-          </div>
+          </p>
           <Link
-            className="profile-button profile-button--primary inline-block mt-4"
+            className="profile-button profile-button--primary profile-empty-action"
             to={routes.login}
           >
             Accedi ora
           </Link>
-          </section>  
-
+        </section>
       </main>
     );
   }
@@ -130,22 +204,62 @@ export default function ProfilePage() {
     { label: "Username", value: profile?.username || "Da impostare" },
     { label: "Membro dal", value: memberSince },
   ];
-  const statusCards = [
-    { label: "Stato profilo", value: profile ? "Online" : "In sync" },
-    { label: "Avatar", value: profile?.avatar_url ? "Custom" : "Default" },
-    { label: "Pronto per", value: "Modifiche rapide" },
-  ];
+  const favoriteCountLabel = `${userFavorites.length} ${
+    userFavorites.length === 1 ? "gioco salvato" : "giochi salvati"
+  }`;
+  const wantToPlayCountLabel = `${userWantToPlay.length} ${
+    userWantToPlay.length === 1 ? "gioco salvato" : "giochi salvati"
+  }`;
+
+  const handleRemoveFavorite = async (favoriteId) => {
+    const { error } = await supabase
+      .from("favorites")
+      .delete()
+      .eq("id", favoriteId);
+
+    if (!error) {
+      setUserFavorites((prev) => prev.filter((entry) => entry.id !== favoriteId));
+    }
+  };
+
+  const handleRemoveWantToPlay = async (itemId) => {
+    const { error } = await supabase
+      .from("want_to_play")
+      .delete()
+      .eq("id", itemId);
+
+    if (!error) {
+      setUserWantToPlay((prev) => prev.filter((entry) => entry.id !== itemId));
+    }
+  };
+
+  const getGamePreviewSource = (entry) => {
+    const inlinePreview =
+      entry?.game_image ||
+      entry?.background_image ||
+      entry?.cover ||
+      entry?.cover_url ||
+      entry?.image_url ||
+      entry?.poster_url;
+
+    if (inlinePreview) {
+      return inlinePreview;
+    }
+
+    const fetchedPreview = gamePreviewById[Number(entry?.game_id)];
+    return fetchedPreview || GAME_PREVIEW_FALLBACK;
+  };
 
   return (
     <main className="profile-shell">
-      <section className="profile-panel">
-        <div className="profile-hero">
-          <div className="profile-hero__content">
-            <span className="profile-badge mb-5">Player profile</span>
-            <h1 className="profile-title mb-5">Control Room</h1>
-            <p className="profile-lead mb-5">
+      <section className="profile-panel profile-panel--profile">
+        <div className="profile-overview">
+          <div className="profile-overview__content">
+            <p className="profile-overview__eyebrow">Area personale</p>
+            <h1 className="profile-title">Control Room</h1>
+            <p className="profile-lead">
               Tutti i dettagli del tuo account in una vista piu leggibile, con
-              accesso rapido alle modifiche principali.
+              accesso immediato alle impostazioni e alle tue raccolte.
             </p>
             <div className="profile-action-row">
               <Link
@@ -163,7 +277,7 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          <article className="profile-card profile-card--hero">
+          <article className="profile-summary">
             <div className="profile-avatar-frame">
               <img
                 src={avatarSource}
@@ -172,178 +286,140 @@ export default function ProfilePage() {
                 onError={handleAvatarError}
               />
             </div>
-            <span className="profile-chip">online identity</span>
             <h2 className="profile-name">
               {profile?.username || "Player one"}
             </h2>
             <p className="profile-subtitle">
               {fullName || "Nome da completare"}
             </p>
+
+            <dl className="profile-meta" aria-label="Dettagli account">
+              {details.map((detail) => (
+                <div key={detail.label} className="profile-meta-row">
+                  <dt className="profile-meta-row__label">{detail.label}</dt>
+                  <dd className="profile-meta-row__value">{detail.value}</dd>
+                </div>
+              ))}
+            </dl>
           </article>
         </div>
 
-        <section className="profile-stats-grid" aria-label="Stato profilo">
-          {statusCards.map((card) => (
-            <article key={card.label} className="profile-stat-card">
-              <span className="profile-stat-card__label">{card.label}</span>
-              <strong className="profile-stat-card__value">{card.value}</strong>
-            </article>
-          ))}
-        </section>
+        <section className="profile-collections" aria-label="Le tue raccolte">
+          <article className="profile-collection profile-collection--favorites">
+            <header className="profile-collection__header">
+              <h2 className="profile-collection__title">
+                <FaHeart className="profile-collection__title-icon" />
+                Preferiti
+              </h2>
+              <p className="profile-collection__count">{favoriteCountLabel}</p>
+            </header>
 
-        <section className="profile-details-grid" aria-label="Dettagli account">
-          {details.map((detail) => (
-            <article key={detail.label} className="profile-detail-card">
-              <span className="profile-detail-card__label">{detail.label}</span>
-              <strong className="profile-detail-card__value">
-                {detail.value}
-              </strong>
-            </article>
-          ))}
-        </section>
+            {userFavorites.length > 0 ? (
+              <ul className="profile-games-list">
+                {userFavorites.map((fav) => (
+                  <li key={fav.id} className="profile-game-item">
+                    <div className="profile-game-item__main">
+                      <div className="profile-game-item__poster-frame">
+                        <img
+                          src={getGamePreviewSource(fav)}
+                          alt={`Anteprima di ${fav.game_name}`}
+                          className="profile-game-item__poster"
+                          loading="lazy"
+                          onError={handleGamePreviewError}
+                        />
+                      </div>
 
-        <section className="mt-12" aria-label="Giochi preferiti">
-          <div className="mb-6 flex items-center gap-3">
-            <span className="rounded-full border border-red-500/30 bg-red-500/10 px-4 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-red-400">
-              <FaHeart className="mr-1.5 inline-block text-xs" />
-              Preferiti
-            </span>
-            <span className="text-sm text-[#94a3b8]">
-              {userFavorites.length}{" "}
-              {userFavorites.length === 1 ? "gioco" : "giochi"}
-            </span>
-          </div>
-
-          {userFavorites.length > 0 ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {userFavorites.map((fav) => (
-                <article
-                  key={fav.id}
-                  className="group flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-[#071121]/60 p-5 backdrop-blur-xl transition-all duration-300 hover:border-[#7dd3fc]/25 hover:shadow-[0_8px_32px_rgba(56,189,248,0.06)]"
-                >
-                  <div className="flex items-center gap-4 overflow-hidden">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-red-500/20 bg-red-500/10">
-                      <FaHeart className="text-red-400" />
+                      <div className="profile-game-item__content">
+                        <h3 className="profile-game-item__name">{fav.game_name}</h3>
+                        <Link
+                          to={`/detail/${fav.game_id}`}
+                          className="profile-game-link"
+                        >
+                          Visualizza dettagli
+                        </Link>
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <h3 className="truncate text-sm font-bold text-white">
-                        {fav.game_name}
-                      </h3>
-                      <Link
-                        to={`/detail/${fav.game_id}`}
-                        className="text-xs font-medium text-[#7dd3fc] transition hover:text-white"
-                      >
-                        Visualizza dettagli →
-                      </Link>
+
+                    <button
+                      onClick={() => {
+                        void handleRemoveFavorite(fav.id);
+                      }}
+                      className="profile-icon-button profile-icon-button--danger"
+                      title="Rimuovi dai preferiti"
+                    >
+                      <FaTrash />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <article className="profile-empty-list">
+                <FaHeart className="profile-empty-list__icon" />
+                <p>Nessun gioco salvato nei preferiti.</p>
+                <Link to={routes.home} className="profile-game-link">
+                  Esplora i giochi
+                </Link>
+              </article>
+            )}
+          </article>
+
+          <article className="profile-collection profile-collection--wishlist">
+            <header className="profile-collection__header">
+              <h2 className="profile-collection__title">
+                <FaBookmark className="profile-collection__title-icon" />
+                Want to play
+              </h2>
+              <p className="profile-collection__count">{wantToPlayCountLabel}</p>
+            </header>
+
+            {userWantToPlay.length > 0 ? (
+              <ul className="profile-games-list">
+                {userWantToPlay.map((item) => (
+                  <li key={item.id} className="profile-game-item">
+                    <div className="profile-game-item__main">
+                      <div className="profile-game-item__poster-frame">
+                        <img
+                          src={getGamePreviewSource(item)}
+                          alt={`Anteprima di ${item.game_name}`}
+                          className="profile-game-item__poster"
+                          loading="lazy"
+                          onError={handleGamePreviewError}
+                        />
+                      </div>
+
+                      <div className="profile-game-item__content">
+                        <h3 className="profile-game-item__name">{item.game_name}</h3>
+                        <Link
+                          to={`/detail/${item.game_id}`}
+                          className="profile-game-link"
+                        >
+                          Visualizza dettagli
+                        </Link>
+                      </div>
                     </div>
-                  </div>
 
-                  <button
-                    onClick={async () => {
-                      const { error } = await supabase
-                        .from("favorites")
-                        .delete()
-                        .eq("id", fav.id);
-                      if (!error) {
-                        setUserFavorites((prev) =>
-                          prev.filter((f) => f.id !== fav.id),
-                        );
-                      }
-                    }}
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-[#94a3b8] opacity-0 transition-all duration-200 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 group-hover:opacity-100"
-                    title="Rimuovi dai preferiti"
-                  >
-                    <FaTrash className="text-xs" />
-                  </button>
-                </article>
-              ))}
-            </div>
-          ) : (
-            <article className="rounded-2xl border border-white/10 bg-[#071121]/60 p-8 text-center backdrop-blur-xl">
-              <FaHeart className="mx-auto mb-3 text-2xl text-[#475569]" />
-              <p className="text-sm font-semibold text-[#94a3b8]">
-                Nessun gioco salvato nei preferiti.
-              </p>
-              <Link
-                to={routes.home}
-                className="mt-3 inline-block text-xs font-semibold text-[#7dd3fc] transition hover:text-white"
-              >
-                Esplora i giochi →
-              </Link>
-            </article>
-          )}
-        </section>
-
-        <section className="mt-12" aria-label="Giochi want to play">
-          <div className="mb-6 flex items-center gap-3">
-            <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-amber-300">
-              <FaBookmark className="mr-1.5 inline-block text-xs" />
-              Want to play
-            </span>
-            <span className="text-sm text-[#94a3b8]">
-              {userWantToPlay.length}{" "}
-              {userWantToPlay.length === 1 ? "gioco" : "giochi"}
-            </span>
-          </div>
-
-          {userWantToPlay.length > 0 ? (
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              {userWantToPlay.map((item) => (
-                <article
-                  key={item.id}
-                  className="group flex items-center justify-between gap-4 rounded-2xl border border-white/10 bg-[#071121]/60 p-5 backdrop-blur-xl transition-all duration-300 hover:border-amber-300/30 hover:shadow-[0_8px_32px_rgba(251,191,36,0.08)]"
-                >
-                  <div className="flex items-center gap-4 overflow-hidden">
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-amber-400/25 bg-amber-500/10">
-                      <FaBookmark className="text-amber-300" />
-                    </div>
-                    <div className="min-w-0">
-                      <h3 className="truncate text-sm font-bold text-white">
-                        {item.game_name}
-                      </h3>
-                      <Link
-                        to={`/detail/${item.game_id}`}
-                        className="text-xs font-medium text-[#7dd3fc] transition hover:text-white"
-                      >
-                        Visualizza dettagli →
-                      </Link>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={async () => {
-                      const { error } = await supabase
-                        .from("want_to_play")
-                        .delete()
-                        .eq("id", item.id);
-                      if (!error) {
-                        setUserWantToPlay((prev) =>
-                          prev.filter((entry) => entry.id !== item.id),
-                        );
-                      }
-                    }}
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-[#94a3b8] opacity-0 transition-all duration-200 hover:border-amber-400/35 hover:bg-amber-500/10 hover:text-amber-300 group-hover:opacity-100"
-                    title="Rimuovi da want to play"
-                  >
-                    <FaTrash className="text-xs" />
-                  </button>
-                </article>
-              ))}
-            </div>
-          ) : (
-            <article className="rounded-2xl border border-white/10 bg-[#071121]/60 p-8 text-center backdrop-blur-xl">
-              <FaBookmark className="mx-auto mb-3 text-2xl text-[#475569]" />
-              <p className="text-sm font-semibold text-[#94a3b8]">
-                Nessun gioco salvato in Want to play.
-              </p>
-              <Link
-                to={routes.home}
-                className="mt-3 inline-block text-xs font-semibold text-[#7dd3fc] transition hover:text-white"
-              >
-                Esplora i giochi →
-              </Link>
-            </article>
-          )}
+                    <button
+                      onClick={() => {
+                        void handleRemoveWantToPlay(item.id);
+                      }}
+                      className="profile-icon-button"
+                      title="Rimuovi da want to play"
+                    >
+                      <FaTrash />
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <article className="profile-empty-list">
+                <FaBookmark className="profile-empty-list__icon" />
+                <p>Nessun gioco salvato in Want to play.</p>
+                <Link to={routes.home} className="profile-game-link">
+                  Esplora i giochi
+                </Link>
+              </article>
+            )}
+          </article>
         </section>
       </section>
     </main>

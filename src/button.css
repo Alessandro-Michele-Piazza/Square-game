@@ -1,82 +1,131 @@
 .next-btn-container {
   display: flex;
+  align-items: center;
   justify-content: center;
-  /* Mappatura delle variabili locali sulla tua palette globale */
-  --color-text: var(--color-yellow-primary);
-  --color-background: var(--color-card-bg); /* Blu scuro per la base del bottone */
-  --color-outline: var(--color-blue-primary); /* Accento blu per i contorni */
-  --color-shadow: var(--shadow-lightning); /* Il tuo bagliore giallo neon */
+  --next-btn-size: 3rem;
+  --next-btn-expanded-size: 4.1rem;
+  --color-text: var(--color-text-bright);
+  --color-text-active: var(--color-blue-light);
+  --color-background: rgba(255, 255, 255, 0.08);
+  --color-background-active: rgba(32, 69, 136, 0.58);
+  --color-outline: rgba(125, 211, 252, 0.4);
+  --color-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.03), 0 10px 20px rgba(0, 0, 0, 0.38);
+  width: var(--next-btn-size);
 }
 
 .next-btn-content {
-  display: flex;
+  appearance: none;
+  display: inline-flex;
   align-items: center;
-  padding: 8px 24px; /* Un po' più di respiro, perfetto per lo stile gaming */
+  justify-content: center;
+  width: var(--next-btn-size);
+  height: var(--next-btn-size);
+  padding: 0;
   text-decoration: none;
-  font-family: var(--font-orbitron); /* Font per titoli/pulsanti principali */
-  font-size: 22px; /* Leggermente ridimensionato per l'Orbitron che è molto largo */
-  text-transform: uppercase; /* Ci sta benissimo con lo stile Orbitron/Gaming */
-  letter-spacing: 1px;
   color: var(--color-text);
   background: var(--color-background);
-  transition: all 0.5s ease; /* Transizione più fluida, 1s era un po' lento */
-  border-radius: var(--radius-gaming); /* Bordi squadrati da gaming (4px) */
-  border: 1px solid var(--color-blue-dark); /* Sottile bordo blu scuro di base */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  border-radius: 999px;
+  border: 1px solid transparent;
+  box-shadow: var(--color-shadow);
+  cursor: pointer;
+  transition:
+    width 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 250ms ease,
+    box-shadow 250ms ease,
+    background-color 250ms ease,
+    transform 220ms ease;
 }
 
 .next-btn-content:hover,
-.next-btn-content:focus {
-  transition: 0.3s;
-  -webkit-animation: next-btn-animation 0.8s;
-  animation: next-btn-animation 0.8s;
-  outline: 2px solid transparent;
-  outline-offset: 4px;
-  color: var(--color-yellow-hover); /* Il giallo si intensifica all'hover */
-  background: #112546; /* Sfondo leggermente più chiaro per il feedback */
-  border-color: var(--color-blue-light); /* Il bordo si accende */
-  box-shadow: var(--shadow-lightning); /* Attiva il tuo effetto neon giallo */
+.next-btn-content:focus-visible {
+  width: var(--next-btn-expanded-size);
+  outline: none;
+  color: var(--color-text-active);
+  background: var(--color-background-active);
+  border-color: var(--color-outline);
+  box-shadow:
+    0 0 0 1px rgba(125, 211, 252, 0.25),
+    0 0 20px rgba(96, 165, 250, 0.22),
+    0 10px 22px rgba(0, 0, 0, 0.45);
+}
+
+.next-btn-content:active {
+  transform: scale(0.97);
 }
 
 .next-btn-content .next-btn-icon-arrow {
-  transition: 0.4s ease;
-  margin-right: 0px;
-  transform: scale(0.7);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 14px;
+  transform: translateX(0);
+  transition: transform 420ms cubic-bezier(0.22, 0.9, 0.24, 1);
 }
 
-.next-btn-content:hover .next-btn-icon-arrow {
-  margin-right: 15px; /* Ridotto leggermente per non farlo scattare troppo lontano */
+.next-btn-content:hover .next-btn-icon-arrow,
+.next-btn-content:focus-visible .next-btn-icon-arrow {
+  transform: translateX(6px);
 }
 
 .next-btn-icon-arrow {
-  width: 20px;
-  margin-left: 12px;
   position: relative;
-  top: 2%;
+}
+
+.next-btn-content.is-prev .next-btn-icon-arrow {
+  transform: scaleX(-1);
+}
+
+.next-btn-content.is-prev:hover .next-btn-icon-arrow,
+.next-btn-content.is-prev:focus-visible .next-btn-icon-arrow {
+  transform: translateX(-6px) scaleX(-1);
+}
+
+.next-btn-icon-arrow svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.next-btn-icon-arrow path {
+  fill: var(--color-text);
 }
 
 /* SVG Frecce */
-#next-btn-arrow-one {
-  transition: 0.4s;
-  transform: translateX(-60%);
+.next-btn-arrow-one {
+  transition:
+    transform 0.4s ease,
+    opacity 0.3s ease;
+  transform: translateX(-65%);
+  opacity: 0.12;
 }
 
-#next-btn-arrow-two {
-  transition: 0.5s;
+.next-btn-arrow-two {
+  transition:
+    transform 0.5s ease,
+    opacity 0.3s ease;
   transform: translateX(-30%);
+  opacity: 0.42;
 }
 
-.next-btn-content:hover #next-btn-arrow-three {
+.next-btn-content:hover .next-btn-arrow-three,
+.next-btn-content:focus-visible .next-btn-arrow-three {
+  opacity: 1;
   animation: next-btn-color-anim 1s infinite 0.2s;
 }
 
-.next-btn-content:hover #next-btn-arrow-one {
+.next-btn-content:hover .next-btn-arrow-one,
+.next-btn-content:focus-visible .next-btn-arrow-one {
   transform: translateX(0%);
+  opacity: 1;
   animation: next-btn-color-anim 1s infinite 0.6s;
 }
 
-.next-btn-content:hover #next-btn-arrow-two {
+.next-btn-content:hover .next-btn-arrow-two,
+.next-btn-content:focus-visible .next-btn-arrow-two {
   transform: translateX(0%);
+  opacity: 1;
   animation: next-btn-color-anim 1s infinite 0.4s;
 }
 
@@ -95,17 +144,13 @@
   }
 }
 
-/* Button animations (L'effetto onda del contorno al click/focus) */
-@-webkit-keyframes next-btn-animation {
-  0% {
-    outline: 2px solid var(--color-blue-light);
-    outline-offset: 0;
-  }
-}
-
-@keyframes next-btn-animation {
-  0% {
-    outline: 2px solid var(--color-blue-light);
-    outline-offset: 0;
+@media (prefers-reduced-motion: reduce) {
+  .next-btn-content,
+  .next-btn-icon-arrow,
+  .next-btn-arrow-one,
+  .next-btn-arrow-two,
+  .next-btn-arrow-three {
+    transition: none;
+    animation: none;
   }
 }

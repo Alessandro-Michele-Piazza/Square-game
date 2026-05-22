@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import "./GameCarousel.css";
+import "../button.css";
 
 function buildSlides({ trailers, screenshots, fallbackImage, title }) {
   const coverSlide = fallbackImage
@@ -59,6 +60,22 @@ function buildSlides({ trailers, screenshots, fallbackImage, title }) {
   );
 
   return combinedSlides;
+}
+
+function CarouselArrowIcon() {
+  return (
+    <span className="next-btn-icon-arrow" aria-hidden="true">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 34 14"
+        fill="none"
+      >
+        <path className="next-btn-arrow-one" d="M0 0L8 7L0 14H4L12 7L4 0H0Z" />
+        <path className="next-btn-arrow-two" d="M11 0L19 7L11 14H15L23 7L15 0H11Z" />
+        <path className="next-btn-arrow-three" d="M22 0L30 7L22 14H26L34 7L26 0H22Z" />
+      </svg>
+    </span>
+  );
 }
 
 export default function GameCarousel({
@@ -130,14 +147,16 @@ export default function GameCarousel({
 
       {slides.length > 1 && (
         <div className="carousel-nav">
-          <button
-            type="button"
-            className="carousel-arrow"
-            onClick={goPrev}
-            aria-label="Slide precedente"
-          >
-            Prev
-          </button>
+          <div className="next-btn-container">
+            <button
+              type="button"
+              className="next-btn-content is-prev"
+              onClick={goPrev}
+              aria-label="Slide precedente"
+            >
+              <CarouselArrowIcon />
+            </button>
+          </div>
 
           <div className="carousel-thumbs" role="tablist" aria-label="Media del gioco">
             {slides.map((slide, index) => (
@@ -154,14 +173,16 @@ export default function GameCarousel({
             ))}
           </div>
 
-          <button
-            type="button"
-            className="carousel-arrow"
-            onClick={goNext}
-            aria-label="Slide successiva"
-          >
-            Next
-          </button>
+          <div className="next-btn-container">
+            <button
+              type="button"
+              className="next-btn-content"
+              onClick={goNext}
+              aria-label="Slide successiva"
+            >
+              <CarouselArrowIcon />
+            </button>
+          </div>
         </div>
       )}
     </section>

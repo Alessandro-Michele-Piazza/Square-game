@@ -1,6 +1,7 @@
 import { RouterProvider } from "react-router";
 import "./App.css";
 import "./loading_page.css";
+import "aos/dist/aos.css";
 import router from "./router/router";
 import { UserContextProvider } from "./context/UserContext";
 
