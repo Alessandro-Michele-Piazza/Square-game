@@ -1,4 +1,3 @@
-<img width="1863" height="887" alt="detail page" src="https://github.com/user-attachments/assets/6a7cb031-bdc9-4a81-beda-e2a0d5daac62" />
 Da zero a Full-Stack: ecco Square Games 🎮
 <br>
 Sono felice di presentare Square Games, il mio ultimo progetto web che mette insieme gaming, community e tecnologia.
