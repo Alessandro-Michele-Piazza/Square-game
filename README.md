@@ -2,7 +2,7 @@ Da zero a Full-Stack: ecco Square Games 🎮
 <br>
 Sono felice di presentare Square Games, il mio ultimo progetto web che mette insieme gaming, community e tecnologia.
 
-Non è solo una vetrina di videogiochi, ma una piattaforma interattiva completa dove l'utente può gestire il proprio profilo, recensire titoli e salvare i preferiti.
+Non è solo una vetrina di videogiochi, ma una piattaforma interattiva completa dove l'utente può gestire il proprio profilo, recensire titoli, salvare i preferiti e creare una Want to play list!
 <br>
 
 Cosa ho imparato e implementato in questo progetto:
@@ -24,9 +24,10 @@ Sono aperto a feedback, curiosità o nuove opportunità! <br>
 
 hashtag#WebDevelopment hashtag#ReactJS hashtag#Supabase hashtag#FullStack hashtag#Gaming hashtag#TailwindCSS hashtag#Coding hashtag#AlessandroPiazza
 
-<img width="1861" height="891" alt="detail page" src="https://github.com/user-attachments/assets/b5b6556a-9d90-4eab-be10-9954249cef2b" />
-<img width="1863" height="887" alt="detail page" src="https://github.com/user-attachments/assets/161a04e8-65cb-48fd-a90d-7cba0cf989c1" />
-<img width="1863" height="887" alt="detail page" src="https://github.com/user-attachments/assets/b413a91b-7115-446b-958e-931d06946707" />
-<img width="1861" height="787" alt="cattura2" src="https://github.com/user-attachments/assets/9e9960c9-0b21-4a01-bd92-c6fd700a395d" />
+<img width="auto" height="auto" alt="Home Page" src="https://github.com/user-attachments/assets/b5b6556a-9d90-4eab-be10-9954249cef2b" />
+<img width="auto" height="auto" alt="Detail page" src="https://github.com/user-attachments/assets/161a04e8-65cb-48fd-a90d-7cba0cf989c1" />
+<img width="auto" height="auto" alt="Immagine pagina profilo 1 con le info dei pg" src="https://github.com/user-attachments/assets/b413a91b-7115-446b-958e-93
+<img width="auto" height="auto" alt="Immagine pagina profilo 2 con want to play e favoriti" src="https://github.com/user-attachments/assets/5ec16beb-89d8-4f2b-9786-5191c2f39f24" />
+1d06946707" />
 
 
