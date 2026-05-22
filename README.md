@@ -26,6 +26,7 @@ hashtag#WebDevelopment hashtag#ReactJS hashtag#Supabase hashtag#FullStack hashta
 
 <img width="1861" height="891" alt="detail page" src="https://github.com/user-attachments/assets/b5b6556a-9d90-4eab-be10-9954249cef2b" />
 <img width="1863" height="887" alt="detail page" src="https://github.com/user-attachments/assets/161a04e8-65cb-48fd-a90d-7cba0cf989c1" />
-<img width="1860" height="892" alt="image" src="https://github.com/user-attachments/assets/8518340a-1719-45f3-b3d3-445b13aae8f9" />
-<img width="1856" height="669" alt="image" src="https://github.com/user-attachments/assets/2eba1c7e-d070-4445-bcda-30559ef37107" />
+<img width="1863" height="887" alt="detail page" src="https://github.com/user-attachments/assets/b413a91b-7115-446b-958e-931d06946707" />
+<img width="1861" height="787" alt="cattura2" src="https://github.com/user-attachments/assets/9e9960c9-0b21-4a01-bd92-c6fd700a395d" />
+
 
