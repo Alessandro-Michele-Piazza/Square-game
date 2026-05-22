@@ -26,8 +26,6 @@ hashtag#WebDevelopment hashtag#ReactJS hashtag#Supabase hashtag#FullStack hashta
 
 <img width="auto" height="auto" alt="Home Page" src="https://github.com/user-attachments/assets/b5b6556a-9d90-4eab-be10-9954249cef2b" />
 <img width="auto" height="auto" alt="Detail page" src="https://github.com/user-attachments/assets/161a04e8-65cb-48fd-a90d-7cba0cf989c1" />
-<img width="auto" height="auto" alt="Immagine pagina profilo 1 con le info dei pg" src="https://github.com/user-attachments/assets/b413a91b-7115-446b-958e-93
-<img width="auto" height="auto" alt="Immagine pagina profilo 2 con want to play e favoriti" src="https://github.com/user-attachments/assets/5ec16beb-89d8-4f2b-9786-5191c2f39f24" />
-1d06946707" />
-
+<img width="auto" height="auto" alt="Profile page 1" src="https://github.com/user-attachments/assets/71e63022-1f71-4867-bf70-8b8ee32525ff" />
+<img width="auto" height="auto" alt="Profile page 1" src="https://github.com/user-attachments/assets/23436519-bde3-4edf-8371-c53747a022e4" />
 
