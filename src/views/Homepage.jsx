@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLoaderData } from "react-router";
 import Gamelist from "../components/Gamelist";
 
@@ -40,6 +40,7 @@ function pickBestGame(currentGame, nextGame) {
 export default function Homepage() {
   const data = useLoaderData();
   const [currentPage, setCurrentPage] = useState(1);
+  const hasMountedRef = useRef(false);
 
   const games = (() => {
     const uniqueGames = new Map();
@@ -65,6 +66,21 @@ export default function Homepage() {
 
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
   const hasPagination = games.length > PAGE_SIZE;
+
+  useEffect(() => {
+    if (!hasPagination) {
+      return;
+    }
+
+    if (!hasMountedRef.current) {
+      hasMountedRef.current = true;
+      return;
+    }
+
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [currentPageSafe, hasPagination]);
 
   return (
     <>

@@ -1,19 +1,101 @@
-async function fetchGamesList(url) {
+const FILTER_PAGE_SIZE = 20;
+
+async function fetchGamesPayload(url) {
   const response = await fetch(url);
   const json = await response.json();
 
   if (!response.ok || !Array.isArray(json.results)) {
     console.error("RAWG API error:", json);
+    return null;
+  }
+
+  return json;
+}
+
+async function fetchGamesList(url) {
+  const json = await fetchGamesPayload(url);
+
+  if (!json) {
     return [];
   }
 
   return json.results;
 }
 
-async function getFilteredGames(filterKey, slug) {
-  return fetchGamesList(
-    `https://api.rawg.io/api/games?key=${import.meta.env.VITE_RAWG_KEY}&${filterKey}=${slug}&page_size=20`,
+function parsePageNumber(request) {
+  if (!request?.url) {
+    return 1;
+  }
+
+  try {
+    const rawPage = new URL(request.url).searchParams.get("page");
+    const parsedPage = Number.parseInt(rawPage ?? "1", 10);
+
+    if (Number.isNaN(parsedPage) || parsedPage < 1) {
+      return 1;
+    }
+
+    return parsedPage;
+  } catch {
+    return 1;
+  }
+}
+
+function buildPaginatedResult(json, page, pageSize = FILTER_PAGE_SIZE) {
+  const results = Array.isArray(json?.results) ? json.results : [];
+  const count = Number.isFinite(Number(json?.count))
+    ? Number(json.count)
+    : results.length;
+  const totalPages = Math.max(1, Math.ceil(count / pageSize));
+
+  return {
+    games: results,
+    pagination: {
+      page: Math.max(1, Math.min(page, totalPages)),
+      pageSize,
+      totalResults: Math.max(0, count),
+      totalPages,
+      hasNext: Boolean(json?.next),
+      hasPrevious: Boolean(json?.previous),
+    },
+  };
+}
+
+async function fetchPaginatedGames(url, request, pageSize = FILTER_PAGE_SIZE) {
+  const requestedPage = parsePageNumber(request);
+  const pagedUrl = `${url}&page_size=${pageSize}&page=${requestedPage}`;
+  const json = await fetchGamesPayload(pagedUrl);
+
+  if (!json) {
+    return buildPaginatedResult({ results: [], count: 0, next: null, previous: null }, 1, pageSize);
+  }
+
+  const totalResults = Number.isFinite(Number(json.count))
+    ? Number(json.count)
+    : json.results.length;
+  const totalPages = Math.max(1, Math.ceil(totalResults / pageSize));
+
+  if (requestedPage > totalPages && totalResults > 0) {
+    const fallbackUrl = `${url}&page_size=${pageSize}&page=${totalPages}`;
+    const fallbackJson = await fetchGamesPayload(fallbackUrl);
+
+    if (fallbackJson) {
+      return buildPaginatedResult(fallbackJson, totalPages, pageSize);
+    }
+  }
+
+  return buildPaginatedResult(json, requestedPage, pageSize);
+}
+
+async function getFilteredGames(filterKey, slug, request) {
+  return fetchPaginatedGames(
+    `https://api.rawg.io/api/games?key=${import.meta.env.VITE_RAWG_KEY}&${filterKey}=${slug}`,
+    request,
   );
+}
+
+function hasFilteredMatches(payload) {
+  return Number(payload?.pagination?.totalResults ?? 0) > 0;
 }
 
 export async function getAllGamesLoader() {
@@ -40,9 +122,10 @@ export async function getAuthHeroImageLoader() {
   };
 }
 
-export async function getSearchedGames({ params }) {
-  return fetchGamesList(
-    `https://api.rawg.io/api/games?key=${import.meta.env.VITE_RAWG_KEY}&search=${params.slug}&page_size=20`,
+export async function getSearchedGames({ params, request }) {
+  return fetchPaginatedGames(
+    `https://api.rawg.io/api/games?key=${import.meta.env.VITE_RAWG_KEY}&search=${params.slug}`,
+    request,
   );
 }
 
@@ -58,34 +141,34 @@ export async function getAllGenres() {
   return json.results;
 }
 
-export async function getFilteredbyGenreGames({ params }) {
-  return getFilteredGames("genres", params.slug);
+export async function getFilteredbyGenreGames({ params, request }) {
+  return getFilteredGames("genres", params.slug, request);
 }
 
-export async function getFilteredByDeveloperGames({ params }) {
-  return getFilteredGames("developers", params.slug);
+export async function getFilteredByDeveloperGames({ params, request }) {
+  return getFilteredGames("developers", params.slug, request);
 }
 
-export async function getFilteredByPublisherGames({ params }) {
-  return getFilteredGames("publishers", params.slug);
+export async function getFilteredByPublisherGames({ params, request }) {
+  return getFilteredGames("publishers", params.slug, request);
 }
 
-export async function getFilteredByPlatformGames({ params }) {
-  const byPlatformId = await getFilteredGames("platforms", params.id);
+export async function getFilteredByPlatformGames({ params, request }) {
+  const byPlatformId = await getFilteredGames("platforms", params.id, request);
 
   // Card badges often use RAWG parent platform ids (for example PlayStation = 2),
   // which are not resolved by `platforms=id`.
-  if (Array.isArray(byPlatformId) && byPlatformId.length > 0) {
+  if (hasFilteredMatches(byPlatformId)) {
     return byPlatformId;
   }
 
-  const byParentPlatformId = await getFilteredGames("parent_platforms", params.id);
+  const byParentPlatformId = await getFilteredGames("parent_platforms", params.id, request);
 
-  if (Array.isArray(byParentPlatformId) && byParentPlatformId.length > 0) {
+  if (hasFilteredMatches(byParentPlatformId)) {
     return byParentPlatformId;
   }
 
-  return getFilteredGames("parent_platforms", params.slug);
+  return getFilteredGames("parent_platforms", params.slug, request);
 }
 
 
