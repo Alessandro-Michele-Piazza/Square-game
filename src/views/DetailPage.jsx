@@ -20,6 +20,7 @@ import BodySection from "../components/BodySection";
 import { UserContext } from "../context/user-context";
 import supabase from "../database/supabase";
 import useAos from "../hooks/useAos";
+import useRouteScrollReset from "../hooks/useRouteScrollReset";
 import "../components/GameCarousel.css";
 
 const fallbackImage =
@@ -145,6 +146,7 @@ export default function DetailPage() {
   const screenshots = Array.isArray(data?.screenshots) ? data.screenshots : [];
   const navigate = useNavigate();
   useAos();
+  useRouteScrollReset();
 
   const { user } = useContext(UserContext);
   const ownerId = user?.id ?? null;

@@ -4,12 +4,14 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
 import useAos from "../hooks/useAos";
+import useRouteScrollReset from "../hooks/useRouteScrollReset";
 
 export default function Layout() {
   const data = useLoaderData();
   const genres = Array.isArray(data) ? data : [];
   const [drawerOpen, setDrawerOpen] = useState(false);
   useAos();
+  useRouteScrollReset();
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
