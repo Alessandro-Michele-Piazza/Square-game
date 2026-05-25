@@ -1,8 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Orbitron:wght@400..900&display=swap");
 @import "tailwindcss";
 @plugin "daisyui";
-@import "C:\Users\alexp\Progetti_Aulab\rehacktor\src\card_custom.css";
-@import "C:\Users\alexp\Progetti_Aulab\rehacktor\src\loading_page.css";
+@import "./card_custom.css";
+@import "./loading_page.css";
 @import "./scrollbar.css";
 @import "./cursor.css";
 
