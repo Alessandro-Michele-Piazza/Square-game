@@ -1,6 +1,31 @@
-import { FaInstagram, FaTwitch, FaYoutube } from "react-icons/fa6";
+import { FaLinkedinIn } from "react-icons/fa6";
 import "./Footer.css";
 import { Link } from "react-router";
+
+function PortfolioSparkIcon() {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className="site-footer__portfolio-icon"
+      aria-hidden="true"
+    >
+      <path
+        d="M4 6.5h16a1.5 1.5 0 0 1 1.5 1.5v8a1.5 1.5 0 0 1-1.5 1.5H4A1.5 1.5 0 0 1 2.5 16V8A1.5 1.5 0 0 1 4 6.5Z"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.7"
+      />
+      <path
+        d="M8 17.5h8M10 19.5h4"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+      />
+      <path d="m12 8.5 1.2 2.1 2.4.4-1.7 1.7.4 2.4-2.3-1.1-2.3 1.1.4-2.4-1.7-1.7 2.4-.4L12 8.5Z" />
+    </svg>
+  );
+}
 
 export default function Footer() {
   return (
@@ -23,35 +48,25 @@ export default function Footer() {
         </Link>
 
         <div className="site-footer__actions">
-          
-
           <div
             className="site-footer__socials"
-            aria-label="External gaming links"
+            aria-label="External profile links"
           >
             <a
-              href="https://www.instagram.com/everyeyeit/"
+              href="https://www.linkedin.com/in/alessandro-michele-piazza-13b751171/"
               target="_blank"
-              rel="noreferrer"
-              aria-label="Everyeye Instagram"
+              rel="noreferrer noopener"
+              aria-label="Alessandro Michele Piazza LinkedIn"
             >
-              <FaInstagram />
+              <FaLinkedinIn />
             </a>
             <a
-              href="https://www.twitch.tv/everyeye"
+              href="https://alessandro-michele-piazza.github.io"
               target="_blank"
-              rel="noreferrer"
-              aria-label="Everyeye Twitch"
+              rel="noreferrer noopener"
+              aria-label="Portfolio di Alessandro Michele Piazza"
             >
-              <FaTwitch />
-            </a>
-            <a
-              href="https://www.youtube.com/@Everyeye"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Everyeye YouTube"
-            >
-              <FaYoutube />
+              <PortfolioSparkIcon />
             </a>
           </div>
         </div>
@@ -59,13 +74,13 @@ export default function Footer() {
 
       <div className="site-footer__bottom">
         <span> Powered By: </span>
-        <Link
-          to="https://www.linkedin.com/in/alessandro-michele-piazza-13b751171/"
+        <a
+          href="https://alessandro-michele-piazza.github.io"
           target="_blank"
-          rel="noreferrer"
+          rel="noreferrer noopener"
         >
-          <span className=" powered_by"> Alessandro Michele Piazza </span>
-        </Link>
+          <span className="powered_by">Alessandro Michele Piazza</span>
+        </a>
       </div>
     </footer>
   );

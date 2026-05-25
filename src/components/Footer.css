@@ -81,6 +81,12 @@
   font-size: 1rem;
 }
 
+.site-footer__portfolio-icon {
+  width: 1.08rem;
+  height: 1.08rem;
+  display: block;
+}
+
 .site-footer__socials a:hover {
   transform: translateY(-2px);
   border-color: rgba(254, 240, 138, 0.35);
