@@ -3,7 +3,6 @@ import { Outlet, useLoaderData } from "react-router";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
-import { FaBars } from "react-icons/fa6";
 import useAos from "../hooks/useAos";
 
 export default function Layout() {
@@ -29,20 +28,7 @@ export default function Layout() {
 
   return (
     <>
-      <Navbar />
-
-      <div className="sticky top-[var(--auth-header-height)] z-40 px-3 pt-2 sm:px-5" data-aos="fade-down">
-        <div className="mx-auto flex w-full max-w-[1500px] items-center">
-          <button
-            onClick={handleOpenDrawer}
-            aria-label="Apri menu generi"
-            className=" inline-flex items-center gap-2 rounded-full border border-[#7dd3fc]/30 px-4 py-2 text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[#7dd3fc] transition hover:border-[#fef08a]/40 hover:text-[#fef08a]"
-          >
-            <FaBars className="text-sm" />
-            Generi
-          </button>
-        </div>
-      </div>
+      <Navbar onOpenGenres={handleOpenDrawer} />
 
       <Sidebar genres={genres} isOpen={drawerOpen} onClose={handleCloseDrawer} />
 

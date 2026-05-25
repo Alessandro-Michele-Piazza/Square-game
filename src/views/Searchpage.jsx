@@ -38,7 +38,7 @@ export default function Searchpage() {
           Nessun gioco trovato per la tua ricerca.
         </p>
       )}
-      <Gamelist>
+      <Gamelist className="mb-14">
         {games.map((game) => {
           return <Gamelist.Card key={game.id} game={game} />;
         })}

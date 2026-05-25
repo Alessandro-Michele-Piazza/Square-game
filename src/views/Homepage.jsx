@@ -64,6 +64,7 @@ export default function Homepage() {
   })();
 
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
+  const hasPagination = games.length > PAGE_SIZE;
 
   return (
     <>
@@ -76,13 +77,13 @@ export default function Homepage() {
       {games.length === 0 && (
         <p className="text-center text-[#94a3b8]">Nessun gioco trovato. Controlla la API key RAWG.</p>
       )}
-      <Gamelist>
+      <Gamelist className={hasPagination ? "" : "mb-14"}>
         {paginatedGames.map((game) => {
           return <Gamelist.Card key={game.id} game={game} />;
         })}
       </Gamelist>
 
-      {games.length > PAGE_SIZE && (
+      {hasPagination && (
         <nav
           className="mx-auto mt-8 mb-4 flex w-full max-w-7xl flex-wrap items-center justify-center gap-2 px-4"
           aria-label="Paginazione top games"

@@ -1,18 +1,7 @@
 .profile-shell {
   min-height: calc(100vh - 4rem);
   padding: clamp(1.5rem, 4vw, 3rem);
-  background:
-    radial-gradient(
-      circle at top right,
-      rgba(59, 130, 246, 0.18),
-      transparent 32%
-    ),
-    radial-gradient(
-      circle at bottom left,
-      rgba(254, 240, 138, 0.12),
-      transparent 28%
-    ),
-    linear-gradient(180deg, rgba(5, 10, 21, 0.88), rgba(7, 16, 31, 0.92));
+  background: transparent;
 }
 
 .profile-shell--settings {
@@ -455,41 +444,6 @@
 
 .profile-empty-action {
   margin-top: 1.5rem;
-}
-
-.profile-panel--profile {
-  background: linear-gradient(
-      150deg,
-      rgba(6, 12, 24, 0.98),
-      rgba(11, 27, 50, 0.88)
-    ),
-    radial-gradient(circle at 10% -10%, rgba(225, 29, 72, 0.22), transparent 32%),
-    radial-gradient(circle at 88% 0%, rgba(56, 189, 248, 0.22), transparent 36%),
-    linear-gradient(180deg, rgba(8, 15, 31, 0.98), rgba(6, 12, 24, 0.98));
-}
-
-.profile-panel--profile::before {
-  top: -5.5rem;
-  right: -6rem;
-  width: 21rem;
-  height: 21rem;
-  background: radial-gradient(
-    circle,
-    rgba(244, 63, 94, 0.22),
-    transparent 66%
-  );
-}
-
-.profile-panel--profile::after {
-  bottom: -5rem;
-  left: -4rem;
-  width: 19rem;
-  height: 19rem;
-  background: radial-gradient(
-    circle,
-    rgba(56, 189, 248, 0.2),
-    transparent 68%
-  );
 }
 
 .profile-overview {

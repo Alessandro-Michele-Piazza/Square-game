@@ -6,7 +6,7 @@ import { FaArrowRightFromBracket, FaBars, FaXmark } from "react-icons/fa6";
 import supabase from "../database/supabase";
 import Placeholder from "../assets/Portrait_Placeholder.png";
 
-export default function Navbar() {
+export default function Navbar({ onOpenGenres, sticky = true }) {
   const [slug, setSlug] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -14,30 +14,33 @@ export default function Navbar() {
   const navigate = useNavigate();
   const { user, profile, signOut } = useContext(UserContext);
 
-  const [avatarUrl, setAvatarUrl] = useState(
-    profile?.avatar_url ? null : Placeholder,
-  );
+  const [signedAvatar, setSignedAvatar] = useState({ path: null, url: null });
 
   useEffect(() => {
-    if (!profile?.avatar_url) {
-      setAvatarUrl(Placeholder);
+    if (!profile?.avatar_url || profile.avatar_url.startsWith("http")) {
       return;
     }
-    if (profile.avatar_url.startsWith("http")) {
-      setAvatarUrl(profile.avatar_url);
-      return;
-    }
+
+    const currentPath = profile.avatar_url;
+
     supabase.storage
       .from("avatars")
-      .createSignedUrl(profile.avatar_url, 3600)
+      .createSignedUrl(currentPath, 3600)
       .then(({ data, error }) => {
         if (error || !data?.signedUrl) {
-          setAvatarUrl(Placeholder);
+          setSignedAvatar({ path: currentPath, url: null });
         } else {
-          setAvatarUrl(data.signedUrl);
+          setSignedAvatar({ path: currentPath, url: data.signedUrl });
         }
       });
   }, [profile?.avatar_url]);
+
+  const avatarUrl =
+    profile?.avatar_url && profile.avatar_url.startsWith("http")
+      ? profile.avatar_url
+      : signedAvatar.path === profile?.avatar_url && signedAvatar.url
+        ? signedAvatar.url
+        : Placeholder;
 
   const handleLogout = async () => {
     await signOut();
@@ -54,11 +57,13 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 px-3 pt-3 sm:px-5 sm:pt-4">
+    <header
+      className={`${sticky ? "sticky top-0" : "relative"} z-50 px-3 pt-3 sm:px-5 sm:pt-4`}
+    >
       <div className="mx-auto w-full max-w-[1500px]">
         <nav className="grid grid-cols-[auto_1fr_auto] items-center gap-3">
           {/* Logo chip */}
-          <div className=" flex items-center px-3 py-2 sm:px-4 sm:py-2.5">
+          <div className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5">
             <Link
               className="flex items-center gap-3 transition-transform duration-300 hover:scale-[1.01]"
               to={routes.home}
@@ -77,6 +82,18 @@ export default function Navbar() {
                 </span>
               </span>
             </Link>
+
+            {typeof onOpenGenres === "function" && (
+              <button
+                type="button"
+                onClick={onOpenGenres}
+                aria-label="Apri menu generi"
+                className="topbar-genre-trigger"
+              >
+                <FaBars className="text-sm" />
+                <span className="hidden sm:inline">Generi</span>
+              </button>
+            )}
           </div>
 
           {/* Search chip (desktop) */}
@@ -96,10 +113,6 @@ export default function Navbar() {
           {/* Action chip */}
           <div className=" flex items-center justify-end gap-2 px-2 py-2 sm:px-3">
             <div className="hidden md:flex items-center gap-2 text-sm font-medium">
-              <Link className="topbar-pill-link" to={routes.home}>
-                Home
-              </Link>
-
               {!user ? (
                 <>
                   <Link className="topbar-pill-link" to={routes.login}>
@@ -199,14 +212,6 @@ export default function Navbar() {
                 </button>
               </div>
             )}
-
-            <Link
-              className="topbar-subtle-link"
-              to={routes.home}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
-            </Link>
           </div>
         </div>
       </div>

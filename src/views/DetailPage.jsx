@@ -282,7 +282,7 @@ export default function DetailPage() {
   if (!game?.id) {
     return (
       <div className="min-h-screen bg-[rgba(5,10,21,0.84)] text-white">
-        <Navbar />
+        <Navbar sticky={false} />
         <main className="mx-auto flex min-h-[72vh] max-w-3xl flex-col items-center justify-center gap-6 px-6 text-center" data-aos="fade-up">
           <h1 className="font-orbitron text-4xl font-black text-white">
             Scheda gioco non disponibile
@@ -336,18 +336,19 @@ export default function DetailPage() {
   const ratingsCount = formatCount(game?.ratings_count);
 
   return (
-    <div className="min-h-screen bg-[rgba(4,9,21,0.84)] text-[#e2e8f0]">
-      <Navbar />
+    <div className="relative isolate min-h-screen overflow-hidden bg-[rgba(4,9,21,0.84)] text-[#e2e8f0]">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[42rem] overflow-hidden [mask-image:linear-gradient(to_bottom,black_0%,black_72%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_72%,transparent_100%)]">
+        <img
+          src={accentImage}
+          alt=""
+          className="h-full w-full scale-[1.02] object-cover opacity-28 blur-[4px]"
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,9,21,0.05)_0%,rgba(4,9,21,0.58)_52%,rgba(4,9,21,0.9)_100%)]" />
+      </div>
 
-      <main className="relative isolate overflow-hidden pb-16">
-        <div className="absolute inset-x-0 top-0 h-[30rem] overflow-hidden">
-          <img
-            src={accentImage}
-            alt=""
-            className="h-full w-full object-cover opacity-20 blur-[4px]"
-          />
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,9,21,0.16)_0%,rgba(4,9,21,0.74)_58%,rgba(4,9,21,0.94)_100%)]" />
-        </div>
+      <Navbar sticky={false} />
+
+      <main className="relative z-10 overflow-hidden pb-16">
         <div className="absolute left-1/2 top-44 h-72 w-72 -translate-x-1/2 rounded-full bg-[#22d3ee]/10 blur-[120px]" />
 
         <section className="relative mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8" data-aos="fade-up">
