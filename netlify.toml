@@ -1,0 +1,12 @@
+[build]
+  # Comando per costruire il progetto
+  command = "npm run build"
+  
+  # Directory con i file compilati
+  publish = "dist"
+
+# Configurazione per Single Page Application (React Router)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
