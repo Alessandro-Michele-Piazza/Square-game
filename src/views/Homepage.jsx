@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLoaderData } from "react-router";
 import Gamelist from "../components/Gamelist";
 
@@ -37,12 +37,46 @@ function pickBestGame(currentGame, nextGame) {
   return currentGame;
 }
 
+function normalizeCatalogGame(game, index) {
+  const genres = Array.isArray(game?.genres)
+    ? game.genres
+        .map((genre) => genre?.name)
+        .filter(Boolean)
+    : [];
+
+  const parentPlatforms = Array.isArray(game?.parent_platforms)
+    ? game.parent_platforms
+        .map((item) => item?.platform?.name)
+        .filter(Boolean)
+    : [];
+
+  const directPlatforms = Array.isArray(game?.platforms)
+    ? game.platforms
+        .map((item) => item?.platform?.name)
+        .filter(Boolean)
+    : [];
+
+  const metacriticValue = Number(game?.metacritic);
+
+  return {
+    // Catalog schema example:
+    // { id, name, genre, platform, metacriticScore, image }
+    id: Number(game?.id ?? index),
+    name: String(game?.name ?? "Titolo sconosciuto"),
+    genre: Array.from(new Set(genres)),
+    platform: Array.from(new Set([...parentPlatforms, ...directPlatforms])),
+    metacriticScore: Number.isFinite(metacriticValue) ? metacriticValue : 0,
+    image: game?.background_image ?? "",
+    rawGame: game,
+  };
+}
+
 export default function Homepage() {
   const data = useLoaderData();
   const [currentPage, setCurrentPage] = useState(1);
   const hasMountedRef = useRef(false);
 
-  const games = (() => {
+  const games = useMemo(() => {
     const uniqueGames = new Map();
     const rawGames = Array.isArray(data) ? data : [];
 
@@ -54,18 +88,22 @@ export default function Homepage() {
     });
 
     return Array.from(uniqueGames.values());
-  })();
+  }, [data]);
 
-  const totalPages = Math.max(1, Math.ceil(games.length / PAGE_SIZE));
+  const gamesCatalog = useMemo(() => {
+    return games.map((game, index) => normalizeCatalogGame(game, index));
+  }, [games]);
+
+  const totalPages = Math.max(1, Math.ceil(gamesCatalog.length / PAGE_SIZE));
   const currentPageSafe = Math.min(currentPage, totalPages);
 
-  const paginatedGames = (() => {
+  const paginatedGames = useMemo(() => {
     const startIndex = (currentPageSafe - 1) * PAGE_SIZE;
-    return games.slice(startIndex, startIndex + PAGE_SIZE);
-  })();
+    return gamesCatalog.slice(startIndex, startIndex + PAGE_SIZE);
+  }, [currentPageSafe, gamesCatalog]);
 
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
-  const hasPagination = games.length > PAGE_SIZE;
+  const hasPagination = gamesCatalog.length > PAGE_SIZE;
 
   useEffect(() => {
     if (!hasPagination) {
@@ -84,25 +122,29 @@ export default function Homepage() {
 
   return (
     <>
-      <h1
-        className="font-orbitron text-3xl font-bold text-center my-8 text-[#fef08a] drop-shadow-[0_0_18px_rgba(254,240,138,0.45)]"
-        data-aos="fade-up"
-      >
-        Top Rated Games
-      </h1>
-      {games.length === 0 && (
+      <div className="mx-auto mt-8 flex w-full max-w-7xl items-center justify-between gap-3 px-4">
+        <h1
+          className="font-orbitron mb-5 text-3xl font-bold text-[#fef08a] drop-shadow-[0_0_18px_rgba(254,240,138,0.45)]"
+          data-aos="fade-up"
+        >
+          Top Rated Games
+        </h1>
+      </div>
+
+      {gamesCatalog.length === 0 && (
         <p className="text-center text-[#94a3b8]">Nessun gioco trovato. Controlla la API key RAWG.</p>
       )}
+
       <Gamelist className={hasPagination ? "" : "mb-14"}>
         {paginatedGames.map((game) => {
-          return <Gamelist.Card key={game.id} game={game} />;
+          return <Gamelist.Card key={game.id} game={game.rawGame} />;
         })}
       </Gamelist>
 
       {hasPagination && (
         <nav
           className="mx-auto mt-8 mb-4 flex w-full max-w-7xl flex-wrap items-center justify-center gap-2 px-4"
-          aria-label="Paginazione top games"
+          aria-label="Paginazione top games filtrati"
         >
           <button
             type="button"

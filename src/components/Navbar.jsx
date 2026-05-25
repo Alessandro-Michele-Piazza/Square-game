@@ -87,11 +87,10 @@ export default function Navbar({ onOpenGenres, sticky = true }) {
               <button
                 type="button"
                 onClick={onOpenGenres}
-                aria-label="Apri menu generi"
+                aria-label="Apri menu filtri"
                 className="topbar-genre-trigger"
               >
                 <FaBars className="text-sm" />
-                <span className="hidden sm:inline">Generi</span>
               </button>
             )}
           </div>

@@ -41,6 +41,93 @@ function parsePageNumber(request) {
   }
 }
 
+function parseMetacriticMin(request, fallback = 0) {
+  if (!request?.url) {
+    return fallback;
+  }
+
+  try {
+    const rawMin = new URL(request.url).searchParams.get("metacriticMin");
+    const parsedMin = Number.parseInt(rawMin ?? String(fallback), 10);
+
+    if (Number.isNaN(parsedMin) || parsedMin < 0) {
+      return fallback;
+    }
+
+    return Math.min(100, parsedMin);
+  } catch {
+    return fallback;
+  }
+}
+
+function readSearchParam(request, key) {
+  if (!request?.url) {
+    return "";
+  }
+
+  try {
+    return String(new URL(request.url).searchParams.get(key) ?? "").trim();
+  } catch {
+    return "";
+  }
+}
+
+function parseOptionalGenreSlug(request) {
+  return readSearchParam(request, "genre");
+}
+
+function parseOptionalPlatformId(request) {
+  const rawPlatform = readSearchParam(request, "platform");
+  const parsedPlatform = Number.parseInt(rawPlatform, 10);
+
+  if (Number.isNaN(parsedPlatform) || parsedPlatform < 1) {
+    return null;
+  }
+
+  return parsedPlatform;
+}
+
+function buildSecondaryFiltersQuerySegment(
+  request,
+  { includeGenre = true, includePlatform = true } = {},
+) {
+  const queryParts = [];
+
+  if (includeGenre) {
+    const genreSlug = parseOptionalGenreSlug(request);
+
+    if (genreSlug) {
+      queryParts.push(`genres=${encodeURIComponent(genreSlug)}`);
+    }
+  }
+
+  if (includePlatform) {
+    const platformId = parseOptionalPlatformId(request);
+
+    if (platformId) {
+      queryParts.push(`platforms=${platformId}`);
+    }
+  }
+
+  if (queryParts.length === 0) {
+    return "";
+  }
+
+  return `&${queryParts.join("&")}`;
+}
+
+function buildMetacriticQuerySegment(request, baseMin = 0) {
+  const requestedMin = parseMetacriticMin(request, 0);
+  const safeBaseMin = Math.max(0, Math.min(100, Number(baseMin) || 0));
+  const effectiveMin = Math.max(safeBaseMin, requestedMin);
+
+  if (effectiveMin <= 0) {
+    return "";
+  }
+
+  return `&metacritic=${effectiveMin},100`;
+}
+
 function buildPaginatedResult(json, page, pageSize = FILTER_PAGE_SIZE) {
   const results = Array.isArray(json?.results) ? json.results : [];
   const count = Number.isFinite(Number(json?.count))
@@ -87,9 +174,12 @@ async function fetchPaginatedGames(url, request, pageSize = FILTER_PAGE_SIZE) {
   return buildPaginatedResult(json, requestedPage, pageSize);
 }
 
-async function getFilteredGames(filterKey, slug, request) {
+async function getFilteredGames(filterKey, slug, request, options = {}) {
+  const metacriticQuerySegment = buildMetacriticQuerySegment(request);
+  const secondaryFiltersQuerySegment = buildSecondaryFiltersQuerySegment(request, options);
+
   return fetchPaginatedGames(
-    `https://api.rawg.io/api/games?key=${import.meta.env.VITE_RAWG_KEY}&${filterKey}=${slug}`,
+    `https://api.rawg.io/api/games?key=${import.meta.env.VITE_RAWG_KEY}&${filterKey}=${encodeURIComponent(String(slug))}${secondaryFiltersQuerySegment}${metacriticQuerySegment}`,
     request,
   );
 }
@@ -98,9 +188,11 @@ function hasFilteredMatches(payload) {
   return Number(payload?.pagination?.totalResults ?? 0) > 0;
 }
 
-export async function getAllGamesLoader() {
+export async function getAllGamesLoader({ request }) {
+  const metacriticQuerySegment = buildMetacriticQuerySegment(request, 85);
+
   return fetchGamesList(
-    `https://api.rawg.io/api/games?key=${import.meta.env.VITE_RAWG_KEY}&metacritic=85,100&ordering=-metacritic&page_size=40`,
+    `https://api.rawg.io/api/games?key=${import.meta.env.VITE_RAWG_KEY}${metacriticQuerySegment}&ordering=-metacritic&page_size=40`,
   );
 }
 
@@ -123,8 +215,11 @@ export async function getAuthHeroImageLoader() {
 }
 
 export async function getSearchedGames({ params, request }) {
+  const metacriticQuerySegment = buildMetacriticQuerySegment(request);
+  const secondaryFiltersQuerySegment = buildSecondaryFiltersQuerySegment(request);
+
   return fetchPaginatedGames(
-    `https://api.rawg.io/api/games?key=${import.meta.env.VITE_RAWG_KEY}&search=${params.slug}`,
+    `https://api.rawg.io/api/games?key=${import.meta.env.VITE_RAWG_KEY}&search=${encodeURIComponent(String(params.slug ?? ""))}${secondaryFiltersQuerySegment}${metacriticQuerySegment}`,
     request,
   );
 }
@@ -142,7 +237,9 @@ export async function getAllGenres() {
 }
 
 export async function getFilteredbyGenreGames({ params, request }) {
-  return getFilteredGames("genres", params.slug, request);
+  return getFilteredGames("genres", params.slug, request, {
+    includeGenre: false,
+  });
 }
 
 export async function getFilteredByDeveloperGames({ params, request }) {
@@ -154,7 +251,9 @@ export async function getFilteredByPublisherGames({ params, request }) {
 }
 
 export async function getFilteredByPlatformGames({ params, request }) {
-  const byPlatformId = await getFilteredGames("platforms", params.id, request);
+  const byPlatformId = await getFilteredGames("platforms", params.id, request, {
+    includePlatform: false,
+  });
 
   // Card badges often use RAWG parent platform ids (for example PlayStation = 2),
   // which are not resolved by `platforms=id`.
@@ -162,13 +261,17 @@ export async function getFilteredByPlatformGames({ params, request }) {
     return byPlatformId;
   }
 
-  const byParentPlatformId = await getFilteredGames("parent_platforms", params.id, request);
+  const byParentPlatformId = await getFilteredGames("parent_platforms", params.id, request, {
+    includePlatform: false,
+  });
 
   if (hasFilteredMatches(byParentPlatformId)) {
     return byParentPlatformId;
   }
 
-  return getFilteredGames("parent_platforms", params.slug, request);
+  return getFilteredGames("parent_platforms", params.slug, request, {
+    includePlatform: false,
+  });
 }
 
 

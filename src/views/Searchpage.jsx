@@ -160,6 +160,7 @@ export default function Searchpage() {
       >
         {formatFilterHeading(pathname, slug)}
       </h1>
+
       {games.length === 0 && (
         <p className="text-center text-[#94a3b8]">
           Nessun gioco trovato per la tua ricerca.
