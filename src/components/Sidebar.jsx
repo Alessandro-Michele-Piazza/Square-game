@@ -566,7 +566,7 @@ export default function Sidebar({ genres, isOpen, onClose }) {
         <div className="mb-5 space-y-3">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
-              <h2 className="font-orbitron text-lg font-black uppercase tracking-[0.2em] text-[#fef08a]">Catalog Filters</h2>
+              <h2 className="font-orbitron text-lg font-black uppercase tracking-[0.2em] text-[#fef08a]"> Filters</h2>
             </div>
 
             <button
