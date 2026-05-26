@@ -4,8 +4,8 @@ import { UserContext } from "../context/user-context";
 import { FaBookmark, FaHeart, FaTrash } from "react-icons/fa6";
 import supabase from "../database/supabase";
 import routes from "../router/routes";
-import Placeholder from "../assets/Portrait_Placeholder.png";
-import "./profile_update.css";
+import Placeholder from "../media/Portrait_Placeholder.png";
+import "../css/views/profile_update.css";
 
 const GAME_PREVIEW_FALLBACK =
   "https://placehold.co/240x135/081120/e2e8f0?text=No+Image";

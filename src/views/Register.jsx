@@ -4,7 +4,7 @@ import { useContext } from "react";
 import { UserContext } from "../context/user-context";
 import routes from "../router/routes";
 import { useState } from "react";
-import "./Register.css";
+import "../css/views/Register.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
@@ -47,7 +47,7 @@ export default function Register() {
       <div className="register-split__form">
         <div className="register-card__brand">
           <img
-            src="/favicon.svg"
+            src="/media/favicon.svg"
             alt="Square Games logo"
             className="register-card__logo"
           />

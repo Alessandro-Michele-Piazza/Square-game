@@ -1,14 +1,22 @@
 import { Link, useNavigate } from "react-router";
 import routes from "../router/routes";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef } from "react";
 import { UserContext } from "../context/user-context";
-import { FaArrowRightFromBracket, FaBars, FaXmark } from "react-icons/fa6";
+import {
+  FaArrowRightFromBracket,
+  FaBars,
+  FaChevronDown,
+  FaXmark,
+} from "react-icons/fa6";
 import supabase from "../database/supabase";
-import Placeholder from "../assets/Portrait_Placeholder.png";
+import Placeholder from "../media/Portrait_Placeholder.png";
+import "../css/components/Navbar.css";
 
 export default function Navbar({ onOpenGenres, sticky = true }) {
   const [slug, setSlug] = useState("");
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
+  const userDropdownRef = useRef(null);
 
   const handleChange = (e) => setSlug(e.target.value);
   const navigate = useNavigate();
@@ -35,6 +43,37 @@ export default function Navbar({ onOpenGenres, sticky = true }) {
       });
   }, [profile?.avatar_url]);
 
+  useEffect(() => {
+    if (!isUserDropdownOpen) {
+      return undefined;
+    }
+
+    const handlePointerDown = (event) => {
+      if (
+        userDropdownRef.current
+        && !userDropdownRef.current.contains(event.target)
+      ) {
+        setIsUserDropdownOpen(false);
+      }
+    };
+
+    const handleEscapeDown = (event) => {
+      if (event.key === "Escape") {
+        setIsUserDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("touchstart", handlePointerDown);
+    document.addEventListener("keydown", handleEscapeDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("touchstart", handlePointerDown);
+      document.removeEventListener("keydown", handleEscapeDown);
+    };
+  }, [isUserDropdownOpen]);
+
   const avatarUrl =
     profile?.avatar_url && profile.avatar_url.startsWith("http")
       ? profile.avatar_url
@@ -42,9 +81,14 @@ export default function Navbar({ onOpenGenres, sticky = true }) {
         ? signedAvatar.url
         : Placeholder;
 
+  const closeAllMenus = () => {
+    setIsMobileMenuOpen(false);
+    setIsUserDropdownOpen(false);
+  };
+
   const handleLogout = async () => {
     await signOut();
-    setIsMenuOpen(false);
+    closeAllMenus();
     navigate("/");
   };
 
@@ -52,52 +96,56 @@ export default function Navbar({ onOpenGenres, sticky = true }) {
     if (e.key === "Enter" && slug.trim()) {
       navigate(`/search/${slug.trim()}`);
       setSlug("");
-      setIsMenuOpen(false);
+      closeAllMenus();
     }
+  };
+
+  const handleOpenGenresFromMenu = () => {
+    if (typeof onOpenGenres !== "function") {
+      return;
+    }
+
+    setIsMobileMenuOpen(false);
+    onOpenGenres();
   };
 
   return (
     <header
-      className={`${sticky ? "sticky top-0" : "relative"} z-50 px-3 pt-3 sm:px-5 sm:pt-4`}
+      className={sticky ? "topbar topbar--sticky" : "topbar topbar--static"}
     >
-      <div className="mx-auto w-full max-w-[1500px]">
-        <nav className="grid grid-cols-[auto_1fr_auto] items-center gap-3">
+      <div className="topbar-shell">
+        <nav className="topbar-grid">
           {/* Logo chip */}
-          <div className="flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2.5">
-            <Link
-              className="flex items-center gap-3 transition-transform duration-300 hover:scale-[1.01]"
-              to={routes.home}
-            >
-              <img
-                src="/favicon.svg"
-                alt="Square Games logo"
-                className="h-10 w-10 rounded-2xl object-contain drop-shadow-[0_0_14px_rgba(254,240,138,0.24)] sm:h-11 sm:w-11"
-              />
-              <span className="hidden xs:block">
-                <span className="block font-orbitron text-sm font-bold uppercase tracking-[0.2em] text-[#fef08a] drop-shadow-[0_0_8px_rgba(254,240,138,0.35)] sm:text-base">
-                  Square Games
-                </span>
-                <span className="block text-[0.56rem] uppercase tracking-[0.32em] text-[#7dd3fc] sm:text-[0.62rem]">
-                  discover. rank. play.
-                </span>
-              </span>
-            </Link>
-
+          <div className="topbar-brand-zone">
             {typeof onOpenGenres === "function" && (
               <button
                 type="button"
                 onClick={onOpenGenres}
                 aria-label="Apri menu filtri"
-                className="topbar-genre-trigger"
+                className="topbar-genre-trigger topbar-genre-trigger--desktop"
               >
-                <FaBars className="text-sm" />
+                <FaBars />
               </button>
             )}
+
+            <Link className="topbar-brand-link" to={routes.home}>
+              <img
+                src="/media/favicon.svg"
+                alt="Square Games logo"
+                className="topbar-logo"
+              />
+              <span className="topbar-brand-copy">
+                <span className="topbar-brand-title">Square Games</span>
+                <span className="topbar-brand-tagline">
+                  discover. rank. play.
+                </span>
+              </span>
+            </Link>
           </div>
 
           {/* Search chip (desktop) */}
-          <div className="hidden md:flex justify-center">
-            <div className=" w-full max-w-xl px-4 py-2.5 lg:px-5">
+          <div className="topbar-search-desktop">
+            <div className="topbar-search-shell">
               <input
                 type="text"
                 className="topbar-search-input"
@@ -110,8 +158,8 @@ export default function Navbar({ onOpenGenres, sticky = true }) {
           </div>
 
           {/* Action chip */}
-          <div className=" flex items-center justify-end gap-2 px-2 py-2 sm:px-3">
-            <div className="hidden md:flex items-center gap-2 text-sm font-medium">
+          <div className="topbar-actions-zone">
+            <div className="topbar-actions-desktop">
               {!user ? (
                 <>
                   <Link className="topbar-pill-link" to={routes.login}>
@@ -125,43 +173,75 @@ export default function Navbar({ onOpenGenres, sticky = true }) {
                   </Link>
                 </>
               ) : (
-                <>
-                  <Link to={routes.profile} className="topbar-profile-chip">
+                <div
+                  ref={userDropdownRef}
+                  className={`topbar-user-menu ${
+                    isUserDropdownOpen ? "is-open" : ""
+                  }`.trim()}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setIsUserDropdownOpen((previousState) => !previousState)}
+                    className="topbar-user-toggle"
+                    aria-label="Apri menu utente"
+                    aria-haspopup="menu"
+                    aria-expanded={isUserDropdownOpen}
+                  >
                     <img
                       src={avatarUrl}
                       alt="Avatar"
-                      className="h-7 w-7 rounded-full object-cover ring-1 ring-[#fef08a]/30"
+                      className="topbar-avatar"
                     />
-                    <span>{profile?.username}</span>
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="topbar-pill-link topbar-pill-link--danger"
-                  >
-                    <FaArrowRightFromBracket className="text-xs" /> Logout
+                    <span>{profile?.username || "Profilo"}</span>
+                    <FaChevronDown className="topbar-user-chevron" />
                   </button>
-                </>
+
+                  <div className="topbar-user-dropdown" role="menu">
+                    <Link
+                      to={routes.profile}
+                      role="menuitem"
+                      className="topbar-user-dropdown-link"
+                      onClick={closeAllMenus}
+                    >
+                      Profilo
+                    </Link>
+                    <Link
+                      to={routes.profile_settings}
+                      role="menuitem"
+                      className="topbar-user-dropdown-link"
+                      onClick={closeAllMenus}
+                    >
+                      Modifica profilo
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      role="menuitem"
+                      className="topbar-user-dropdown-link topbar-user-dropdown-link--danger"
+                    >
+                      <FaArrowRightFromBracket /> Logout
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
 
             <button
-              className="topbar-icon-button inline-flex md:hidden"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label={isMenuOpen ? "Chiudi menu" : "Apri menu"}
+              className="topbar-icon-button topbar-menu-toggle"
+              onClick={() => setIsMobileMenuOpen((previousState) => !previousState)}
+              aria-label={isMobileMenuOpen ? "Chiudi menu" : "Apri menu"}
             >
-              {isMenuOpen ? <FaXmark /> : <FaBars />}
+              {isMobileMenuOpen ? <FaXmark /> : <FaBars />}
             </button>
           </div>
         </nav>
 
         {/* Mobile floating panel */}
         <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            isMenuOpen ? "max-h-[420px] pt-3" : "max-h-0"
-          }`}
+          className={`topbar-mobile-wrap ${isMobileMenuOpen ? "is-open" : ""}`.trim()}
         >
-          <div className="topbar-mobile-panel ml-auto w-full max-w-sm p-4">
-            <div className="relative mb-3">
+          <div className="topbar-mobile-panel topbar-mobile-panel--content">
+            <div className="topbar-mobile-search">
               <input
                 type="text"
                 className="topbar-search-input"
@@ -172,40 +252,61 @@ export default function Navbar({ onOpenGenres, sticky = true }) {
               />
             </div>
 
+            {typeof onOpenGenres === "function" && (
+              <div className="topbar-mobile-group">
+                <button
+                  type="button"
+                  onClick={handleOpenGenresFromMenu}
+                  className="topbar-pill-link topbar-pill-link--block topbar-pill-link--filters"
+                >
+                  Filtri
+                </button>
+              </div>
+            )}
+
             {!user ? (
-              <div className="flex flex-col gap-2">
+              <div className="topbar-mobile-group">
                 <Link
-                  className="topbar-pill-link topbar-pill-link--accent w-full justify-center"
+                  className="topbar-pill-link topbar-pill-link--accent topbar-pill-link--block"
                   to={routes.register}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={closeAllMenus}
                 >
                   Registrati
                 </Link>
                 <Link
-                  className="topbar-pill-link w-full justify-center"
+                  className="topbar-pill-link topbar-pill-link--block"
                   to={routes.login}
-                  onClick={() => setIsMenuOpen(false)}
+                  onClick={closeAllMenus}
                 >
                   Accedi
                 </Link>
               </div>
             ) : (
-              <div className="flex flex-col gap-2">
+              <div className="topbar-mobile-group">
                 <Link
                   to={routes.profile}
-                  className="topbar-profile-chip w-full justify-center"
-                  onClick={() => setIsMenuOpen(false)}
+                  className="topbar-profile-chip topbar-profile-chip--block"
+                  onClick={closeAllMenus}
                 >
                   <img
                     src={avatarUrl}
                     alt="Avatar"
-                    className="h-8 w-8 rounded-full object-cover ring-1 ring-[#fef08a]/30"
+                    className="topbar-avatar topbar-avatar--mobile"
                   />
                   <span>{profile?.username}</span>
                 </Link>
+
+                <Link
+                  to={routes.profile_settings}
+                  className="topbar-pill-link topbar-pill-link--block"
+                  onClick={closeAllMenus}
+                >
+                  Modifica profilo
+                </Link>
+
                 <button
                   onClick={handleLogout}
-                  className="topbar-pill-link topbar-pill-link--danger w-full justify-center"
+                  className="topbar-pill-link topbar-pill-link--danger topbar-pill-link--block"
                 >
                   <FaArrowRightFromBracket /> Logout
                 </button>

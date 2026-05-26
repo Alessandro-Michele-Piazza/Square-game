@@ -5,6 +5,7 @@ import Footer from "../components/Footer";
 import Sidebar from "../components/Sidebar";
 import useAos from "../hooks/useAos";
 import useRouteScrollReset from "../hooks/useRouteScrollReset";
+import "../css/layouts/Layout.css";
 
 export default function Layout() {
   const data = useLoaderData();
@@ -34,8 +35,8 @@ export default function Layout() {
 
       <Sidebar genres={genres} isOpen={drawerOpen} onClose={handleCloseDrawer} />
 
-      <section className="mx-auto flex w-full max-w-[1500px] gap-0 px-3 sm:px-5">
-        <div className="flex-1 min-w-0">
+      <section className="layout-shell">
+        <div className="layout-content">
           <Outlet />
         </div>
       </section>

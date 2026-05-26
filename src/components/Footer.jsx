@@ -1,5 +1,5 @@
 import { FaLinkedinIn } from "react-icons/fa6";
-import "./Footer.css";
+import "../css/components/Footer.css";
 import { Link } from "react-router";
 
 function PortfolioSparkIcon() {
@@ -34,7 +34,7 @@ export default function Footer() {
         <Link to="/" className="site-footer__brand-link">
           <div className="site-footer__brand">
             <img
-              src="/favicon.svg"
+              src="/media/favicon.svg"
               alt="Square Games logo"
               className="site-footer__logo"
             />
@@ -73,14 +73,16 @@ export default function Footer() {
       </div>
 
       <div className="site-footer__bottom">
-        <span> Powered By: </span>
-        <a
-          href="https://alessandro-michele-piazza.github.io"
-          target="_blank"
-          rel="noreferrer noopener"
-        >
-          <span className="powered_by">Alessandro Michele Piazza</span>
-        </a>
+        <div>
+          <span> Powered By: </span>
+          <a
+            href="https://alessandro-michele-piazza.github.io"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            <span className="powered_by">Alessandro Michele Piazza</span>
+          </a>
+        </div>
       </div>
     </footer>
   );

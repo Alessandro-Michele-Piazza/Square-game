@@ -1,11 +1,13 @@
 import GameCard from "./GameCard";
+import "../css/components/Gamelist.css";
 
-export default function Gamelist({ children, className = "" }) {
-  const baseClassName = "mx-auto grid w-full max-w-7xl grid-cols-1 gap-8 px-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
+export default function Gamelist({ children, className = "", isEmpty = false }) {
+  const baseClassName = "gamelist";
+  const emptyClassName = isEmpty ? "gamelist--empty" : "";
 
   return (
     <div
-      className={`${baseClassName} ${className}`.trim()}
+      className={[baseClassName, className, emptyClassName].filter(Boolean).join(" ")}
       data-aos="fade-up"
       data-aos-delay="80"
     >

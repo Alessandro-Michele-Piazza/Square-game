@@ -1,6 +1,4 @@
 @import url("https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Orbitron:wght@400..900&display=swap");
-@import "tailwindcss";
-@plugin "daisyui";
 @import "./card_custom.css";
 @import "./loading_page.css";
 @import "./scrollbar.css";
@@ -44,6 +42,12 @@
   --shadow-lightning: 0 0 15px var(--color-yellow-glow);
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .scritta_blu_chiaro {
   color: var(--color-blue-primary);
 }
@@ -75,6 +79,29 @@
 }
 
 /* APPLICAZIONE STILI BASE */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+@supports (overflow: clip) {
+  html,
+  body,
+  #root {
+    overflow-x: clip;
+  }
+}
+
 body {
   font-family: var(--font-exo2);
   background-color: var(--color-main-bg);
@@ -278,27 +305,6 @@ h3,
   color: var(--color-blue-primary);
   text-shadow: 0 0 5px var(--color-blue-primary), 0 0 10px var(--color-blue-primary),
     0 0 20px var(--color-blue-primary), 0 0 40px var(--color-blue-primary);
-}
-
-/* STILI PERSONALIZZATI PER DAISYUI */
-/* Esempio: Override per i componenti daisyui */
-.daisyui-btn {
-  font-family: var(--font-orbitron);
-  background-color: var(--color-yellow-primary);
-  color: #000;
-  border-radius: var(--radius-gaming);
-  box-shadow: var(--shadow-lightning);
-}
-
-.daisyui-btn:hover {
-  background-color: var(--color-yellow-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 0 20px var(--color-yellow-primary);
-}
-
-.daisyui-btn:active {
-  background-color: var(--color-yellow-active);
-  transform: translateY(0);
 }
 
 .Profile-navbar-custom-link {

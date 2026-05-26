@@ -1,0 +1,35 @@
+.gamelist {
+  width: min(80rem, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  padding-inline: 1rem;
+}
+
+.gamelist--spaced-bottom {
+  margin-bottom: 3.5rem;
+}
+
+.gamelist--empty {
+  min-height: clamp(18rem, 52vh, 32rem);
+  align-content: start;
+}
+
+@media (min-width: 640px) {
+  .gamelist {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .gamelist {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .gamelist {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

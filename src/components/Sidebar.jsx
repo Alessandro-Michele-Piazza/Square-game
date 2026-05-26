@@ -13,6 +13,7 @@ import {
 } from "react-icons/fa6";
 import { BsNintendoSwitch } from "react-icons/bs";
 import { SiAtari, SiSega } from "react-icons/si";
+import "../css/components/Sidebar.css";
 
 const PLATFORM_FAMILIES = [
   {
@@ -20,63 +21,63 @@ const PLATFORM_FAMILIES = [
     label: "Sony / PlayStation",
     shortLabel: "PS",
     Icon: FaPlaystation,
-    toneClass: "text-[#60a5fa]",
+    toneClass: "sidebar-platforms__icon-tone--sony",
   },
   {
     id: "xbox",
     label: "Xbox",
     shortLabel: "Xbox",
     Icon: FaXbox,
-    toneClass: "text-[#34d399]",
+    toneClass: "sidebar-platforms__icon-tone--xbox",
   },
   {
     id: "microsoft",
     label: "Windows / PC",
     shortLabel: "PC",
     Icon: FaWindows,
-    toneClass: "text-[#93c5fd]",
+    toneClass: "sidebar-platforms__icon-tone--microsoft",
   },
   {
     id: "nintendo",
     label: "Nintendo",
     shortLabel: "Nintendo",
     Icon: BsNintendoSwitch,
-    toneClass: "text-[#fb7185]",
+    toneClass: "sidebar-platforms__icon-tone--nintendo",
   },
   {
     id: "sega",
     label: "Sega",
     shortLabel: "Sega",
     Icon: SiSega,
-    toneClass: "text-[#f59e0b]",
+    toneClass: "sidebar-platforms__icon-tone--sega",
   },
   {
     id: "atari",
     label: "Atari",
     shortLabel: "Atari",
     Icon: SiAtari,
-    toneClass: "text-[#a78bfa]",
+    toneClass: "sidebar-platforms__icon-tone--atari",
   },
   {
     id: "apple",
     label: "Apple",
     shortLabel: "Apple",
     Icon: FaApple,
-    toneClass: "text-[#e2e8f0]",
+    toneClass: "sidebar-platforms__icon-tone--apple",
   },
   {
     id: "linux",
     label: "Linux / Steam",
     shortLabel: "Linux",
     Icon: FaLinux,
-    toneClass: "text-[#cbd5e1]",
+    toneClass: "sidebar-platforms__icon-tone--linux",
   },
   {
     id: "other",
     label: "Altri",
     shortLabel: "Altro",
     Icon: FaLayerGroup,
-    toneClass: "text-[#7dd3fc]",
+    toneClass: "sidebar-platforms__icon-tone--other",
   },
 ];
 
@@ -159,7 +160,7 @@ function resolvePlatformVisual(option, slug = "") {
     return { Icon: family.Icon, toneClass: family.toneClass };
   }
 
-  return { Icon: FaGamepad, toneClass: "text-[#7dd3fc]" };
+  return { Icon: FaGamepad, toneClass: "sidebar-platforms__icon-tone--other" };
 }
 
 function buildPlatformOption(rawPlatform) {
@@ -545,34 +546,34 @@ export default function Sidebar({ genres, isOpen, onClose }) {
 
   return (
     <div
-      className={`fixed inset-0 z-[70] transition-opacity duration-300 ${
+      className={`sidebar-panel ${
         isOpen
-          ? "pointer-events-auto opacity-100"
-          : "pointer-events-none opacity-0"
+          ? "sidebar-panel--open"
+          : "sidebar-panel--closed"
       }`}
       aria-hidden={!isOpen}
     >
       <button
         aria-label="Chiudi menu generi"
-        className="absolute inset-0 bg-black/55 backdrop-blur-[2px]"
+        className="sidebar-panel__scrim"
         onClick={onClose}
       />
 
       <aside
-        className={`absolute left-0 top-0 h-full w-[min(26.5rem,94vw)] overflow-y-auto border-r border-[#67e8f9]/25 bg-[linear-gradient(165deg,rgba(4,12,27,0.97)_0%,rgba(7,18,37,0.98)_46%,rgba(10,31,61,0.94)_100%)] px-5 py-6 shadow-[24px_0_60px_rgba(2,6,23,0.7)] backdrop-blur-xl transition-transform duration-300 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
+        className={`sidebar-panel__aside ${
+          isOpen ? "sidebar-panel__aside--open" : "sidebar-panel__aside--closed"
         }`}
       >
-        <div className="mb-5 space-y-3">
-          <div className="flex items-start justify-between gap-3">
-            <div className="min-w-0">
-              <h2 className="font-orbitron text-lg font-black uppercase tracking-[0.2em] text-[#fef08a]"> Filters</h2>
+        <div className="sidebar-panel__head">
+          <div className="sidebar-panel__head-row">
+            <div className="sidebar-panel__title-wrap">
+              <h2 className="sidebar-panel__title">Filters</h2>
             </div>
 
             <button
               onClick={onClose}
               aria-label="Chiudi menu"
-              className="flex h-8 w-8 items-center justify-center rounded-full border border-white/12 bg-[#0d1b35] text-[#94a3b8] transition hover:border-[#fef08a]/30 hover:text-[#fef08a]"
+              className="sidebar-panel__close-btn"
             >
               <FaXmark />
             </button>
@@ -582,24 +583,24 @@ export default function Sidebar({ genres, isOpen, onClose }) {
             type="button"
             onClick={resetAllFilters}
             disabled={!hasAnyActiveFilters}
-            className={`group inline-flex w-full items-center justify-between rounded-xl border px-3.5 py-2.5 text-xs font-semibold uppercase tracking-[0.12em] transition ${
+            className={`sidebar-panel__reset ${
               hasAnyActiveFilters
-                ? "border-[#fef08a]/45 bg-[linear-gradient(120deg,rgba(132,204,22,0.08)_0%,rgba(250,204,21,0.16)_55%,rgba(14,165,233,0.08)_100%)] text-[#fef08a] shadow-[0_0_18px_rgba(254,240,138,0.14)] hover:border-[#fef08a]/70 hover:shadow-[0_0_22px_rgba(254,240,138,0.22)]"
-                : "cursor-not-allowed border-[#2a4b72] bg-[#09162b]/80 text-[#7f97b6] opacity-70"
+                ? "sidebar-panel__reset--active"
+                : "sidebar-panel__reset--inactive"
             }`}
           >
-            <span className="inline-flex items-center gap-2">
-              <span className="inline-flex h-6 w-6 items-center justify-center rounded-lg border border-white/10 bg-[#091a32] text-[#7dd3fc] transition group-hover:text-[#fef08a]">
-                <FaSliders className="text-[0.72rem]" />
+            <span className="sidebar-panel__reset-left">
+              <span className="sidebar-panel__reset-icon-box">
+                <FaSliders className="sidebar-panel__reset-icon" />
               </span>
               Filter reset
             </span>
 
             <span
-              className={`inline-flex min-w-6 items-center justify-center rounded-md px-1.5 py-0.5 text-[0.62rem] font-bold ${
+              className={`sidebar-panel__reset-count ${
                 hasAnyActiveFilters
-                  ? "bg-[#fef08a]/20 text-[#fef08a]"
-                  : "bg-[#17304e] text-[#8ea6c3]"
+                  ? "sidebar-panel__reset-count--active"
+                  : "sidebar-panel__reset-count--inactive"
               }`}
             >
               {activeFiltersCount}
@@ -607,15 +608,15 @@ export default function Sidebar({ genres, isOpen, onClose }) {
           </button>
         </div>
 
-        <div className="pb-2">
-          <div className="space-y-5">
-            <section className="space-y-3">
-              <h3 className="inline-flex items-center gap-2 font-orbitron text-xs font-bold uppercase tracking-[0.16em] text-[#cbd5e1]">
-                <FaGamepad className="text-[#67e8f9]" />
+        <div className="sidebar-panel__body">
+          <div className="sidebar-panel__sections">
+            <section className="sidebar-panel__section">
+              <h3 className="sidebar-panel__section-title">
+                <FaGamepad className="sidebar-panel__section-title-icon" />
                 Piattaforme
               </h3>
 
-              <div className="grid grid-cols-3 gap-2 text-base">
+              <div className="sidebar-platforms__families">
                 {visiblePlatformFamilies.map((family) => {
                   const familyOptions = groupedPlatforms[family.id] || [];
                   const hasOptions = familyOptions.length > 0 || isLoadingPlatforms;
@@ -630,19 +631,19 @@ export default function Sidebar({ genres, isOpen, onClose }) {
                       draggable={false}
                       onDragStart={preventDragStart}
                       onClick={() => setOpenFamilyId((previousId) => (previousId === family.id ? null : family.id))}
-                      className={`select-none rounded-xl border px-2 py-2 text-left transition ${
+                      className={`sidebar-platforms__family ${
                         !hasOptions
-                          ? "cursor-not-allowed border-[#1e3553] bg-[#091427] opacity-45"
+                          ? "sidebar-platforms__family--disabled"
                           : isOpenFamily
-                            ? "border-[#fef08a]/45 bg-[#10264a]"
-                            : "border-[#26466f] bg-[#0b1c34] hover:border-[#67e8f9]/45 hover:bg-[#0e2446]"
+                            ? "sidebar-platforms__family--open"
+                            : "sidebar-platforms__family--idle"
                       }`}
                     >
-                      <span className="flex items-center justify-between gap-2">
+                      <span className="sidebar-platforms__family-row">
                         <FamilyIcon className={family.toneClass} />
-                        <span className="text-[0.6rem] font-semibold text-[#7dd3fc]">{familyOptions.length}</span>
+                        <span className="sidebar-platforms__family-count">{familyOptions.length}</span>
                       </span>
-                      <span className="mt-1 block text-[0.58rem] font-semibold uppercase tracking-[0.12em] text-[#cbd5e1]">
+                      <span className="sidebar-platforms__family-label">
                         {family.shortLabel}
                       </span>
                     </button>
@@ -651,17 +652,17 @@ export default function Sidebar({ genres, isOpen, onClose }) {
               </div>
 
               {openFamilyId && (
-                <div className="rounded-2xl border border-[#2a4f78] bg-[#0a1b34]/85 p-3">
+                <div className="sidebar-platforms__list-shell">
                   {isLoadingPlatforms ? (
-                    <div className="rounded-xl border border-[#1b2e4b] bg-[#061024]/70 px-3 py-3 text-xs text-[#64748b]">
+                    <div className="sidebar-platforms__message">
                       Caricamento piattaforme...
                     </div>
                   ) : openedFamilyPlatforms.length === 0 ? (
-                    <div className="rounded-xl border border-[#1b2e4b] bg-[#061024]/70 px-3 py-3 text-xs text-[#64748b]">
+                    <div className="sidebar-platforms__message">
                       Nessuna piattaforma disponibile.
                     </div>
                   ) : (
-                    <div className="space-y-2">
+                    <div className="sidebar-platforms__list">
                       {openedFamilyPlatforms.map((platform) => {
                         const optionVisual = resolvePlatformVisual(platform.name, platform.slug);
                         const OptionIcon = optionVisual.Icon;
@@ -683,17 +684,17 @@ export default function Sidebar({ genres, isOpen, onClose }) {
                             onClick={onClose}
                             draggable={false}
                             onDragStart={preventDragStart}
-                            className={`group select-none flex items-center gap-3 rounded-2xl border px-3 py-2.5 text-sm transition ${
+                            className={`sidebar-platforms__item ${
                               isPlatformActive
-                                ? "border-[#fef08a]/55 bg-[#10264a] text-[#fef08a]"
-                                : "border-[#203a5f] bg-[#08152b]/80 text-[#dbeafe] hover:border-[#60a5fa]/45 hover:bg-[#0b1b36] hover:text-white"
+                                ? "sidebar-platforms__item--active"
+                                : "sidebar-platforms__item--idle"
                             }`}
                           >
-                            <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#244369] bg-[#0c1a32]">
+                            <span className="sidebar-platforms__item-icon-box">
                               <OptionIcon className={optionVisual.toneClass} />
                             </span>
 
-                            <span className="truncate transition group-hover:text-white">{platform.name}</span>
+                            <span className="sidebar-platforms__item-name">{platform.name}</span>
                           </Link>
                         );
                       })}
@@ -703,44 +704,42 @@ export default function Sidebar({ genres, isOpen, onClose }) {
               )}
             </section>
 
-              <section className="space-y-3">
-                <h3 className="inline-flex items-center gap-2 font-orbitron text-xs font-bold uppercase tracking-[0.16em] text-[#cbd5e1]">
-                  <FaSliders className="text-[#67e8f9]" />
+            <section className="sidebar-panel__section">
+              <h3 className="sidebar-panel__section-title">
+                <FaSliders className="sidebar-panel__section-title-icon" />
                   Metacritic
-                </h3>
+              </h3>
 
-                <div className="rounded-xl border border-[#1f3758] bg-[#081325]/85 px-3 py-3">
-                  <div className="mb-2 flex items-center justify-between text-xs text-[#94a3b8]">
+              <div className="sidebar-mc__box">
+                <div className="sidebar-mc__scale">
                     <span>0</span>
-                    <span className="font-semibold text-[#fef08a]">{pendingMetacriticMin}</span>
+                    <span className="sidebar-mc__value">{pendingMetacriticMin}</span>
                     <span>100</span>
-                  </div>
-
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    step="1"
-                    value={pendingMetacriticMin}
-                    onChange={(event) => setPendingMetacriticMin(Number.parseInt(event.target.value, 10) || 0)}
-                    className="w-full accent-[#fef08a]"
-                  />
-
-                  <div className="mt-3 flex items-center justify-between gap-2">
-                    <span className="text-[0.64rem] font-semibold uppercase tracking-[0.14em] text-[#7dd3fc]">
-                      Aggiornamento live
-                    </span>
-                  </div>
                 </div>
-              </section>
 
-            <section className="space-y-3">
-              <h3 className="inline-flex items-center gap-2 font-orbitron text-xs font-bold uppercase tracking-[0.16em] text-[#cbd5e1]">
-                <FaLayerGroup className="text-[#67e8f9]" />
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value={pendingMetacriticMin}
+                  onChange={(event) => setPendingMetacriticMin(Number.parseInt(event.target.value, 10) || 0)}
+                  className="sidebar-mc__input"
+                />
+
+                <div className="sidebar-mc__footer">
+                  <span className="sidebar-mc__live">Aggiornamento live</span>
+                </div>
+              </div>
+            </section>
+
+            <section className="sidebar-panel__section">
+              <h3 className="sidebar-panel__section-title">
+                <FaLayerGroup className="sidebar-panel__section-title-icon" />
                 Generi ({genreLinks.length})
               </h3>
 
-              <ul className="space-y-2">
+              <ul className="sidebar-genres__list">
                 {genreLinks.map((genre) => {
                   const genreSearch = buildFilterSearch(search, {
                     metacriticMin: activeMetacriticMin,
@@ -755,15 +754,21 @@ export default function Sidebar({ genres, isOpen, onClose }) {
                     <li key={genre.slug}>
                       <Link
                         to={`/genre/${genre.slug}${genreSearch}`}
-                        className={`flex items-center justify-between rounded-xl border px-3 py-2.5 text-sm font-semibold transition ${
+                        className={`sidebar-genres__item-link ${
                           isGenreActive
-                            ? "border-[#fef08a]/55 bg-[#10264a] text-[#fef08a]"
-                            : "border-[#1f3758] bg-[#071325]/70 text-[#dbeafe] hover:border-[#fef08a]/35 hover:text-[#fef08a]"
+                            ? "sidebar-genres__item-link--active"
+                            : "sidebar-genres__item-link--idle"
                         }`}
                         onClick={onClose}
                       >
                         <span>{genre.name}</span>
-                        <span className={`text-xs ${isGenreActive ? "text-[#fef08a]" : "text-[#64748b]"}`}>
+                        <span
+                          className={`sidebar-genres__status ${
+                            isGenreActive
+                              ? "sidebar-genres__status--active"
+                              : "sidebar-genres__status--idle"
+                          }`}
+                        >
                           {isGenreActive ? "active" : "open"}
                         </span>
                       </Link>
@@ -773,7 +778,7 @@ export default function Sidebar({ genres, isOpen, onClose }) {
               </ul>
 
               {genreLinks.length === 0 && (
-                <div className="rounded-xl border border-[#1f3758] bg-[#071325]/60 px-3 py-3 text-sm text-[#94a3b8]">
+                <div className="sidebar-genres__empty">
                   Nessun genere disponibile al momento.
                 </div>
               )}

@@ -12,7 +12,7 @@ Cosa ho imparato e implementato in questo progetto:
 
 🔹 Integrazione API: Sincronizzazione in tempo reale con le API di RAWG per un catalogo di migliaia di giochi sempre aggiornato. <br>
 
-🔹 UI/UX & Responsive Design: Interfaccia curata con Tailwind CSS e daisyUI. Il sito è 100% responsive, garantendo un'esperienza perfetta sia su desktop che su mobile. <br>
+🔹 UI/UX & Responsive Design: Interfaccia curata in CSS puro con design responsive mobile-first. Il sito è 100% responsive, garantendo un'esperienza perfetta sia su desktop che su mobile. <br>
 
 🔹 Cloud Storage: Gestione del caricamento avatar tramite Supabase Storage. <br>
 
@@ -22,7 +22,7 @@ Questo progetto ha rappresentato una sfida importante nel gestire il flusso di d
 
 Sono aperto a feedback, curiosità o nuove opportunità! <br>
 
-hashtag#WebDevelopment hashtag#ReactJS hashtag#Supabase hashtag#FullStack hashtag#Gaming hashtag#TailwindCSS hashtag#Coding hashtag#AlessandroPiazza
+hashtag#WebDevelopment hashtag#ReactJS hashtag#Supabase hashtag#FullStack hashtag#Gaming hashtag#CSS hashtag#Coding hashtag#AlessandroPiazza
 
 <img width="auto" height="auto" alt="Home Page" src="https://github.com/user-attachments/assets/b5b6556a-9d90-4eab-be10-9954249cef2b" />
 <img width="auto" height="auto" alt="Detail page" src="https://github.com/user-attachments/assets/161a04e8-65cb-48fd-a90d-7cba0cf989c1" />

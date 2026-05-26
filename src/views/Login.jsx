@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { UserContext } from "../context/user-context";
 import routes from "../router/routes";
-import "./Login.css";
+import "../css/views/Login.css";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -40,7 +40,7 @@ export default function Login() {
       <div className="login-split__form">
         <div className="login-card__brand">
           <img
-            src="/favicon.svg"
+            src="/media/favicon.svg"
             alt="Square Games logo"
             className="login-card__logo"
           />

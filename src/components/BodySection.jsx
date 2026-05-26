@@ -2,8 +2,8 @@ import { FaPaperPlane, FaTrash } from "react-icons/fa6";
 import supabase from "../database/supabase";
 import { useContext, useEffect, useRef, useState } from "react";
 import { UserContext } from "../context/user-context";
-import Placeholder from "../assets/Portrait_Placeholder.png";
-import "./Reviews.css";
+import Placeholder from "../media/Portrait_Placeholder.png";
+import "../css/components/Reviews.css";
 
 function AvatarImg({ avatarUrl }) {
   const [src, setSrc] = useState(Placeholder);

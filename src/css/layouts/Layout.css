@@ -1,0 +1,12 @@
+.layout-shell {
+  width: min(1500px, 100%);
+  margin: 0 auto;
+  display: flex;
+  gap: 0;
+  padding-inline: clamp(0.35rem, 1vw, 0.9rem);
+}
+
+.layout-content {
+  flex: 1;
+  min-width: 0;
+}

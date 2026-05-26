@@ -1,8 +1,10 @@
+import "../css/components/Header.css";
+
 export default function Header() {
     return (
-        <header className="bg-[#050a15] text-white py-4">
-            <div className="container mx-auto px-4">
-                <h1 className="text-2xl font-bold">Rehacktor</h1>
+        <header className="site-header">
+            <div className="site-header__inner">
+                <h1 className="site-header__title">Rehacktor</h1>
             </div>
         </header>
     );

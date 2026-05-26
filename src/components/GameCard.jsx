@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import "./GameCard.css";
+import "../css/components/GameCard.css";
 
 const fallbackImage =
   "https://placehold.co/600x900/081120/e2e8f0?text=No+Image";

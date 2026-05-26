@@ -4,8 +4,8 @@ import routes from "../router/routes";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
 import supabase from "../database/supabase";
-import Placeholder from "../assets/Portrait_Placeholder.png";
-import "./profile_update.css";
+import Placeholder from "../media/Portrait_Placeholder.png";
+import "../css/views/profile_update.css";
 
 function handleAvatarError(event) {
   event.currentTarget.onerror = null;
@@ -144,9 +144,9 @@ export default function ProfileSettingsPage() {
     return (
       <main className="profile-shell">
         <section className="profile-panel profile-panel--empty">
-          <span className="profile-badge mb-5">Profile settings</span>
-          <h1 className="profile-title mb-5">Accesso richiesto</h1>
-          <p className="profile-lead mb-5">
+          <span className="profile-badge profile-empty-intro-item">Profile settings</span>
+          <h1 className="profile-title profile-empty-intro-item">Accesso richiesto</h1>
+          <p className="profile-lead profile-empty-intro-item">
             Devi effettuare il login prima di modificare il profilo.
           </p>
         </section>

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useLoaderData, useLocation, useNavigate, useParams, useSearchParams } from "react-router";
 import Gamelist from "../components/Gamelist";
+import "../css/views/CatalogPage.css";
 
 function formatFilterHeading(pathname, slug) {
   const routeKey = pathname.split("/").filter(Boolean)[0] ?? "search";
@@ -124,6 +125,7 @@ export default function Searchpage() {
   const hasMountedRef = useRef(false);
 
   const hasPagination = pagination.totalPages > 1;
+  const isGamesEmpty = games.length === 0;
   const pageItems = hasPagination
     ? buildPageItems(pagination.totalPages, pagination.page)
     : [];
@@ -155,18 +157,21 @@ export default function Searchpage() {
   return (
     <>
       <h1
-        className="font-orbitron text-3xl font-bold text-center my-8 text-[#fef08a] drop-shadow-[0_0_18px_rgba(254,240,138,0.45)]"
+        className="catalog-page__title catalog-page__title--center"
         data-aos="fade-up"
       >
         {formatFilterHeading(pathname, slug)}
       </h1>
 
       {games.length === 0 && (
-        <p className="text-center text-[#94a3b8]">
+        <p className="catalog-page__empty">
           Nessun gioco trovato per la tua ricerca.
         </p>
       )}
-      <Gamelist className={hasPagination ? "" : "mb-14"}>
+      <Gamelist
+        className={hasPagination ? "" : "gamelist--spaced-bottom"}
+        isEmpty={isGamesEmpty}
+      >
         {games.map((game) => {
           return <Gamelist.Card key={game.id} game={game} />;
         })}
@@ -174,14 +179,14 @@ export default function Searchpage() {
 
       {hasPagination && (
         <nav
-          className="mx-auto mt-8 mb-4 flex w-full max-w-7xl flex-wrap items-center justify-center gap-2 px-4"
+          className="catalog-page__pagination"
           aria-label="Paginazione risultati filtrati"
         >
           <button
             type="button"
             onClick={() => goToPage(pagination.page - 1)}
             disabled={!pagination.hasPrevious}
-            className="rounded-lg border border-[#1e3a63] bg-[#081120] px-3 py-2 text-sm font-semibold text-[#93c5fd] transition hover:border-[#60a5fa] hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+            className="catalog-page__button"
           >
             Prev
           </button>
@@ -191,7 +196,7 @@ export default function Searchpage() {
               return (
                 <span
                   key={`${pageItem}-${index}`}
-                  className="min-w-10 px-2 py-2 text-center text-sm font-semibold text-[#64748b]"
+                  className="catalog-page__ellipsis"
                   aria-hidden="true"
                 >
                   ...
@@ -207,11 +212,7 @@ export default function Searchpage() {
                 type="button"
                 onClick={() => goToPage(pageItem)}
                 aria-current={isActive ? "page" : undefined}
-                className={`min-w-10 rounded-lg border px-3 py-2 text-sm font-semibold transition ${
-                  isActive
-                    ? "border-[#fef08a] bg-[#fef08a] text-[#061024] shadow-[0_0_20px_rgba(254,240,138,0.28)]"
-                    : "border-[#1e3a63] bg-[#081120] text-[#93c5fd] hover:border-[#60a5fa] hover:text-white"
-                }`}
+                className={`catalog-page__button catalog-page__button--number ${isActive ? "is-active" : ""}`.trim()}
               >
                 {pageItem}
               </button>
@@ -222,12 +223,12 @@ export default function Searchpage() {
             type="button"
             onClick={() => goToPage(pagination.page + 1)}
             disabled={!pagination.hasNext}
-            className="rounded-lg border border-[#1e3a63] bg-[#081120] px-3 py-2 text-sm font-semibold text-[#93c5fd] transition hover:border-[#60a5fa] hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+            className="catalog-page__button"
           >
             Next
           </button>
 
-          <p className="w-full text-center text-sm text-[#94a3b8]">
+          <p className="catalog-page__summary">
             Pagina {pagination.page} di {pagination.totalPages} - {pagination.totalResults} risultati
           </p>
         </nav>

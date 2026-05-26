@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import "./GameCarousel.css";
-import "../button.css";
+import "../css/components/GameCarousel.css";
+import "../css/base/button.css";
 
 function buildSlides({ trailers, screenshots, fallbackImage, title }) {
   const coverSlide = fallbackImage

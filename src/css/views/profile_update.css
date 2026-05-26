@@ -446,6 +446,10 @@
   margin-top: 1.5rem;
 }
 
+.profile-empty-intro-item {
+  margin-bottom: 1.25rem;
+}
+
 .profile-overview {
   position: relative;
   z-index: 1;

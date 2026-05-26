@@ -1,0 +1,93 @@
+.catalog-page__header {
+  width: min(80rem, 100%);
+  margin: 2rem auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-inline: 1rem;
+}
+
+.catalog-page__title {
+  margin: 0 0 1.25rem;
+  font-family: var(--font-orbitron);
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #fef08a;
+  text-shadow: 0 0 18px rgba(254, 240, 138, 0.45);
+}
+
+.catalog-page__title--center {
+  margin: 2rem auto;
+  text-align: center;
+  width: min(80rem, 100%);
+  padding-inline: 1rem;
+}
+
+.catalog-page__empty {
+  margin: 0.5rem auto 0;
+  text-align: center;
+  color: #94a3b8;
+  width: min(80rem, 100%);
+  padding-inline: 1rem;
+}
+
+.catalog-page__pagination {
+  width: min(80rem, 100%);
+  margin: 2rem auto 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-inline: 1rem;
+}
+
+.catalog-page__button {
+  border: 1px solid #1e3a63;
+  background: #081120;
+  color: #93c5fd;
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: border-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+}
+
+.catalog-page__button--number {
+  min-width: 2.5rem;
+}
+
+.catalog-page__button:hover {
+  border-color: #60a5fa;
+  color: #ffffff;
+}
+
+.catalog-page__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.catalog-page__button.is-active {
+  border-color: #fef08a;
+  background: #fef08a;
+  color: #061024;
+  box-shadow: 0 0 20px rgba(254, 240, 138, 0.28);
+}
+
+.catalog-page__ellipsis {
+  min-width: 2.5rem;
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.catalog-page__summary {
+  width: 100%;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #94a3b8;
+  margin: 0.25rem 0 0;
+}

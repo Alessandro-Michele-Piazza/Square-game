@@ -1,0 +1,17 @@
+.site-header {
+  background: #050a15;
+  color: #ffffff;
+  padding-block: 1rem;
+}
+
+.site-header__inner {
+  width: min(80rem, 100%);
+  margin: 0 auto;
+  padding-inline: 1rem;
+}
+
+.site-header__title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}

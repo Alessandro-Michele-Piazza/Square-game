@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLoaderData } from "react-router";
 import Gamelist from "../components/Gamelist";
+import "../css/views/CatalogPage.css";
 
 const PAGE_SIZE = 12;
 
@@ -104,6 +105,7 @@ export default function Homepage() {
 
   const pageNumbers = Array.from({ length: totalPages }, (_, index) => index + 1);
   const hasPagination = gamesCatalog.length > PAGE_SIZE;
+  const isGamesEmpty = gamesCatalog.length === 0;
 
   useEffect(() => {
     if (!hasPagination) {
@@ -122,9 +124,9 @@ export default function Homepage() {
 
   return (
     <>
-      <div className="mx-auto mt-8 flex w-full max-w-7xl items-center justify-between gap-3 px-4">
+      <div className="catalog-page__header">
         <h1
-          className="font-orbitron mb-5 text-3xl font-bold text-[#fef08a] drop-shadow-[0_0_18px_rgba(254,240,138,0.45)]"
+          className="catalog-page__title"
           data-aos="fade-up"
         >
           Top Rated Games
@@ -132,10 +134,13 @@ export default function Homepage() {
       </div>
 
       {gamesCatalog.length === 0 && (
-        <p className="text-center text-[#94a3b8]">Nessun gioco trovato. Controlla la API key RAWG.</p>
+        <p className="catalog-page__empty">Nessun gioco trovato. Controlla la API key RAWG.</p>
       )}
 
-      <Gamelist className={hasPagination ? "" : "mb-14"}>
+      <Gamelist
+        className={hasPagination ? "" : "gamelist--spaced-bottom"}
+        isEmpty={isGamesEmpty}
+      >
         {paginatedGames.map((game) => {
           return <Gamelist.Card key={game.id} game={game.rawGame} />;
         })}
@@ -143,14 +148,14 @@ export default function Homepage() {
 
       {hasPagination && (
         <nav
-          className="mx-auto mt-8 mb-4 flex w-full max-w-7xl flex-wrap items-center justify-center gap-2 px-4"
+          className="catalog-page__pagination"
           aria-label="Paginazione top games filtrati"
         >
           <button
             type="button"
             onClick={() => setCurrentPage((prevPage) => Math.max(1, Math.min(prevPage, totalPages) - 1))}
             disabled={currentPageSafe === 1}
-            className="rounded-lg border border-[#1e3a63] bg-[#081120] px-3 py-2 text-sm font-semibold text-[#93c5fd] transition hover:border-[#60a5fa] hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+            className="catalog-page__button"
           >
             Prev
           </button>
@@ -164,11 +169,7 @@ export default function Homepage() {
                 type="button"
                 onClick={() => setCurrentPage(pageNumber)}
                 aria-current={isActive ? "page" : undefined}
-                className={`min-w-10 rounded-lg border px-3 py-2 text-sm font-semibold transition ${
-                  isActive
-                    ? "border-[#fef08a] bg-[#fef08a] text-[#061024] shadow-[0_0_20px_rgba(254,240,138,0.28)]"
-                    : "border-[#1e3a63] bg-[#081120] text-[#93c5fd] hover:border-[#60a5fa] hover:text-white"
-                }`}
+                className={`catalog-page__button catalog-page__button--number ${isActive ? "is-active" : ""}`.trim()}
               >
                 {pageNumber}
               </button>
@@ -179,12 +180,12 @@ export default function Homepage() {
             type="button"
             onClick={() => setCurrentPage((prevPage) => Math.min(totalPages, prevPage + 1))}
             disabled={currentPageSafe === totalPages}
-            className="rounded-lg border border-[#1e3a63] bg-[#081120] px-3 py-2 text-sm font-semibold text-[#93c5fd] transition hover:border-[#60a5fa] hover:text-white disabled:cursor-not-allowed disabled:opacity-40"
+            className="catalog-page__button"
           >
             Next
           </button>
 
-          <p className="w-full text-center text-sm text-[#94a3b8]">
+          <p className="catalog-page__summary">
             Pagina {currentPageSafe} di {totalPages}
           </p>
         </nav>

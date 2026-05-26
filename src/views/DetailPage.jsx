@@ -21,7 +21,7 @@ import { UserContext } from "../context/user-context";
 import supabase from "../database/supabase";
 import useAos from "../hooks/useAos";
 import useRouteScrollReset from "../hooks/useRouteScrollReset";
-import "../components/GameCarousel.css";
+import "../css/views/DetailPage.css";
 
 const fallbackImage =
   "https://placehold.co/1400x900/081120/e2e8f0?text=No+Image";
@@ -116,19 +116,19 @@ function getPlatformIcon(platformName) {
 
 function DetailLinks({ items, emptyLabel, toBuilder, iconForItem }) {
   if (!items.length) {
-    return <span className="text-sm text-[#94a3b8]">{emptyLabel}</span>;
+    return <span className="detail-links-empty">{emptyLabel}</span>;
   }
 
   return (
-    <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2">
+    <div className="detail-links-list">
       {items.map((item) => (
         <Link
           key={`${item.id}-${item.slug}`}
           to={toBuilder(item)}
-          className="inline-flex items-center gap-2 text-sm text-[#dbe6f7] transition-colors duration-200 hover:text-[#67e8f9]"
+          className="detail-links-item"
         >
           {iconForItem && (
-            <span className="text-base text-[#67e8f9]">
+            <span className="detail-links-icon">
               {iconForItem(item)}
             </span>
           )}
@@ -283,17 +283,17 @@ export default function DetailPage() {
 
   if (!game?.id) {
     return (
-      <div className="min-h-screen bg-[rgba(5,10,21,0.84)] text-white">
+      <div className="detail-fallback">
         <Navbar sticky={false} />
-        <main className="mx-auto flex min-h-[72vh] max-w-3xl flex-col items-center justify-center gap-6 px-6 text-center" data-aos="fade-up">
-          <h1 className="font-orbitron text-4xl font-black text-white">
+        <main className="detail-fallback-main" data-aos="fade-up">
+          <h1 className="detail-fallback-title">
             Scheda gioco non disponibile
           </h1>
-          <p className="max-w-xl text-base leading-8 text-[#94a3b8]">
+          <p className="detail-fallback-text">
             Non sono riuscito a recuperare i dati del gioco. Controlla la API
             key RAWG o prova a ricaricare la pagina.
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          <div className="detail-fallback-actions">
             <button
               onClick={() => navigate(-1)}
               className="detail-link"
@@ -338,23 +338,23 @@ export default function DetailPage() {
   const ratingsCount = formatCount(game?.ratings_count);
 
   return (
-    <div className="relative isolate min-h-screen overflow-hidden bg-[rgba(4,9,21,0.84)] text-[#e2e8f0]">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[42rem] overflow-hidden [mask-image:linear-gradient(to_bottom,black_0%,black_72%,transparent_100%)] [-webkit-mask-image:linear-gradient(to_bottom,black_0%,black_72%,transparent_100%)]">
+    <div className="detail-page">
+      <div className="detail-page__backdrop">
         <img
           src={accentImage}
           alt=""
-          className="h-full w-full scale-[1.02] object-cover opacity-28 blur-[4px]"
+          className="detail-page__backdrop-image"
         />
-        <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(4,9,21,0.05)_0%,rgba(4,9,21,0.58)_52%,rgba(4,9,21,0.9)_100%)]" />
+        <div className="detail-page__backdrop-overlay" />
       </div>
 
       <Navbar sticky={false} />
 
-      <main className="relative z-10 overflow-hidden pb-16">
-        <div className="absolute left-1/2 top-44 h-72 w-72 -translate-x-1/2 rounded-full bg-[#22d3ee]/10 blur-[120px]" />
+      <main className="detail-page__main">
+        <div className="detail-page__orb" />
 
-        <section className="relative mx-auto max-w-7xl px-4 pt-8 sm:px-6 lg:px-8" data-aos="fade-up">
-          <div className="mb-8 flex flex-wrap items-center justify-between gap-4" data-aos="fade-up" data-aos-delay="60">
+        <section className="detail-page__content" data-aos="fade-up">
+          <div className="detail-page__actions" data-aos="fade-up" data-aos-delay="60">
             <button
               onClick={() => navigate(-1)}
               className="detail-link"
@@ -366,7 +366,7 @@ export default function DetailPage() {
               </span>
             </button>
 
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="detail-page__actions-group">
               <Link
                 to="/"
                 className="detail-link"
@@ -380,8 +380,8 @@ export default function DetailPage() {
             </div>
           </div>
 
-          <div className="grid gap-10 lg:grid-cols-[1.45fr_1.15fr] lg:items-start" data-aos="fade-up" data-aos-delay="100">
-            <section data-aos="fade-right" data-aos-delay="140">
+          <div className="detail-page__grid" data-aos="fade-up" data-aos-delay="100">
+            <section className="detail-page__media" data-aos="fade-right" data-aos-delay="140">
               <GameCarousel
                 screenshots={screenshots}
                 trailers={trailers}
@@ -389,49 +389,49 @@ export default function DetailPage() {
                 title={game?.name}
               />
 
-              <dl className="mt-7 grid grid-cols-2 gap-x-4 gap-y-5 border-t border-white/10 pt-6 text-sm">
+              <dl className="detail-page__stats">
                 <div>
-                  <dt className="text-[0.7rem] uppercase tracking-[0.2em] text-[#94a3b8]">
+                  <dt className="detail-page__stat-label">
                     Metacritic
                   </dt>
-                  <dd className="mt-1 inline-flex items-center gap-2 text-lg font-semibold text-white">
-                    <FaStar className="text-[#facc15]" />
+                  <dd className="detail-page__stat-value detail-page__stat-value--icon">
+                    <FaStar className="detail-page__stat-star" />
                     {metacritic}
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-[0.7rem] uppercase tracking-[0.2em] text-[#94a3b8]">
+                  <dt className="detail-page__stat-label">
                     Reviews
                   </dt>
-                  <dd className="mt-1 text-lg font-semibold text-white">
+                  <dd className="detail-page__stat-value">
                     {ratingsCount}
                   </dd>
                 </div>
-                <div className="col-span-2">
-                  <dt className="text-[0.7rem] uppercase tracking-[0.2em] text-[#94a3b8]">
+                <div className="detail-page__genre-block">
+                  <dt className="detail-page__stat-label">
                     Generi
                   </dt>
                   {genres.length > 0 ? (
-                    <div className="mt-2 flex flex-wrap gap-x-4 gap-y-2">
+                    <div className="detail-page__genre-links">
                       {genres.map((genre) => (
                         <Link
                           key={genre.slug}
                           to={`/genre/${genre.slug}`}
-                          className="text-sm text-[#dbe6f7] transition-colors duration-200 hover:text-[#67e8f9]"
+                          className="detail-page__genre-link"
                         >
                           {genre.name}
                         </Link>
                       ))}
                     </div>
                   ) : (
-                    <span className="mt-2 block text-sm text-[#94a3b8]">
+                    <span className="detail-page__meta-empty">
                       Non disponibili
                     </span>
                   )}
                 </div>
               </dl>
 
-              <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs uppercase tracking-[0.2em] text-[#9fb1cc]">
+              <div className="detail-page__cta-row">
                 {game?.website && (
                   <a
                     href={game.website}
@@ -440,44 +440,44 @@ export default function DetailPage() {
                     className="btn-glow btn-glow--yellow btn-glow--no-reflect"
                   >
                     Visita sito ufficiale
-                    <FaArrowUpRightFromSquare className="text-xs" />
+                    <FaArrowUpRightFromSquare className="detail-page__cta-icon" />
                   </a>
                 )}
               </div>
             </section>
 
-            <section className="lg:pt-0" data-aos="fade-left" data-aos-delay="160">
-              <h1 className="font-orbitron text-4xl font-black leading-tight text-white sm:text-5xl">
+            <section className="detail-page__info" data-aos="fade-left" data-aos-delay="160">
+              <h1 className="detail-page__title">
                 {game?.name || "Titolo sconosciuto"}
               </h1>
 
-              <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-[#a9b7cf]">
-                <span className="inline-flex items-center gap-2">
-                  <FaCalendarDays className="text-[#67e8f9]" />
+              <div className="detail-page__meta-row">
+                <span className="detail-page__meta-item">
+                  <FaCalendarDays className="detail-page__meta-icon" />
                   Release: {releaseDate}
                 </span>
-                <span className="inline-flex items-center gap-2">
-                  <FaGamepad className="text-[#67e8f9]" />
+                <span className="detail-page__meta-item">
+                  <FaGamepad className="detail-page__meta-icon" />
                   Rating: {rating}
                 </span>
               </div>
 
-              <p className="mt-6 text-sm leading-8 text-[#d1d9e8] sm:text-base">
+              <p className="detail-page__description">
                 {game?.description_raw || "Descrizione non disponibile"}
               </p>
 
-              <div className="mt-8 flex flex-wrap items-center gap-3">
+              <div className="detail-page__collection-actions">
                 {ownerId && (
                   <>
                     <button
                       onClick={toggleFavorite}
                       disabled={favLoading}
-                      className="group flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm font-semibold text-[#dbe6f7] transition-all duration-300 hover:border-red-400/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+                      className="detail-page__collection-btn detail-page__collection-btn--favorite"
                     >
                       {isFavorite ? (
-                        <FaHeart className="text-red-500" />
+                        <FaHeart className="detail-page__icon detail-page__icon--favorite-active" />
                       ) : (
-                        <FaRegHeart className="text-red-300/80" />
+                        <FaRegHeart className="detail-page__icon detail-page__icon--favorite" />
                       )}
                       {favLoading
                         ? "Attendere..."
@@ -489,12 +489,12 @@ export default function DetailPage() {
                     <button
                       onClick={toggleWantToPlay}
                       disabled={wantToPlayLoading}
-                      className="group flex items-center gap-2 rounded-full border border-white/10 bg-black/20 px-4 py-2 text-sm font-semibold text-[#dbe6f7] transition-all duration-300 hover:border-amber-400/40 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
+                      className="detail-page__collection-btn detail-page__collection-btn--want"
                     >
                       {isWantToPlay ? (
-                        <FaBookmark className="text-amber-400" />
+                        <FaBookmark className="detail-page__icon detail-page__icon--want-active" />
                       ) : (
-                        <FaRegBookmark className="text-amber-200/90" />
+                        <FaRegBookmark className="detail-page__icon detail-page__icon--want" />
                       )}
                       {wantToPlayLoading
                         ? "Attendere..."
@@ -508,10 +508,10 @@ export default function DetailPage() {
             </section>
           </div>
 
-          <section className="mt-8 grid gap-6 lg:grid-cols-3" data-aos="fade-up" data-aos-delay="200">
-            <article className="rounded-[24px] border border-white/10 bg-[#071121]/60 p-5 backdrop-blur-xl" data-aos="zoom-in" data-aos-delay="240">
-              <h2 className="inline-flex items-center gap-2 font-orbitron text-sm font-bold uppercase tracking-[0.2em] text-[#67e8f9]">
-                <FaGamepad className="text-base" />
+          <section className="detail-page__cards" data-aos="fade-up" data-aos-delay="200">
+            <article className="detail-page__card" data-aos="zoom-in" data-aos-delay="240">
+              <h2 className="detail-page__card-title">
+                <FaGamepad className="detail-page__card-title-icon" />
                 Piattaforme
               </h2>
               <DetailLinks
@@ -524,8 +524,8 @@ export default function DetailPage() {
               />
             </article>
 
-            <article className="rounded-[24px] border border-white/10 bg-[#071121]/60 p-5 backdrop-blur-xl" data-aos="zoom-in" data-aos-delay="280">
-              <h2 className="font-orbitron text-sm font-bold uppercase tracking-[0.2em] text-[#67e8f9]">
+            <article className="detail-page__card" data-aos="zoom-in" data-aos-delay="280">
+              <h2 className="detail-page__card-title">
                 Developers
               </h2>
               <DetailLinks
@@ -535,8 +535,8 @@ export default function DetailPage() {
               />
             </article>
 
-            <article className="rounded-[24px] border border-white/10 bg-[#071121]/60 p-5 backdrop-blur-xl" data-aos="zoom-in" data-aos-delay="320">
-              <h2 className="font-orbitron text-sm font-bold uppercase tracking-[0.2em] text-[#67e8f9]">
+            <article className="detail-page__card" data-aos="zoom-in" data-aos-delay="320">
+              <h2 className="detail-page__card-title">
                 Publishers
               </h2>
               <DetailLinks
@@ -547,7 +547,7 @@ export default function DetailPage() {
             </article>
           </section>
 
-          <div className="mt-12" data-aos="fade-up" data-aos-delay="360">
+          <div className="detail-page__reviews-wrap" data-aos="fade-up" data-aos-delay="360">
             <BodySection game={game} />
           </div>
         </section>
