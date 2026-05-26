@@ -12,6 +12,7 @@
   box-shadow: 0 0 10px rgba(244, 63, 94, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   text-shadow: 0 0 8px rgba(251, 113, 133, 0.6);
   transition: box-shadow 0.25s ease, transform 0.2s ease;
+    
 }
 
 .rating_badge_custom:hover {
