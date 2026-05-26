@@ -28,60 +28,69 @@ function PortfolioSparkIcon() {
 }
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="site-footer ">
-      <div className="site-footer__top">
-        <Link to="/" className="site-footer__brand-link">
-          <div className="site-footer__brand">
-            <img
-              src="/media/favicon.svg"
-              alt="Square Games logo"
-              className="site-footer__logo"
-            />
-            <div>
-              <p className="site-footer__title">Square Games</p>
-              <p className="site-footer__tagline">
-                Gaming picks, clean and sharp.
-              </p>
+    <footer className="site-footer">
+      <div className="site-footer__surface">
+        <div className="site-footer__top">
+          <Link to="/" className="site-footer__brand-link">
+            <div className="site-footer__brand">
+              <img
+                src="/media/favicon.svg"
+                alt="Square Games logo"
+                className="site-footer__logo"
+              />
+              <div>
+                <p className="site-footer__title">Square Games</p>
+                <p className="site-footer__tagline">
+                  Gaming picks, clean and sharp.
+                </p>
+              </div>
+            </div>
+          </Link>
+
+          <div className="site-footer__actions">
+            <p className="site-footer__actions-label">Connettiti</p>
+            <div
+              className="site-footer__socials"
+              aria-label="External profile links"
+            >
+              <a
+                href="https://www.linkedin.com/in/alessandro-michele-piazza-13b751171/"
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="Alessandro Michele Piazza LinkedIn"
+              >
+                <FaLinkedinIn />
+              </a>
+              <a
+                href="https://alessandro-michele-piazza.github.io"
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label="Portfolio di Alessandro Michele Piazza"
+              >
+                <PortfolioSparkIcon />
+              </a>
             </div>
           </div>
-        </Link>
+        </div>
 
-        <div className="site-footer__actions">
-          <div
-            className="site-footer__socials"
-            aria-label="External profile links"
-          >
-            <a
-              href="https://www.linkedin.com/in/alessandro-michele-piazza-13b751171/"
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="Alessandro Michele Piazza LinkedIn"
-            >
-              <FaLinkedinIn />
-            </a>
+        <div className="site-footer__bottom">
+          <p className="site-footer__legal">
+            Copyright {currentYear} Square Games. All rights reserved.
+          </p>
+          <p className="site-footer__credit">
+            Powered by
             <a
               href="https://alessandro-michele-piazza.github.io"
               target="_blank"
               rel="noreferrer noopener"
-              aria-label="Portfolio di Alessandro Michele Piazza"
+              className="site-footer__credit-link"
             >
-              <PortfolioSparkIcon />
+              Alessandro Michele Piazza
             </a>
-          </div>
-        </div>
-      </div>
-
-      <div className="site-footer__bottom">
-        <div>
-          <span> Powered By: </span>
-          <a
-            href="https://alessandro-michele-piazza.github.io"
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            <span className="powered_by">Alessandro Michele Piazza</span>
-          </a>
+          </p>
         </div>
       </div>
     </footer>
