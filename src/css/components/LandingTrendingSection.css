@@ -1,7 +1,7 @@
 .landing-trending {
   width: min(1320px, 100%);
   margin: 0 auto;
-  padding: clamp(2rem, 5vw, 3.25rem) 0 10vh;
+  padding: clamp(2rem, 5vw, 3.25rem) var(--landing-inline-gutter, clamp(0.95rem, 4.6vw, 1.35rem)) 10vh;
 }
 
 .landing-trending__header {
@@ -43,7 +43,7 @@
   position: relative;
   display: block;
   width: 100%;
-  max-width: 20rem;
+  max-width: 18rem;
   justify-self: center;
   border-radius: 14px;
   overflow: hidden;
@@ -115,23 +115,34 @@
 @media (max-width: 760px) {
   .landing-trending__grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 0.62rem;
+    row-gap: 1rem;
   }
 
   .landing-trending-card {
-    max-width: none;
+    max-width: 10.6rem;
+    aspect-ratio: 9 / 10;
   }
 }
 
 @media (max-width: 520px) {
   .landing-trending {
     padding-top: 1.55rem;
+    padding-bottom: 8.5vh;
   }
 
   .landing-trending__grid {
     grid-template-columns: 1fr;
+    row-gap: 1.1rem;
   }
 
   .landing-trending-card {
-    aspect-ratio: 5 / 4;
+    width: min(78vw, 15.8rem);
+    max-width: none;
+    aspect-ratio: 4 / 5;
+  }
+
+  .landing-trending-card__content {
+    padding: 0.66rem;
   }
 }

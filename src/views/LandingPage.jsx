@@ -13,7 +13,7 @@ const TRENDING_GAMES = [
     title: "Resident Evil Requiem",
     genre: "Survival Horror",
     year: "2026",
-    image: "/media/ff7_remake_wallpaper.webp",
+    image: "/media/resident_evil_requiem.webp",
     to: routes.detail.replace(":id", "1004511"),
   },
   {

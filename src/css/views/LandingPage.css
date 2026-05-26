@@ -19,9 +19,17 @@ body.landing-body .cursor-glow {
 }
 
 .landing-page {
+  --landing-inline-gutter: clamp(0.95rem, 4.6vw, 1.35rem);
+
   width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   background: transparent;
+}
+
+@media (max-width: 520px) {
+  .landing-page {
+    --landing-inline-gutter: clamp(0.95rem, 5.2vw, 1.2rem);
+  }
 }
