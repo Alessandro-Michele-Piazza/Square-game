@@ -39,6 +39,14 @@
   gap: clamp(0.55rem, 1.3vw, 0.9rem);
 }
 
+.landing-trending__carousel-shell {
+  min-width: 0;
+}
+
+.landing-trending__controls {
+  display: none;
+}
+
 .landing-trending-card {
   position: relative;
   display: block;
@@ -114,14 +122,77 @@
 
 @media (max-width: 760px) {
   .landing-trending__grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 0.62rem;
-    row-gap: 1rem;
+    display: flex;
+    gap: 0.78rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    padding: 0.18rem 0.1rem 0.45rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .landing-trending__grid::-webkit-scrollbar {
+    display: none;
   }
 
   .landing-trending-card {
-    max-width: 10.6rem;
+    flex: 0 0 min(72vw, 15.8rem);
+    width: auto;
+    max-width: none;
     aspect-ratio: 9 / 10;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .landing-trending__controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-top: 0.55rem;
+  }
+
+  .landing-trending__controls .next-btn-container {
+    --next-btn-size: 2.25rem;
+    --next-btn-expanded-size: 3.45rem;
+    flex-shrink: 0;
+  }
+
+  .landing-trending__controls .next-btn-content:disabled {
+    opacity: 0.38;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .landing-trending__controls .next-btn-content:focus-visible,
+  .landing-trending__dot:focus-visible {
+    outline: 2px solid #fef08a;
+    outline-offset: 2px;
+  }
+
+  .landing-trending__dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.38rem;
+    flex: 1;
+  }
+
+  .landing-trending__dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(148, 163, 184, 0.42);
+    padding: 0;
+    cursor: pointer;
+    transition: width 200ms ease, background-color 200ms ease;
+  }
+
+  .landing-trending__dot.is-active {
+    width: 1.2rem;
+    background: linear-gradient(90deg, #fef08a 0%, #7dd3fc 100%);
   }
 }
 
@@ -131,14 +202,8 @@
     padding-bottom: 8.5vh;
   }
 
-  .landing-trending__grid {
-    grid-template-columns: 1fr;
-    row-gap: 1.1rem;
-  }
-
   .landing-trending-card {
-    width: min(78vw, 15.8rem);
-    max-width: none;
+    flex-basis: min(78vw, 15.5rem);
     aspect-ratio: 4 / 5;
   }
 

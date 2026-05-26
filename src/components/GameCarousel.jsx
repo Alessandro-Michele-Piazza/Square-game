@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import CarouselArrowIcon from "./CarouselArrowIcon";
 import "../css/components/GameCarousel.css";
 import "../css/base/button.css";
 
@@ -62,22 +63,6 @@ function buildSlides({ trailers, screenshots, fallbackImage, title }) {
   return combinedSlides;
 }
 
-function CarouselArrowIcon() {
-  return (
-    <span className="next-btn-icon-arrow" aria-hidden="true">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 34 14"
-        fill="none"
-      >
-        <path className="next-btn-arrow-one" d="M0 0L8 7L0 14H4L12 7L4 0H0Z" />
-        <path className="next-btn-arrow-two" d="M11 0L19 7L11 14H15L23 7L15 0H11Z" />
-        <path className="next-btn-arrow-three" d="M22 0L30 7L22 14H26L34 7L26 0H22Z" />
-      </svg>
-    </span>
-  );
-}
-
 export default function GameCarousel({
   screenshots = [],
   trailers = [],
@@ -90,12 +75,6 @@ export default function GameCarousel({
   );
   const [current, setCurrent] = useState(0);
 
-  useEffect(() => {
-    if (current > slides.length - 1) {
-      setCurrent(0);
-    }
-  }, [current, slides.length]);
-
   if (!slides.length) {
     return (
       <div className="carousel-empty">
@@ -104,7 +83,8 @@ export default function GameCarousel({
     );
   }
 
-  const activeSlide = slides[current];
+  const safeCurrent = Math.min(current, slides.length - 1);
+  const activeSlide = slides[safeCurrent];
 
   const goPrev = () => {
     setCurrent((prev) => (prev - 1 + slides.length) % slides.length);
@@ -140,7 +120,7 @@ export default function GameCarousel({
 
         <div className="carousel-topbar">
           <span>
-            {current + 1}/{slides.length}
+            {safeCurrent + 1}/{slides.length}
           </span>
         </div>
       </div>
@@ -164,8 +144,8 @@ export default function GameCarousel({
                 key={slide.id}
                 type="button"
                 role="tab"
-                aria-selected={index === current}
-                className={`carousel-thumb ${index === current ? "is-active" : ""}`}
+                aria-selected={index === safeCurrent}
+                className={`carousel-thumb ${index === safeCurrent ? "is-active" : ""}`}
                 onClick={() => setCurrent(index)}
               >
                 <img src={slide.thumb || slide.poster} alt={slide.label} />

@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
+import CarouselArrowIcon from "../CarouselArrowIcon";
+import "../../css/base/button.css";
 import "../../css/components/LandingCategoriesSection.css";
 
 export default function LandingCategoriesSection({ cards, allCollectionsTo }) {
@@ -151,15 +153,17 @@ export default function LandingCategoriesSection({ cards, allCollectionsTo }) {
           data-aos="fade-up"
           data-aos-delay="120"
         >
-          <button
-            type="button"
-            className="landing-categories__control-button"
-            onClick={() => moveBy(-1)}
-            aria-label="Categoria precedente"
-            disabled={safeActiveIndex === 0}
-          >
-            <span aria-hidden="true">&#8249;</span>
-          </button>
+          <div className="next-btn-container">
+            <button
+              type="button"
+              className="next-btn-content is-prev"
+              onClick={() => moveBy(-1)}
+              aria-label="Categoria precedente"
+              disabled={safeActiveIndex === 0}
+            >
+              <CarouselArrowIcon />
+            </button>
+          </div>
 
           <div className="landing-categories__dots">
             {cards.map((card, index) => (
@@ -174,15 +178,17 @@ export default function LandingCategoriesSection({ cards, allCollectionsTo }) {
             ))}
           </div>
 
-          <button
-            type="button"
-            className="landing-categories__control-button"
-            onClick={() => moveBy(1)}
-            aria-label="Categoria successiva"
-            disabled={safeActiveIndex === maxIndex}
-          >
-            <span aria-hidden="true">&#8250;</span>
-          </button>
+          <div className="next-btn-container">
+            <button
+              type="button"
+              className="next-btn-content"
+              onClick={() => moveBy(1)}
+              aria-label="Categoria successiva"
+              disabled={safeActiveIndex === maxIndex}
+            >
+              <CarouselArrowIcon />
+            </button>
+          </div>
         </div>
       </div>
     </section>

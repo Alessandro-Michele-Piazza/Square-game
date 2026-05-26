@@ -190,31 +190,19 @@
     margin-top: 0.55rem;
   }
 
-  .landing-categories__control-button {
-    width: 2.25rem;
-    height: 2.25rem;
-    border: 1px solid rgba(125, 211, 252, 0.45);
-    border-radius: 999px;
-    background: rgba(8, 47, 73, 0.45);
-    color: #e0f2fe;
-    font-size: 1.2rem;
-    line-height: 1;
-    cursor: pointer;
-    transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
+  .landing-categories__controls .next-btn-container {
+    --next-btn-size: 2.25rem;
+    --next-btn-expanded-size: 3.45rem;
+    flex-shrink: 0;
   }
 
-  .landing-categories__control-button:disabled {
-    opacity: 0.42;
+  .landing-categories__controls .next-btn-content:disabled {
+    opacity: 0.38;
     cursor: default;
+    pointer-events: none;
   }
 
-  .landing-categories__control-button:not(:disabled):hover {
-    transform: translateY(-1px);
-    border-color: rgba(125, 211, 252, 0.78);
-    background: rgba(14, 116, 144, 0.5);
-  }
-
-  .landing-categories__control-button:focus-visible,
+  .landing-categories__controls .next-btn-content:focus-visible,
   .landing-categories__dot:focus-visible {
     outline: 2px solid #fef08a;
     outline-offset: 2px;
