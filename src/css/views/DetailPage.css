@@ -34,7 +34,7 @@
 
 .detail-fallback {
   min-height: 100vh;
-  background: rgba(5, 10, 21, 0.84);
+  background: rgba(0, 0, 0, 0.84);
   color: #ffffff;
 }
 
@@ -80,7 +80,7 @@
   isolation: isolate;
   min-height: 100vh;
   overflow: hidden;
-  background: rgba(4, 9, 21, 0.84);
+  background: rgba(0, 0, 0, 0.84);
   color: #e2e8f0;
 }
 
@@ -109,9 +109,9 @@
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(4, 9, 21, 0.05) 0%,
-    rgba(4, 9, 21, 0.58) 52%,
-    rgba(4, 9, 21, 0.9) 100%
+    rgba(0, 0, 0, 0.08) 0%,
+    rgba(0, 0, 0, 0.62) 52%,
+    rgba(0, 0, 0, 0.9) 100%
   );
 }
 

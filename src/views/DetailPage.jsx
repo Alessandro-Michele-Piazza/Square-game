@@ -21,6 +21,7 @@ import { UserContext } from "../context/user-context";
 import supabase from "../database/supabase";
 import useAos from "../hooks/useAos";
 import useRouteScrollReset from "../hooks/useRouteScrollReset";
+import routes from "../router/routes";
 import "../css/views/DetailPage.css";
 
 const fallbackImage =
@@ -304,7 +305,7 @@ export default function DetailPage() {
                 Torna indietro
               </span>
             </button>
-            <Link to="/" className="detail-link" data-text="Vai alla home">
+            <Link to={routes.home} className="detail-link" data-text="Vai alla home">
               Vai alla home
               <span className="detail-link__hover" aria-hidden="true">
                 Vai alla home
@@ -368,7 +369,7 @@ export default function DetailPage() {
 
             <div className="detail-page__actions-group">
               <Link
-                to="/"
+                to={routes.home}
                 className="detail-link"
                 data-text="Collezione giochi"
               >

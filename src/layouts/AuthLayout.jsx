@@ -14,7 +14,7 @@ export default function AuthLayout() {
 
   return (
     <>
-      <Navbar sticky={!isAuthFormRoute} />
+      <Navbar sticky={!isAuthFormRoute} hideOnMobile={isAuthFormRoute} />
       <Outlet />
       <Footer />
     </>

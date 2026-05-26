@@ -15,7 +15,7 @@
   /* PALETTE COLORI "LIGHTNING BLUE & YELLOW" */
 
   /* Sfondi */
-  --color-main-bg: #050a15; /* Blu notte quasi nero per lo sfondo */
+  --color-main-bg: #000000; /* Nero pieno per lo sfondo globale */
   --color-card-bg: #0d1b35; /* Blu scuro per le card dei giochi */
   --color-nav-gray: #d8d8d8; /* Grigio Navbar richiesto [cite: 27] */
 
@@ -105,47 +105,15 @@ body {
 body {
   font-family: var(--font-exo2);
   background-color: var(--color-main-bg);
-  background-image:
-    radial-gradient(ellipse 62% 48% at 16% 18%, rgba(56, 189, 248, 0.24) 0%, rgba(56, 189, 248, 0) 72%),
-    radial-gradient(ellipse 58% 44% at 84% 14%, rgba(59, 130, 246, 0.2) 0%, rgba(59, 130, 246, 0) 74%),
-    radial-gradient(ellipse 64% 50% at 20% 86%, rgba(14, 165, 233, 0.18) 0%, rgba(14, 165, 233, 0) 74%),
-    radial-gradient(ellipse 60% 48% at 82% 88%, rgba(37, 99, 235, 0.16) 0%, rgba(37, 99, 235, 0) 76%),
-    linear-gradient(160deg, #030712 0%, #050a15 52%, #07152d 100%);
-  background-size: 190% 190%, 210% 210%, 200% 200%, 200% 200%, 100% 100%;
-  background-position: 6% 14%, 90% 12%, 12% 86%, 88% 88%, 0% 0%;
+  background-image: none;
   background-attachment: fixed;
-  animation: azure-wave-flow 20s cubic-bezier(0.42, 0, 0.22, 1) infinite;
+  animation: none;
   color: var(--color-text-bright);
 }
 
 body::before,
 body::after {
-  content: "";
-  position: fixed;
-  inset: -18vmax;
-  pointer-events: none;
-  z-index: 0;
-  will-change: transform, opacity, filter;
-}
-
-body::before {
-  background:
-    radial-gradient(ellipse 34% 28% at 12% 20%, rgba(56, 189, 248, 0.52) 0%, rgba(56, 189, 248, 0) 74%),
-    radial-gradient(ellipse 36% 30% at 88% 82%, rgba(59, 130, 246, 0.44) 0%, rgba(59, 130, 246, 0) 76%);
-  mix-blend-mode: screen;
-  opacity: 0.58;
-  filter: blur(10px);
-  animation: azure-wave-layer-a 14s ease-in-out infinite alternate;
-}
-
-body::after {
-  background:
-    radial-gradient(ellipse 38% 32% at 86% 18%, rgba(34, 211, 238, 0.36) 0%, rgba(34, 211, 238, 0) 76%),
-    radial-gradient(ellipse 36% 30% at 14% 86%, rgba(37, 99, 235, 0.34) 0%, rgba(37, 99, 235, 0) 78%);
-  mix-blend-mode: screen;
-  opacity: 0.46;
-  filter: blur(18px);
-  animation: azure-wave-layer-b 19s ease-in-out infinite alternate;
+  display: none;
 }
 
 @keyframes azure-wave-flow {
@@ -206,15 +174,11 @@ body::after {
 @media (prefers-reduced-motion: reduce) {
   body {
     animation: none;
-    background-size: 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
-    background-position: 0% 0%, 100% 0%, 0% 100%, 100% 100%, 0% 0%;
   }
 
   body::before,
   body::after {
-    animation: none;
-    transform: none;
-    opacity: 0.28;
+    display: none;
   }
 }
 
@@ -531,7 +495,7 @@ aside .detail-link {
   gap: 0.4rem;
   border-radius: 999px;
   border: 1px solid rgba(59, 130, 246, 0.32);
-  background: rgba(15, 23, 42, 0.64);
+  background: rgba(0, 0, 0, 0.64);
   padding: 0.5rem 0.9rem;
   font-family: var(--font-orbitron);
   font-size: 0.67rem;
@@ -547,7 +511,7 @@ aside .detail-link {
 .topbar-pill-link:hover {
   border-color: rgba(254, 240, 138, 0.42);
   color: #fef08a;
-  background: rgba(15, 23, 42, 0.9);
+  background: rgba(0, 0, 0, 0.9);
   transform: translateY(-1px);
 }
 
@@ -572,7 +536,7 @@ aside .detail-link {
   gap: 0.55rem;
   border-radius: 999px;
   border: 1px solid rgba(148, 163, 184, 0.3);
-  background: rgba(15, 23, 42, 0.72);
+  background: rgba(0, 0, 0, 0.72);
   padding: 0.42rem 0.75rem;
   text-decoration: none;
   color: #e2e8f0;
@@ -598,7 +562,7 @@ aside .detail-link {
   justify-content: center;
   border-radius: 999px;
   border: 1px solid rgba(254, 240, 138, 0.32);
-  background: rgba(15, 23, 42, 0.74);
+  background: rgba(0, 0, 0, 0.74);
   color: #fef08a;
   font-size: 1.1rem;
   transition: border-color 0.2s ease, color 0.2s ease;
@@ -613,8 +577,8 @@ aside .detail-link {
   border-radius: 1rem;
   border: 1px solid rgba(148, 163, 184, 0.22);
   background:
-    radial-gradient(circle at top, rgba(125, 211, 252, 0.1), transparent 50%),
-    linear-gradient(160deg, rgba(8, 18, 36, 0.88), rgba(5, 10, 21, 0.76));
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 50%),
+    linear-gradient(160deg, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.76));
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   box-shadow: 0 20px 45px rgba(2, 6, 23, 0.42);

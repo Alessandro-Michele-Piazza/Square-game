@@ -4,7 +4,7 @@
   --footer-gutter: clamp(0.75rem, 1.5vw, 1.25rem);
   padding: 0;
   border-top: 1px solid rgba(254, 240, 138, 0.12);
-  background: rgba(5, 10, 21, 0.96);
+  background: rgba(0, 0, 0, 0.94);
 }
 
 .site-footer__top {

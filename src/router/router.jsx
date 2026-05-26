@@ -13,6 +13,7 @@ import {
 import Layout from "../layouts/Layout";
 import AuthLayout from "../layouts/AuthLayout";
 import Homepage from "../views/Homepage";
+import LandingPage from "../views/LandingPage";
 
 import Login from "../views/Login";
 import Register from "../views/Register";
@@ -24,10 +25,14 @@ import DetailPage from "../views/DetailPage";
 
 const router = createBrowserRouter([
   {
-    path: routes.home,
+    path: routes.landing,
     Component: Layout,
     loader: getAllGenres,
     children: [
+      {
+        index: true,
+        Component: LandingPage,
+      },
       {
         path: routes.home,
         Component: Homepage,

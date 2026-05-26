@@ -1,0 +1,27 @@
+body.landing-body {
+  background-color: #000;
+  background-image: none;
+  animation: none;
+}
+
+body.landing-body::before,
+body.landing-body::after {
+  opacity: 0;
+  animation: none;
+}
+
+body.landing-body .topbar {
+  display: none;
+}
+
+body.landing-body .cursor-glow {
+  display: none;
+}
+
+.landing-page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+}

@@ -27,7 +27,7 @@ export default function Login() {
       email: user_data.email,
       password: user_data.password,
     });
-    navigate("/");
+    navigate(routes.home);
   };
 
   return (

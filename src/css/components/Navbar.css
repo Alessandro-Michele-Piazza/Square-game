@@ -113,7 +113,7 @@
   cursor: pointer;
   border-radius: 999px;
   border: 1px solid rgba(148, 163, 184, 0.3);
-  background: rgba(15, 23, 42, 0.74);
+  background: rgba(0, 0, 0, 0.74);
   padding: 0.38rem 0.8rem 0.38rem 0.45rem;
   color: #e2e8f0;
   font-family: var(--font-orbitron);
@@ -152,8 +152,8 @@
   border-radius: 0.9rem;
   border: 1px solid rgba(148, 163, 184, 0.22);
   background:
-    radial-gradient(circle at top, rgba(125, 211, 252, 0.1), transparent 54%),
-    linear-gradient(160deg, rgba(8, 18, 36, 0.96), rgba(5, 10, 21, 0.92));
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 54%),
+    linear-gradient(160deg, rgba(0, 0, 0, 0.96), rgba(0, 0, 0, 0.92));
   box-shadow: 0 16px 40px rgba(2, 6, 23, 0.56);
   overflow: hidden;
   opacity: 0;
@@ -253,6 +253,10 @@
   gap: 0.5rem;
 }
 
+.topbar-mobile-group + .topbar-mobile-group {
+  margin-top: 0.5rem;
+}
+
 .topbar-pill-link--filters {
   justify-content: center;
 }
@@ -294,6 +298,12 @@
 
   .topbar-actions-zone {
     padding-inline: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .topbar--mobile-hidden {
+    display: none;
   }
 }
 

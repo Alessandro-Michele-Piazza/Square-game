@@ -1,6 +1,7 @@
 
 const routes = {
-home:'/',
+landing:'/',
+home:'/home',
 info:'/info',
 search:'/search/:slug',
 genre:'/genre/:slug',

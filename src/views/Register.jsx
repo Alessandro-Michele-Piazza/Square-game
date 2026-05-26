@@ -34,7 +34,7 @@ export default function Register() {
         },
       },
     });
-    navigate("/");
+    navigate(routes.home);
   };
 
   return (

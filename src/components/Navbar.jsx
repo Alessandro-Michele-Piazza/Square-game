@@ -12,7 +12,11 @@ import supabase from "../database/supabase";
 import Placeholder from "../media/Portrait_Placeholder.png";
 import "../css/components/Navbar.css";
 
-export default function Navbar({ onOpenGenres, sticky = true }) {
+export default function Navbar({
+  onOpenGenres,
+  sticky = true,
+  hideOnMobile = false,
+}) {
   const [slug, setSlug] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserDropdownOpen, setIsUserDropdownOpen] = useState(false);
@@ -89,7 +93,7 @@ export default function Navbar({ onOpenGenres, sticky = true }) {
   const handleLogout = async () => {
     await signOut();
     closeAllMenus();
-    navigate("/");
+    navigate(routes.landing);
   };
 
   const handleSearch = (e) => {
@@ -109,10 +113,16 @@ export default function Navbar({ onOpenGenres, sticky = true }) {
     onOpenGenres();
   };
 
+  const topbarClassName = [
+    "topbar",
+    sticky ? "topbar--sticky" : "topbar--static",
+    hideOnMobile ? "topbar--mobile-hidden" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <header
-      className={sticky ? "topbar topbar--sticky" : "topbar topbar--static"}
-    >
+    <header className={topbarClassName}>
       <div className="topbar-shell">
         <nav className="topbar-grid">
           {/* Logo chip */}
