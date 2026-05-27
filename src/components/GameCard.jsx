@@ -36,6 +36,10 @@ export default function Gamecard({ game }) {
             src={game?.background_image || fallbackImage}
             alt={game?.name || "Game cover"}
             className="game-card__image"
+            loading="lazy"
+            decoding="async"
+            width="600"
+            height="900"
           />
           <div className="game-card__overlay game-card__overlay--gradient" />
           <div className="game-card__overlay game-card__overlay--glow" />

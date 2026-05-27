@@ -12,16 +12,13 @@ import {
 } from "./loader";
 import Layout from "../layouts/Layout";
 import AuthLayout from "../layouts/AuthLayout";
-import Homepage from "../views/Homepage";
-import LandingPage from "../views/LandingPage";
-
-import Login from "../views/Login";
-import Register from "../views/Register";
-import ProfilePage from "../views/ProfilePage";
 import routes from "./routes";
-import Searchpage from "../views/Searchpage";
-import ProfileSettingsPage from "../views/ProfileSettingsPage";
-import DetailPage from "../views/DetailPage";
+
+const loadingFallback = (
+  <div className="loading_page">
+    <div className="loading_spinner"></div>
+  </div>
+);
 
 const router = createBrowserRouter([
   {
@@ -31,67 +28,43 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        Component: LandingPage,
+        lazy: () => import("../views/LandingPage").then((m) => ({ Component: m.default })),
       },
       {
         path: routes.home,
-        Component: Homepage,
         loader: getAllGamesLoader,
-        hydrateFallbackElement: (
-          <div className=" loading_page">
-            <div className="loading_spinner"></div>
-          </div>
-        ),
+        lazy: () => import("../views/Homepage").then((m) => ({ Component: m.default })),
+        hydrateFallbackElement: loadingFallback,
       },
       {
         path: routes.search,
-        Component: Searchpage,
         loader: getSearchedGames,
-        hydrateFallbackElement: (
-          <div className=" loading_page ">
-            <div className="loading_spinner"></div>
-          </div>
-        ),
+        lazy: () => import("../views/Searchpage").then((m) => ({ Component: m.default })),
+        hydrateFallbackElement: loadingFallback,
       },
       {
         path: routes.genre,
-        Component: Searchpage,
         loader: getFilteredbyGenreGames,
-        hydrateFallbackElement: (
-          <div className=" loading_page ">
-            <div className="loading_spinner"></div>
-          </div>
-        ),
+        lazy: () => import("../views/Searchpage").then((m) => ({ Component: m.default })),
+        hydrateFallbackElement: loadingFallback,
       },
       {
         path: routes.developer,
-        Component: Searchpage,
         loader: getFilteredByDeveloperGames,
-        hydrateFallbackElement: (
-          <div className=" loading_page ">
-            <div className="loading_spinner"></div>
-          </div>
-        ),
+        lazy: () => import("../views/Searchpage").then((m) => ({ Component: m.default })),
+        hydrateFallbackElement: loadingFallback,
       },
       {
         path: routes.publisher,
-        Component: Searchpage,
         loader: getFilteredByPublisherGames,
-        hydrateFallbackElement: (
-          <div className=" loading_page ">
-            <div className="loading_spinner"></div>
-          </div>
-        ),
+        lazy: () => import("../views/Searchpage").then((m) => ({ Component: m.default })),
+        hydrateFallbackElement: loadingFallback,
       },
       {
         path: routes.platform,
-        Component: Searchpage,
         loader: getFilteredByPlatformGames,
-        hydrateFallbackElement: (
-          <div className=" loading_page ">
-            <div className="loading_spinner"></div>
-          </div>
-        ),
+        lazy: () => import("../views/Searchpage").then((m) => ({ Component: m.default })),
+        hydrateFallbackElement: loadingFallback,
       },
     ],
   },
@@ -101,33 +74,29 @@ const router = createBrowserRouter([
     children: [
       {
         path: routes.login,
-        Component: Login,
         loader: getAuthHeroImageLoader,
+        lazy: () => import("../views/Login").then((m) => ({ Component: m.default })),
       },
       {
         path: routes.register,
-        Component: Register,
         loader: getAuthHeroImageLoader,
+        lazy: () => import("../views/Register").then((m) => ({ Component: m.default })),
       },
       {
         path: routes.profile,
-        Component: ProfilePage,
+        lazy: () => import("../views/ProfilePage").then((m) => ({ Component: m.default })),
       },
       {
         path: routes.profile_settings,
-        Component: ProfileSettingsPage,
+        lazy: () => import("../views/ProfileSettingsPage").then((m) => ({ Component: m.default })),
       },
     ],
   },
   {
     path: routes.detail,
-    Component: DetailPage,
     loader: getGameFullDetails,
-    hydrateFallbackElement: (
-      <div className=" loading_page">
-        <div className="loading_spinner"></div>
-      </div>
-    ),
+    lazy: () => import("../views/DetailPage").then((m) => ({ Component: m.default })),
+    hydrateFallbackElement: loadingFallback,
   },
 ]);
 

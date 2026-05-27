@@ -25,7 +25,7 @@ export default function LandingHeroSection({
         {/* <h1 className="landing-hero__title" data-aos="fade-up" data-aos-delay="190">
           {title}
         </h1> */}
-          <img src={img_logo} alt={`${title} logo`} className="landing-hero__logo" data-aos="fade-up" data-aos-delay="190" />
+          <img src={img_logo} alt={`${title} logo`} className="landing-hero__logo" data-aos="fade-up" data-aos-delay="190" width="300" height="120" fetchpriority="high" />
         <p className="landing-hero__description" data-aos="fade-up" data-aos-delay="260">
           {description}
         </p>

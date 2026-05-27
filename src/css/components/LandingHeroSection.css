@@ -144,9 +144,9 @@
 }
 
 .landing-hero__button:hover {
-  background: var(--color-yellow-primary); /* era --color-blue-primary */
+  background: var(--color-yellow-primary); 
   color: black;
-  border-color: var(--color-yellow-primary); /* era --color-blue-light */
+  border-color: var(--color-yellow-primary); 
   transform: translateY(-6px);
 }
 
@@ -154,7 +154,8 @@
   transform: scale(0.95);
 }
 
-/* ─── Button 2 — Filled (specchio di button blu) ─── */
+/* ─── Button 2 —── */
+
 .landing-hero__button_2 {
   display: inline-flex;
   align-items: center;

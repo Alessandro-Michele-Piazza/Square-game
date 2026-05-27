@@ -28,6 +28,14 @@
   <meta name="twitter:image" content="https://squaregamesit.netlify.app/media/square_games.webp" />
   <link rel="canonical" href="https://squaregamesit.netlify.app/" />
 
+  <!-- Font preconnect + stylesheet (non-blocking vs CSS @import) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Orbitron:wght@400..900&display=swap" />
+
+  <!-- Preload hero LCP image so the browser discovers it immediately -->
+  <link rel="preload" as="image" href="/media/ff7_remake_wallpaper.webp" type="image/webp" fetchpriority="high" />
+
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-R4D96JFH5C"></script>
   <script>
