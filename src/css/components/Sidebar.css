@@ -120,23 +120,41 @@
   justify-content: center;
   width: 2rem;
   height: 2rem;
+  line-height: 1;
+  font-size: 0;
   flex-shrink: 0;
   border-radius: var(--radius-gaming);
-  border: 1.5px solid var(--sb-border-hi);
+  border: 1.5px solid currentColor;
   background: transparent;
-  color: var(--sb-text);
+  color: var(--sb-accent);
   cursor: pointer;
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 
+.sidebar-panel__close-btn svg {
+  display: block;
+  width: 0.95rem;
+  height: 0.95rem;
+  color: currentColor;
+  fill: currentColor;
+}
+
+.sidebar-panel__close-btn,
+.sidebar-panel__close-btn svg,
+.sidebar-panel__close-btn svg path {
+  color: var(--color-yellow-hover) !important;
+  fill: var(--color-yellow-hover) !important;
+  stroke: var(--color-yellow-hover) !important;
+}
+
 .sidebar-panel__close-btn:hover {
-  border-color: var(--sb-accent);
+  border-color: currentColor;
   background: transparent;
   color: var(--sb-accent);
 }
 
 .sidebar-panel__close-btn:active {
-  border-color: var(--sb-accent);
+  border-color: currentColor;
   background: transparent;
   color: var(--sb-accent);
 }
