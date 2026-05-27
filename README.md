@@ -1,31 +1,76 @@
 Da zero a Full-Stack: ecco Square Games 🎮
-<br>
-Sono felice di presentare Square Games, il mio ultimo progetto web che mette insieme gaming, community e tecnologia.
 
-Non è solo una vetrina di videogiochi, ma una piattaforma interattiva completa dove l'utente può gestire il proprio profilo, recensire titoli, salvare i preferiti e creare una Want to play list!
-<br>
+Sono felice di presentare Square Games, il mio progetto web che unisce gaming, community e sviluppo full-stack.
 
-Cosa ho imparato e implementato in questo progetto:
-🔹 Frontend Dinamico: Sviluppato con React e Vite, sfruttando i Loaders di React Router per una navigazione fluida e istantanea. <br>
+Non è solo una vetrina di videogiochi: è una piattaforma interattiva dove l'utente può autenticarsi, gestire il profilo, pubblicare recensioni, salvare titoli nei preferiti e creare la propria Want to play list.
 
-🔹 Backend & Database: Ho utilizzato Supabase (PostgreSQL) per gestire non solo l'autenticazione, ma anche relazioni complesse tra tabelle per recensioni e preferiti, inclusi trigger SQL personalizzati. <br>
+Cosa ho imparato e implementato in questo progetto (stato attuale):
 
-🔹 Integrazione API: Sincronizzazione in tempo reale con le API di RAWG per un catalogo di migliaia di giochi sempre aggiornato. <br>
+🔹 Frontend dinamico con React 19 + Vite 8
+Routing strutturato con React Router 7 (layout annidati, route lazy e loader per pagina) per una navigazione veloce e scalabile.
 
-🔹 UI/UX & Responsive Design: Interfaccia curata in CSS puro con design responsive mobile-first. Il sito è 100% responsive, garantendo un'esperienza perfetta sia su desktop che su mobile. <br>
+🔹 Architettura data-driven lato codice
+I fetch principali passano dai loader in `src/router/loader.jsx`, con:
 
-🔹 Cloud Storage: Gestione del caricamento avatar tramite Supabase Storage. <br>
+- filtri cumulativi (genere, piattaforma, metacritic)
+- paginazione via query param
+- fallback intelligenti su piattaforme RAWG (`platforms` / `parent_platforms`)
 
-Questo progetto ha rappresentato una sfida importante nel gestire il flusso di dati tra client e server, assicurando sicurezza (RLS) e performance.<br>
+🔹 Backend & Database con Supabase
+Autenticazione, profili e persistenza dati utente su PostgreSQL.
+Tabelle usate nell'app: `profiles`, `favorites`, `want_to_play`, `reviews`.
 
-🚀 Guarda il codice su GitHub: https://lnkd.in/d9Ek_Eri<br>
+🔹 Context e stato autenticazione
+`UserContext` centralizza sessione, login/register/logout, sincronizzazione profilo e update dati utente con listener realtime su auth state.
 
-Sono aperto a feedback, curiosità o nuove opportunità! <br>
+🔹 Integrazione API RAWG
+Catalogo giochi sempre aggiornato con ricerca, filtri per genere/developer/publisher/piattaforma e detail page completa (dettagli, trailer, screenshot).
 
-hashtag#WebDevelopment hashtag#ReactJS hashtag#Supabase hashtag#FullStack hashtag#Gaming hashtag#CSS hashtag#Coding hashtag#AlessandroPiazza
+🔹 UI/UX responsive in CSS puro
+Design mobile-first, animazioni AOS, reset automatico dello scroll su cambio route e componenti modulari per mantenere il codice pulito e riusabile.
 
-<img width="auto" height="auto" alt="Home Page" src="https://github.com/user-attachments/assets/b5b6556a-9d90-4eab-be10-9954249cef2b" />
-<img width="auto" height="auto" alt="Detail page" src="https://github.com/user-attachments/assets/161a04e8-65cb-48fd-a90d-7cba0cf989c1" />
-<img width="auto" height="auto" alt="Profile page 1" src="https://github.com/user-attachments/assets/71e63022-1f71-4867-bf70-8b8ee32525ff" />
-<img width="auto" height="auto" alt="Profile page 1" src="https://github.com/user-attachments/assets/23436519-bde3-4edf-8371-c53747a022e4" />
+🔹 Cloud Storage per avatar
+Upload avatar su Supabase Storage con signed URL per accesso sicuro alle immagini profilo.
+
+🔹 Deploy pronto produzione
+Deploy su Netlify con redirect SPA, caching ottimizzato per asset statici e build pipeline Vite.
+
+Stack principale:
+
+- React
+- React Router
+- Vite
+- Supabase (Auth + Postgres + Storage)
+- RAWG API
+- CSS + AOS + React Icons
+
+Setup locale veloce:
+
+1. `npm install`
+2. Configura il file `.env` con:
+   - `VITE_RAWG_KEY`
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_PUBLISHABLE_KEY`
+3. `npm run dev`
+
+Build e qualità codice:
+
+- `npm run lint`
+- `npm run build`
+- `npm run preview`
+
+🚀 Guarda il codice su GitHub:
+https://github.com/Alessandro-Michele-Piazza/Square-game
+
+Sono aperto a feedback, curiosità o nuove opportunità.
+
+#WebDevelopment #ReactJS #Supabase #FullStack #Gaming #CSS #Coding #AlessandroPiazza
+
+<img width="1080" height="auto" alt="preview1_sito_square_games" src="https://github.com/user-attachments/assets/86ce3ed4-2c4f-482e-93e0-4774b8f1e218" />
+
+
+<img width="1080" height="auto" alt="preview2_sito_square_games" src="https://github.com/user-attachments/assets/1cc78a50-a138-437d-bb56-fa30c50ec93e" />
+
+
+<img width="1080" height="auto" alt="preview3_sito_square_games" src="https://github.com/user-attachments/assets/c178b476-4ef1-4ab6-acd1-a3375fc3b5c1" />
 
