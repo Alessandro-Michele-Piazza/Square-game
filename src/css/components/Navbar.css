@@ -290,7 +290,9 @@
 .topbar-menu-toggle svg {
   display: block;
   width: 1.1rem;
+  min-width: 1.1rem;
   height: 1.1rem;
+  flex-shrink: 0;
   color: var(--color-yellow-hover);
   fill: var(--color-yellow-hover);
 }
@@ -398,7 +400,7 @@
     font-weight: 500;
   }
 
-  .topbar-menu-toggle,
+  .topbar-actions-zone .topbar-menu-toggle,
   .topbar-mobile-wrap {
     display: none;
   }
