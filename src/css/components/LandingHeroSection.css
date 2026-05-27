@@ -131,8 +131,8 @@
   text-transform: uppercase;
   text-decoration: none;
   background: transparent;
-  color: var(--color-yellow-primary); /* era --color-blue-light */
-  border: 1.5px solid var(--color-yellow-primary); /* era --color-blue-primary */
+  color: var(--color-yellow-primary);
+  border: 1.5px solid var(--color-yellow-primary); 
   border-radius: var(--radius-gaming);
   box-shadow: none;
   cursor: pointer;
@@ -169,9 +169,9 @@
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
-  background: var(--color-yellow-primary); /* era --color-blue-primary */
+  background: var(--color-yellow-primary);
   color: black;
-  border: 1.5px solid var(--color-yellow-primary); /* era --color-blue-light */
+  border: 1.5px solid var(--color-yellow-primary); 
   border-radius: var(--radius-gaming);
   box-shadow: none;
   cursor: pointer;
@@ -184,8 +184,8 @@
 
 .landing-hero__button_2:hover {
   background: transparent;
-  color: var(--color-yellow-primary); /* era --color-blue-light */
-  border-color: var(--color-yellow-primary); /* era --color-blue-light */
+  color: var(--color-yellow-primary);
+  border-color: var(--color-yellow-primary);
   transform: translateY(-6px);
 }
 

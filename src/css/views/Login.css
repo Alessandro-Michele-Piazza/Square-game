@@ -1,7 +1,7 @@
 /* ── Split layout ── */
 .login-split {
   display: flex;
-  height: calc(100dvh - var(--auth-header-height));
+  height: 100dvh;
   overflow: hidden;
 }
 
