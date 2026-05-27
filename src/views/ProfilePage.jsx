@@ -255,7 +255,6 @@ export default function ProfilePage() {
       <section className="profile-panel profile-panel--profile">
         <div className="profile-overview">
           <div className="profile-overview__content">
-            <p className="profile-overview__eyebrow">Area personale</p>
             <h1 className="profile-title">Control Room</h1>
             <p className="profile-lead">
               Tutti i dettagli del tuo account in una vista piu leggibile, con

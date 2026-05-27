@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import useAos from "../hooks/useAos";
 import useRouteScrollReset from "../hooks/useRouteScrollReset";
 import routes from "../router/routes";
+import "../css/layouts/Layout.css";
 
 export default function AuthLayout() {
   const { pathname } = useLocation();
@@ -15,7 +16,17 @@ export default function AuthLayout() {
   return (
     <>
       <Navbar sticky={!isAuthFormRoute} hideOnMobile={isAuthFormRoute} />
-      <Outlet />
+
+      {isAuthFormRoute ? (
+        <Outlet />
+      ) : (
+        <section className="layout-shell">
+          <div className="layout-content">
+            <Outlet />
+          </div>
+        </section>
+      )}
+
       <Footer />
     </>
   );

@@ -144,7 +144,6 @@ export default function ProfileSettingsPage() {
     return (
       <main className="profile-shell">
         <section className="profile-panel profile-panel--empty">
-          <span className="profile-badge profile-empty-intro-item">Profile settings</span>
           <h1 className="profile-title profile-empty-intro-item">Accesso richiesto</h1>
           <p className="profile-lead profile-empty-intro-item">
             Devi effettuare il login prima di modificare il profilo.
@@ -158,7 +157,6 @@ export default function ProfileSettingsPage() {
     <main className="profile-shell profile-shell--settings">
       <section className="profile-panel">
         <header className="profile-settings-header">
-          <span className="profile-badge">Profile settings</span>
           <h1 className="profile-title">Tune your identity</h1>
           <p className="profile-lead">
             Aggiorna i dati principali e prova il nuovo avatar prima di salvarlo.
