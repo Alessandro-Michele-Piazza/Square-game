@@ -1,6 +1,6 @@
 .site-header {
-  background: #000;
-  color: #ffffff;
+  background: var(--color-main-bg);
+  color: var(--color-text-bright);
   padding-block: 1rem;
 }
 

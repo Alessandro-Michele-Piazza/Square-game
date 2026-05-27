@@ -178,7 +178,7 @@ export default function ProfilePage() {
             dati.
           </p>
           <Link
-            className="profile-button profile-button--primary profile-empty-action"
+            className="btn-primary profile-button profile-button--primary profile-empty-action"
             to={routes.login}
           >
             Accedi ora
@@ -262,13 +262,13 @@ export default function ProfilePage() {
             </p>
             <div className="profile-action-row">
               <Link
-                className="profile-button profile-button--primary"
+                className="btn-primary profile-button profile-button--primary"
                 to={routes.profile_settings}
               >
                 Modifica profilo
               </Link>
               <Link
-                className="profile-button profile-button--secondary"
+                className="btn-secondary profile-button profile-button--secondary"
                 to={routes.home}
               >
                 Torna alla home

@@ -48,11 +48,12 @@ export default function Gamecard({ game }) {
             <span className="game-card__badge game-card__badge--rating">
               ♥ {rating}
             </span>
+            
           </div>
-
+          
           <div className="game-card__content">
-            <span className="game-card__title">{safeName}</span>
-
+            
+    <span className="game-card__title">{safeName}</span>
             <div className="game-card__meta">
               {primaryGenre && (
                 <span className="game-card__chip game-card__chip--genre">{primaryGenre}</span>

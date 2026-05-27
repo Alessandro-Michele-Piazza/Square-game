@@ -53,7 +53,7 @@
   width: 100%;
   max-width: 18rem;
   justify-self: center;
-  border-radius: 14px;
+  border-radius: var(--radius-gaming);
   overflow: hidden;
   text-decoration: none;
   isolation: isolate;

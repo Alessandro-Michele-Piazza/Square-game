@@ -85,7 +85,7 @@ export default function Login() {
             <span className="login-form__error">La password è richiesta</span>
           )}
 
-          <button type="submit" className="login-form__submit">
+          <button type="submit" className="btn-primary login-form__submit">
             Accedi
           </button>
         </form>

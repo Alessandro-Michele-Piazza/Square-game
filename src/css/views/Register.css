@@ -52,9 +52,7 @@
 .register-split__overlay {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(90deg, transparent 60%, rgba(7, 14, 28, 0.95) 100%),
-    linear-gradient(180deg, transparent 70%, rgba(7, 14, 28, 0.6) 100%);
+  background: linear-gradient(90deg, transparent 60%, rgba(0, 0, 0, 0.78) 100%);
   pointer-events: none;
 }
 
@@ -68,7 +66,7 @@
 .register-card__logo {
   width: 3.2rem;
   height: 3.2rem;
-  filter: drop-shadow(0 0 14px rgba(59, 130, 246, 0.14));
+  filter: none;
 }
 
 .register-card__label {
@@ -119,48 +117,44 @@
 .register-form__group input {
   width: 100%;
   padding: 0.95rem 1rem;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 0.95rem;
-  background: rgba(5, 10, 21, 0.78);
+  border: 1px solid var(--color-blue-primary);
+  border-radius: var(--radius-gaming);
+  background: var(--color-card-bg);
   color: var(--color-text-bright);
   font: inherit;
-  transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease,
-    transform 0.25s ease;
+  transition: border-color 0.25s ease;
 }
 
 .register-form__group input:focus {
   outline: none;
-  border-color: rgba(96, 165, 250, 0.52);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.08);
-  transform: translateY(-1px);
+  border-color: var(--color-yellow-primary);
+  box-shadow: none;
+  transform: none;
 }
 
 .register-form__submit {
   margin-top: 0.35rem;
-  padding: 0.85rem 1.6rem;
+  padding: 0.6rem 1.4rem;
   border: 0;
-  border-radius: 0.5rem;
-  background-color: var(--color-card-bg);
-  color: var(--color-text-bright);
+  border-radius: var(--radius-gaming);
+  background-color: var(--color-yellow-primary);
+  color: var(--color-text-dark);
   font-family: var(--font-orbitron);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
-  transition: all 0.3s ease;
+  box-shadow: none;
+  transition: background 0.2s ease;
 }
 
 .register-form__submit:hover {
-  background: linear-gradient(
-    270deg,
-    rgba(29, 78, 216, 0.7) 0%,
-    rgba(59, 130, 246, 0.88) 60%
-  );
-  box-shadow: 0 0 60px rgba(59, 130, 246, 0.4);
+  background: var(--color-yellow-hover);
+}
+
+.register-form__submit:active {
+  background: var(--color-yellow-active);
 }
 
 .register-card__footer {
@@ -214,7 +208,7 @@
   }
 
   .register-split__overlay {
-    background: linear-gradient(180deg, transparent 0%, rgba(7, 14, 28, 1) 95%);
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.92) 95%);
   }
 
   /* Rimuoviamo l'effetto di riflesso sui bottoni per mobile (pesante e fastidioso) */

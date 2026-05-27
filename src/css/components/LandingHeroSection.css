@@ -1,9 +1,8 @@
 .landing-hero {
   --landing-hero-image: url("/media/ff7_remake_wallpaper.webp");
-
   position: relative;
   width: 100vw;
-  height: 75vh;
+  height: 80vh;
   min-height: 430px;
   margin-right: calc(50% - 50vw);
   margin-left: calc(50% - 50vw);
@@ -22,13 +21,38 @@
   background:
     linear-gradient(
       90deg,
-      rgba(0, 0, 0, 0.98) 0%,
+      rgba(0, 0, 0, 0.468) 0%,
       rgba(0, 0, 0, 0.8) 24%,
-      rgba(0, 0, 0, 0.28) 50%,
-      rgba(0, 0, 0, 0.82) 76%,
-      rgba(0, 0, 0, 0.98) 100%
+      rgba(0, 0, 0, 0) 50%,
+      rgba(0, 0, 0, 0) 76%,
+      rgba(0, 0, 0, 0) 100%
     ),
     linear-gradient(180deg, rgba(0, 0, 0, 0.22) 0%, rgba(0, 0, 0, 0.92) 100%);
+}
+
+.square_enix_link {
+  color: var(--color-yellow-primary);
+  font-size: clamp(1rem, 2vw, 1rem);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    color 180ms ease,
+    text-decoration-color 180ms ease;
+}
+
+.square_enix_link:visited {
+  color: var(--color-yellow-primary);
+}
+
+.square_enix_link:hover {
+  color: var(--color-blue-light);
+  text-decoration: underline;
+}
+
+.landing-hero__logo {
+  width: clamp(180px, 30vw, 300px);
+  height: auto;
 }
 
 .landing-hero::after {
@@ -37,7 +61,11 @@
   inset: auto 0 0 0;
   height: 34%;
   z-index: 1;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.96) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.96) 100%
+  );
 }
 
 .landing-hero__content {
@@ -46,8 +74,7 @@
   width: min(1320px, 100%);
   height: 100%;
   margin: 0 auto;
-  padding:
-    clamp(1.2rem, 2.8vw, 2.25rem)
+  padding: clamp(1.2rem, 2.8vw, 2.25rem)
     var(--landing-inline-gutter, clamp(0.95rem, 4.6vw, 1.35rem))
     clamp(1.6rem, 4.8vw, 3.1rem);
   display: flex;
@@ -68,7 +95,7 @@
 .landing-hero__title {
   margin: 0;
   max-width: 10ch;
-  color: #f8fafc;
+  color: var(--color-yellow-primary);
   font-size: clamp(1.76rem, 4.2vw, 3.24rem);
   text-transform: uppercase;
   line-height: 0.92;
@@ -90,66 +117,78 @@
   gap: 0.7rem;
 }
 
-.landing-hero__actions .landing-hero__button.profile-button {
+.landing-hero__button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: 185px;
   min-height: 2.3rem;
   padding: 0.68rem 1rem;
-  border: 1px solid rgba(148, 163, 184, 0.22);
-  border-radius: 0.5rem;
   font-family: var(--font-orbitron);
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--color-text-bright);
-  background-color: var(--color-card-bg);
-  box-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
-  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.25));
+  background: transparent;
+  color: var(--color-yellow-primary); /* era --color-blue-light */
+  border: 1.5px solid var(--color-yellow-primary); /* era --color-blue-primary */
+  border-radius: var(--radius-gaming);
+  box-shadow: none;
+  cursor: pointer;
   transition:
-    background 0.8s ease,
-    color 0.8s ease,
-    transform 180ms ease,
-    box-shadow 0.8s ease;
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 180ms ease;
 }
 
-.landing-hero__actions .landing-hero__button.profile-button:hover {
-  transform: translateY(-2px);
+.landing-hero__button:hover {
+  background: var(--color-yellow-primary); /* era --color-blue-primary */
+  color: black;
+  border-color: var(--color-yellow-primary); /* era --color-blue-light */
+  transform: translateY(-6px);
 }
 
-.landing-hero__actions .landing-hero__button.profile-button--primary {
-  box-shadow: 0 0 40px rgba(254, 240, 138, 0.2);
+.landing-hero__button:active {
+  transform: scale(0.95);
 }
 
-.landing-hero__actions .landing-hero__button.profile-button--primary:hover {
-  background: linear-gradient(
-    270deg,
-    rgba(234, 179, 8, 0.7) 0%,
-    rgba(254, 240, 138, 0.9) 60%
-  );
-  color: var(--color-text-dark);
-  box-shadow: 0 0 60px rgba(254, 240, 138, 0.35);
+/* ─── Button 2 — Filled (specchio di button blu) ─── */
+.landing-hero__button_2 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 185px;
+  min-height: 2.3rem;
+  padding: 0.68rem 1rem;
+  font-family: var(--font-orbitron);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: var(--color-yellow-primary); /* era --color-blue-primary */
+  color: black;
+  border: 1.5px solid var(--color-yellow-primary); /* era --color-blue-light */
+  border-radius: var(--radius-gaming);
+  box-shadow: none;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    transform 180ms ease;
 }
 
-.landing-hero__actions .landing-hero__button.profile-button--secondary {
-  box-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
-  color: var(--color-text-bright);
+.landing-hero__button_2:hover {
+  background: transparent;
+  color: var(--color-yellow-primary); /* era --color-blue-light */
+  border-color: var(--color-yellow-primary); /* era --color-blue-light */
+  transform: translateY(-6px);
 }
 
-.landing-hero__actions .landing-hero__button.profile-button--secondary:hover {
-  background: linear-gradient(
-    270deg,
-    rgba(29, 78, 216, 0.7) 0%,
-    rgba(59, 130, 246, 0.88) 60%
-  );
-  color: var(--color-text-dark);
-  box-shadow: 0 0 60px rgba(59, 130, 246, 0.4);
-}
-
-.landing-hero__actions .landing-hero__button.profile-button:active {
+.landing-hero__button_2:active {
   transform: scale(0.95);
 }
 

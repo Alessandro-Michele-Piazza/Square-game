@@ -13,8 +13,8 @@
   font-family: var(--font-orbitron);
   font-size: 1.875rem;
   font-weight: 700;
-  color: #fef08a;
-  text-shadow: 0 0 18px rgba(254, 240, 138, 0.45);
+  color: var(--color-yellow-primary);
+  text-shadow: none;
 }
 
 .catalog-page__title--center {
@@ -27,7 +27,7 @@
 .catalog-page__empty {
   margin: 0.5rem auto 0;
   text-align: center;
-  color: #94a3b8;
+  color: var(--color-text-dim);
   width: min(80rem, 100%);
   padding-inline: 1rem;
 }
@@ -44,10 +44,10 @@
 }
 
 .catalog-page__button {
-  border: 1px solid #1e3a63;
-  background: #081120;
-  color: #93c5fd;
-  border-radius: 0.5rem;
+  border: 1.5px solid var(--color-yellow-primary);
+  background: transparent;
+  color: var(--color-yellow-primary);
+  border-radius: var(--radius-gaming);
   padding: 0.5rem 0.75rem;
   font-size: 0.875rem;
   font-weight: 600;
@@ -59,8 +59,9 @@
 }
 
 .catalog-page__button:hover {
-  border-color: #60a5fa;
-  color: #ffffff;
+  border-color: var(--color-yellow-primary);
+  color: var(--color-text-dark);
+  background: var(--color-yellow-primary);
 }
 
 .catalog-page__button:disabled {
@@ -69,10 +70,10 @@
 }
 
 .catalog-page__button.is-active {
-  border-color: #fef08a;
-  background: #fef08a;
-  color: #061024;
-  box-shadow: 0 0 20px rgba(254, 240, 138, 0.28);
+  border-color: var(--color-yellow-primary);
+  background: var(--color-yellow-primary);
+  color: var(--color-text-dark);
+  box-shadow: none;
 }
 
 .catalog-page__ellipsis {
@@ -81,13 +82,13 @@
   text-align: center;
   font-size: 0.875rem;
   font-weight: 600;
-  color: #64748b;
+  color: var(--color-text-dim);
 }
 
 .catalog-page__summary {
   width: 100%;
   text-align: center;
   font-size: 0.875rem;
-  color: #94a3b8;
+  color: var(--color-text-dim);
   margin: 0.25rem 0 0;
 }

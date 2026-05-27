@@ -1,6 +1,6 @@
 :root {
-  --sb-track-color: #232e33;
-  --sb-thumb-color: #1d4ed8;
+  --sb-track-color: var(--color-card-bg);
+  --sb-thumb-color: var(--color-blue-primary);
   --sb-size: 9px;
 }
 
@@ -16,12 +16,12 @@
 
 *::-webkit-scrollbar-track {
   background: var(--sb-track-color);
-  border-radius: 1px;
+  border-radius: var(--radius-gaming);
 }
 
 *::-webkit-scrollbar-thumb {
   background: var(--sb-thumb-color);
-  border-radius: 1px;
+  border-radius: var(--radius-gaming);
 }
 
 *::-webkit-scrollbar-corner {

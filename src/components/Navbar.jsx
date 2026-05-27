@@ -132,7 +132,7 @@ export default function Navbar({
                 type="button"
                 onClick={onOpenGenres}
                 aria-label="Apri menu filtri"
-                className="topbar-genre-trigger topbar-genre-trigger--desktop"
+                className="btn-secondary topbar-genre-trigger topbar-genre-trigger--desktop"
               >
                 <FaBars />
               </button>
@@ -172,11 +172,11 @@ export default function Navbar({
             <div className="topbar-actions-desktop">
               {!user ? (
                 <>
-                  <Link className="topbar-pill-link" to={routes.login}>
+                  <Link className="btn-secondary topbar-pill-link" to={routes.login}>
                     Accedi
                   </Link>
                   <Link
-                    className="topbar-pill-link topbar-pill-link--accent"
+                    className="btn-primary topbar-pill-link topbar-pill-link--accent"
                     to={routes.register}
                   >
                     Registrati
@@ -192,7 +192,7 @@ export default function Navbar({
                   <button
                     type="button"
                     onClick={() => setIsUserDropdownOpen((previousState) => !previousState)}
-                    className="topbar-user-toggle"
+                    className="btn-secondary topbar-user-toggle"
                     aria-label="Apri menu utente"
                     aria-haspopup="menu"
                     aria-expanded={isUserDropdownOpen}
@@ -237,7 +237,7 @@ export default function Navbar({
             </div>
 
             <button
-              className="topbar-icon-button topbar-menu-toggle"
+              className="btn-secondary topbar-icon-button topbar-menu-toggle"
               onClick={() => setIsMobileMenuOpen((previousState) => !previousState)}
               aria-label={isMobileMenuOpen ? "Chiudi menu" : "Apri menu"}
             >
@@ -267,7 +267,7 @@ export default function Navbar({
                 <button
                   type="button"
                   onClick={handleOpenGenresFromMenu}
-                  className="topbar-pill-link topbar-pill-link--block topbar-pill-link--filters"
+                  className="btn-secondary topbar-pill-link topbar-pill-link--block topbar-pill-link--filters"
                 >
                   Filtri
                 </button>
@@ -277,14 +277,14 @@ export default function Navbar({
             {!user ? (
               <div className="topbar-mobile-group">
                 <Link
-                  className="topbar-pill-link topbar-pill-link--accent topbar-pill-link--block"
+                  className="btn-primary topbar-pill-link topbar-pill-link--accent topbar-pill-link--block"
                   to={routes.register}
                   onClick={closeAllMenus}
                 >
                   Registrati
                 </Link>
                 <Link
-                  className="topbar-pill-link topbar-pill-link--block"
+                  className="btn-secondary topbar-pill-link topbar-pill-link--block"
                   to={routes.login}
                   onClick={closeAllMenus}
                 >
@@ -308,7 +308,7 @@ export default function Navbar({
 
                 <Link
                   to={routes.profile_settings}
-                  className="topbar-pill-link topbar-pill-link--block"
+                  className="btn-secondary topbar-pill-link topbar-pill-link--block"
                   onClick={closeAllMenus}
                 >
                   Modifica profilo
@@ -316,7 +316,7 @@ export default function Navbar({
 
                 <button
                   onClick={handleLogout}
-                  className="topbar-pill-link topbar-pill-link--danger topbar-pill-link--block"
+                  className="btn-secondary topbar-pill-link topbar-pill-link--danger topbar-pill-link--block"
                 >
                   <FaArrowRightFromBracket /> Logout
                 </button>

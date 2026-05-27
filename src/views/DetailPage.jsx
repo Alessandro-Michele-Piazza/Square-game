@@ -297,7 +297,7 @@ export default function DetailPage() {
           <div className="detail-fallback-actions">
             <button
               onClick={() => navigate(-1)}
-              className="detail-link"
+              className="btn-secondary detail-link"
               data-text="Torna indietro"
             >
               Torna indietro
@@ -305,7 +305,7 @@ export default function DetailPage() {
                 Torna indietro
               </span>
             </button>
-            <Link to={routes.home} className="detail-link" data-text="Vai alla home">
+            <Link to={routes.home} className="btn-secondary detail-link" data-text="Vai alla home">
               Vai alla home
               <span className="detail-link__hover" aria-hidden="true">
                 Vai alla home
@@ -358,7 +358,7 @@ export default function DetailPage() {
           <div className="detail-page__actions" data-aos="fade-up" data-aos-delay="60">
             <button
               onClick={() => navigate(-1)}
-              className="detail-link"
+              className="btn-secondary detail-link"
               data-text="Torna indietro"
             >
               Torna indietro
@@ -370,7 +370,7 @@ export default function DetailPage() {
             <div className="detail-page__actions-group">
               <Link
                 to={routes.home}
-                className="detail-link"
+                className="btn-secondary detail-link"
                 data-text="Collezione giochi"
               >
                 Collezione giochi
@@ -438,7 +438,7 @@ export default function DetailPage() {
                     href={game.website}
                     target="_blank"
                     rel="noreferrer"
-                    className="btn-glow btn-glow--yellow btn-glow--no-reflect"
+                    className="btn-primary"
                   >
                     Visita sito ufficiale
                     <FaArrowUpRightFromSquare className="detail-page__cta-icon" />
@@ -473,7 +473,7 @@ export default function DetailPage() {
                     <button
                       onClick={toggleFavorite}
                       disabled={favLoading}
-                      className="detail-page__collection-btn detail-page__collection-btn--favorite"
+                      className="btn-secondary detail-page__collection-btn detail-page__collection-btn--favorite"
                     >
                       {isFavorite ? (
                         <FaHeart className="detail-page__icon detail-page__icon--favorite-active" />
@@ -490,7 +490,7 @@ export default function DetailPage() {
                     <button
                       onClick={toggleWantToPlay}
                       disabled={wantToPlayLoading}
-                      className="detail-page__collection-btn detail-page__collection-btn--want"
+                      className="btn-secondary detail-page__collection-btn detail-page__collection-btn--want"
                     >
                       {isWantToPlay ? (
                         <FaBookmark className="detail-page__icon detail-page__icon--want-active" />

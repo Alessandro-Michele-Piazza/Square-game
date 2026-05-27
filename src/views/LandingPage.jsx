@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import LandingHeroSection from "../components/landing/LandingHeroSection";
 import LandingTrendingSection from "../components/landing/LandingTrendingSection";
 import LandingCategoriesSection from "../components/landing/LandingCategoriesSection";
-import useAos from "../hooks/useAos";
 import useRouteScrollReset from "../hooks/useRouteScrollReset";
 import routes from "../router/routes";
 import "../css/views/LandingPage.css";
@@ -81,7 +80,6 @@ const CATEGORY_CARDS = [
 ];
 
 export default function LandingPage() {
-  useAos();
   useRouteScrollReset();
 
   useEffect(() => {
@@ -97,6 +95,9 @@ export default function LandingPage() {
       <LandingHeroSection
         title="Final Fantasy VII Remake"
         description="Una leggenda ritorna. La storia che ha cambiato per sempre il GDR adesso ti aspetta in una veste cinematografica."
+        description2="  ⭐ 4.5/5 | 2020 | "
+        img_logo = "/media/ff7_logo.webp"
+        link_square= "Square Enix"
         primaryAction={{
           label: "Entra nella libreria",
           to: routes.home,

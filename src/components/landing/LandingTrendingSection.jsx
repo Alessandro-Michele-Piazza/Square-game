@@ -101,7 +101,7 @@ export default function LandingTrendingSection({ cards }) {
       data-aos="fade-up"
       data-aos-duration="680"
     >
-      <div className="landing-trending__header" data-aos="fade-right" data-aos-delay="70">
+      <div className="landing-trending__header" data-aos="fade-up" data-aos-delay="70">
         <Link to="/home" >
           <h2 className="landing-trending__eyebrow">Trending this month</h2>
         </Link>
@@ -114,7 +114,7 @@ export default function LandingTrendingSection({ cards }) {
               key={card.key}
               to={card.to}
               className="landing-trending-card"
-              data-aos={index % 2 === 0 ? "fade-up-right" : "fade-up-left"}
+              data-aos="fade-up"
               data-aos-delay={120 + index * 55}
             >
               <img

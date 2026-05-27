@@ -1,0 +1,255 @@
+/* Design system bridge: unify legacy classes to shared tokens. */
+
+.btn-primary,
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radius-gaming);
+  font-family: var(--font-orbitron);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: var(--color-yellow-hover);
+  color: var(--color-text-dark);
+  border: none;
+  font-weight: 700;
+  padding: 0.6rem 1.4rem;
+  transition: background 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: var(--color-yellow-hover);
+  color: var(--color-text-dark);
+}
+
+.btn-primary:active {
+  background: var(--color-yellow-active);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--color-yellow-hover);
+  border: 1.5px solid var(--color-yellow-hover);
+  font-weight: 600;
+  padding: 0.6rem 1.4rem;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: transparent;
+  color: var(--color-yellow-hover);
+  border-color: var(--color-yellow-hover);
+}
+
+.btn-secondary:active {
+  background: transparent;
+  color: var(--color-yellow-active);
+  border-color: var(--color-yellow-active);
+}
+
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Project button classes mapped to the two allowed variants. */
+.login-form__submit,
+.register-form__submit,
+.profile-button--primary,
+.reviews-form__submit,
+.topbar-pill-link--accent,
+.catalog-page__button.is-active {
+  background: var(--color-yellow-hover);
+  color: var(--color-text-dark);
+  border: none;
+  font-family: var(--font-orbitron);
+  font-weight: 700;
+  padding: 0.6rem 1.4rem;
+  border-radius: var(--radius-gaming);
+  box-shadow: none;
+  -webkit-box-reflect: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s ease;
+}
+
+.login-form__submit:hover,
+.register-form__submit:hover,
+.profile-button--primary:hover,
+.reviews-form__submit:hover,
+.topbar-pill-link--accent:hover,
+.catalog-page__button.is-active:hover {
+  background: var(--color-yellow-hover);
+  color: var(--color-text-dark);
+}
+
+.login-form__submit:active,
+.register-form__submit:active,
+.profile-button--primary:active,
+.reviews-form__submit:active,
+.topbar-pill-link--accent:active,
+.catalog-page__button.is-active:active {
+  background: var(--color-yellow-active);
+}
+
+.detail-link,
+.topbar-pill-link,
+.topbar-icon-button,
+.topbar-genre-trigger,
+.topbar-user-toggle,
+.topbar-user-dropdown-link,
+.profile-button--secondary,
+.profile-button--ghost,
+.profile-file-input::file-selector-button,
+.detail-page__collection-btn,
+.catalog-page__button,
+.sidebar-panel__close-btn,
+.sidebar-panel__reset,
+.carousel-arrow,
+.next-btn-content,
+.sidebar-accordion__toggle,
+.sidebar-platforms__macro-toggle,
+.sidebar-platforms__brand-toggle,
+.sidebar-platforms__item,
+.sidebar-genres__item-link {
+  background: transparent;
+  color: var(--color-yellow-hover);
+  border: 1.5px solid var(--color-yellow-hover);
+  border-radius: var(--radius-gaming);
+  font-family: var(--font-orbitron);
+  box-shadow: none;
+  text-shadow: none;
+  -webkit-box-reflect: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.detail-link:hover,
+.topbar-pill-link:hover,
+.topbar-icon-button:hover,
+.topbar-genre-trigger:hover,
+.topbar-user-toggle:hover,
+.topbar-user-dropdown-link:hover,
+.profile-button--secondary:hover,
+.profile-button--ghost:hover,
+.profile-file-input:hover::file-selector-button,
+.detail-page__collection-btn:hover,
+.catalog-page__button:hover,
+.sidebar-panel__close-btn:hover,
+.sidebar-panel__reset:hover,
+.carousel-arrow:hover,
+.next-btn-content:hover,
+.next-btn-content:focus-visible,
+.sidebar-accordion__toggle:hover,
+.sidebar-platforms__macro-toggle:hover,
+.sidebar-platforms__brand-toggle:hover,
+.sidebar-platforms__item:hover,
+.sidebar-genres__item-link:hover {
+  background: transparent;
+  color: var(--color-yellow-hover);
+  border-color: var(--color-yellow-hover);
+}
+
+.detail-link:active,
+.topbar-pill-link:active,
+.topbar-icon-button:active,
+.topbar-genre-trigger:active,
+.topbar-user-toggle:active,
+.detail-page__collection-btn:active,
+.catalog-page__button:active,
+.carousel-arrow:active,
+.next-btn-content:active {
+  background: transparent;
+  color: var(--color-yellow-active);
+  border-color: var(--color-yellow-active);
+}
+
+/* Radius normalization. */
+:where(
+  button,
+  input,
+  select,
+  textarea,
+  img,
+  [class*="card"],
+  [class*="panel"],
+  [class*="badge"],
+  [class*="chip"],
+  [class*="pill"],
+  [class*="modal"]
+) {
+  border-radius: var(--radius-gaming);
+}
+
+/* Inputs and form controls. */
+:where(input:not([type="range"]):not([type="checkbox"]):not([type="radio"]), select, textarea) {
+  border: 1px solid var(--color-blue-primary);
+  background: var(--color-card-bg);
+  color: var(--color-text-bright);
+  font-family: var(--font-exo2);
+  border-radius: var(--radius-gaming);
+}
+
+:where(input:not([type="range"]):not([type="checkbox"]):not([type="radio"]), select, textarea):focus {
+  border-color: var(--color-yellow-hover);
+  outline: none;
+  box-shadow: none;
+}
+
+/* Shared card treatment. */
+:where(
+  .game-card,
+  .reviews-form,
+  .review-card,
+  .detail-page__card,
+  .profile-card,
+  .profile-summary,
+  .profile-collection,
+  .carousel-main,
+  .carousel-empty,
+  .sidebar-panel__section,
+  .sidebar-panel__aside,
+  .topbar-mobile-panel,
+  .profile-panel
+) {
+  background: var(--color-card-bg);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: var(--radius-gaming);
+}
+
+:where(
+  .game-card:hover,
+  .review-card:hover,
+  .detail-page__card:hover,
+  .profile-card:hover,
+  .profile-summary:hover,
+  .profile-collection:hover,
+  .sidebar-panel__section:hover
+) {
+  border-color: rgba(254, 240, 138, 0.3);
+}
+
+/* Remove legacy glow/neon artifacts. */
+:where(
+  .scritta_gialla_neon,
+  .neon-yellow,
+  .neon-blue,
+  .detail-link__hover,
+  .topbar-logo,
+  .topbar-brand-title,
+  .site-footer__logo,
+  .review-card,
+  .game-card,
+  .carousel-topbar
+) {
+  text-shadow: none;
+  filter: none;
+}

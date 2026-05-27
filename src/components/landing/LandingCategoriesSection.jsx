@@ -101,7 +101,7 @@ export default function LandingCategoriesSection({ cards, allCollectionsTo }) {
       data-aos="fade-up"
       data-aos-duration="700"
     >
-      <div className="landing-categories__intro" data-aos="fade-right">
+      <div className="landing-categories__intro" data-aos="fade-up">
         <p className="landing-categories__eyebrow" data-aos="fade-up" data-aos-delay="80">
           Collezioni in evidenza
         </p>
@@ -122,14 +122,14 @@ export default function LandingCategoriesSection({ cards, allCollectionsTo }) {
         </Link>
       </div>
 
-      <div className="landing-categories__carousel-shell" data-aos="fade-left" data-aos-delay="90">
+      <div className="landing-categories__carousel-shell" data-aos="fade-up" data-aos-delay="90">
         <div className="landing-categories__cards" ref={carouselRef}>
           {cards.map((card, index) => (
             <Link
               key={card.key}
               to={card.to}
               className="landing-category-card"
-              data-aos="fade-left"
+              data-aos="fade-up"
               data-aos-delay={110 + index * 45}
             >
               <img

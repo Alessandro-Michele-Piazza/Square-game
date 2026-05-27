@@ -1,9 +1,9 @@
 .loading_spinner {
   width: 48px;
   height: 48px;
-  border: 5px solid #fff;
-  border-bottom-color: #ff3d00;
-  border-radius: 50%;
+  border: 5px solid var(--color-text-bright);
+  border-bottom-color: var(--color-yellow-primary);
+  border-radius: var(--radius-gaming);
   display: inline-block;
   box-sizing: border-box;
   animation: rotation 1s linear infinite;
@@ -24,7 +24,7 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #000;
+  background-color: var(--color-main-bg);
 }
 
 

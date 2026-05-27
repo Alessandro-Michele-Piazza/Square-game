@@ -221,12 +221,12 @@ export default function ProfileSettingsPage() {
             <div className="profile-action-row">
               <button
                 type="submit"
-                className="profile-button profile-button--primary"
+                className="btn-primary profile-button profile-button--primary"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? "Salvataggio..." : "Salva modifiche"}
               </button>
-              <Link className="profile-button profile-button--ghost" to={routes.profile}>
+              <Link className="btn-secondary profile-button profile-button--ghost" to={routes.profile}>
                 Torna al profilo
               </Link>
             </div>
@@ -261,7 +261,7 @@ export default function ProfileSettingsPage() {
               </label>
               <button
                 type="submit"
-                className="profile-button profile-button--secondary"
+                className="btn-secondary profile-button profile-button--secondary"
                 disabled={!file || isUploading}
               >
                 {isUploading ? "Upload in corso..." : "Aggiorna avatar"}

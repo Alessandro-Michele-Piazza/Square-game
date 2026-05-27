@@ -5,9 +5,9 @@
 .carousel-main {
   position: relative;
   overflow: hidden;
-  border-radius: 1.35rem;
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  background: radial-gradient(circle at 20% 20%, #17263f 0%, #071121 65%);
+  border-radius: var(--radius-gaming);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  background: var(--color-card-bg);
   aspect-ratio: 16 / 9;
 }
 
@@ -39,11 +39,11 @@
   display: flex;
   justify-content: space-between;
   gap: 0.8rem;
-  color: #d8e2f2;
+  color: var(--color-text-bright);
   font-size: 0.68rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  text-shadow: 0 0 12px rgba(2, 6, 23, 0.8);
+  text-shadow: none;
 }
 
 .carousel-nav {
@@ -64,21 +64,22 @@
 }
 
 .carousel-arrow {
-  border: 1px solid rgba(148, 163, 184, 0.3);
-  background: rgba(10, 18, 34, 0.78);
-  color: #cbd5e1;
+  border: 1.5px solid var(--color-yellow-primary);
+  background: transparent;
+  color: var(--color-yellow-primary);
   font-size: 0.68rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  border-radius: 999px;
+  border-radius: var(--radius-gaming);
   padding: 0.45rem 0.8rem;
   cursor: pointer;
-  transition: all 180ms ease;
+  transition: all 0.2s ease;
 }
 
 .carousel-arrow:hover {
-  color: #67e8f9;
-  border-color: rgba(103, 232, 249, 0.45);
+  color: var(--color-text-dark);
+  border-color: var(--color-yellow-primary);
+  background: var(--color-yellow-primary);
 }
 
 .carousel-thumbs {
@@ -98,11 +99,11 @@
   flex: 0 0 auto;
   width: 5rem;
   height: 3.1rem;
-  border-radius: 0.75rem;
-  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: var(--radius-gaming);
+  border: 1px solid rgba(59, 130, 246, 0.15);
   padding: 0;
   overflow: hidden;
-  background: #0a1427;
+  background: var(--color-card-bg);
   cursor: pointer;
   transition: all 160ms ease;
 }
@@ -115,22 +116,22 @@
 }
 
 .carousel-thumb:hover {
-  border-color: rgba(103, 232, 249, 0.45);
+  border-color: rgba(254, 240, 138, 0.3);
 }
 
 .carousel-thumb.is-active {
-  border-color: #67e8f9;
-  box-shadow: 0 0 0 1px rgba(103, 232, 249, 0.35);
+  border-color: rgba(254, 240, 138, 0.3);
+  box-shadow: none;
 }
 
 .carousel-empty {
   aspect-ratio: 16 / 9;
-  border-radius: 1.35rem;
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  background: linear-gradient(135deg, #0b162c 0%, #08101d 100%);
+  border-radius: var(--radius-gaming);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  background: var(--color-card-bg);
   display: grid;
   place-items: center;
-  color: #94a3b8;
+  color: var(--color-text-dim);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-size: 0.72rem;

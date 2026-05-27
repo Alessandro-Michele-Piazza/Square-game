@@ -13,23 +13,16 @@
   max-width: 1180px;
   margin: 0 auto;
   padding: clamp(1.5rem, 4vw, 3rem);
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 2rem;
-  background: linear-gradient(
-    145deg,
-    rgba(7, 16, 31, 0.96),
-    rgba(13, 27, 53, 0.88)
-  );
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: var(--radius-gaming);
+  background: var(--color-card-bg);
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.42);
   overflow: hidden;
 }
 
 .profile-panel::before,
 .profile-panel::after {
-  content: "";
-  position: absolute;
-  border-radius: 999px;
-  pointer-events: none;
+  content: none;
 }
 
 .profile-panel::before {
@@ -96,20 +89,16 @@
   display: grid;
   gap: 1rem;
   padding: 1.5rem;
-  border: 1px solid rgba(148, 163, 184, 0.16);
-  border-radius: 1.5rem;
-  background: linear-gradient(
-    180deg,
-    rgba(8, 15, 31, 0.88),
-    rgba(13, 27, 53, 0.72)
-  );
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: var(--radius-gaming);
+  background: var(--color-card-bg);
   backdrop-filter: blur(14px);
 }
 
 .profile-shell--settings .profile-card {
   padding: 0;
   border: none;
-  border-radius: 0;
+  border-radius: var(--radius-gaming);
   background: transparent;
   box-shadow: none;
   backdrop-filter: none;
@@ -173,39 +162,37 @@
   justify-content: center;
   gap: 0.5rem;
   min-height: 2.3rem;
-  padding: 0.68rem 1rem;
-  border: none;
-  border-radius: 0.5rem;
+  padding: 0.6rem 1.4rem;
+  border: 1.5px solid var(--color-yellow-hover);
+  border-radius: var(--radius-gaming);
   font-family: var(--font-orbitron);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
-  color: var(--color-text-bright);
-  background-color: var(--color-card-bg);
-  box-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
+  color: var(--color-yellow-hover);
+  background-color: transparent;
+  box-shadow: none;
   -webkit-box-reflect: none;
-
-  transition:
-    background 0.8s ease,
-    color 0.8s ease,
-    transform 0.2s ease,
-    box-shadow 0.8s ease;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 
 .profile-button:hover {
-  background: linear-gradient(
-    270deg,
-    rgba(29, 78, 216, 0.7) 0%,
-    rgba(59, 130, 246, 0.88) 60%
-  );
-  box-shadow: 0 0 60px rgba(59, 130, 246, 0.4);
+  background: transparent;
+  color: var(--color-yellow-hover);
+  border-color: var(--color-yellow-hover);
 }
 
 .profile-button:active {
-  transform: scale(0.95);
+  background: transparent;
+  color: var(--color-yellow-active);
+  border-color: var(--color-yellow-active);
+  transform: none;
 }
 
 .profile-button:disabled {
@@ -215,44 +202,42 @@
 }
 
 .profile-button--primary {
-  box-shadow: 0 0 40px rgba(254, 240, 138, 0.2);
+  background: var(--color-yellow-hover);
+  color: var(--color-text-dark);
+  border: none;
+  font-weight: 700;
 }
 
 .profile-button--primary:hover {
-  background: linear-gradient(
-    270deg,
-    rgba(234, 179, 8, 0.7) 0%,
-    rgba(254, 240, 138, 0.9) 60%
-  );
+  background: var(--color-yellow-active);
   color: var(--color-text-dark);
-  box-shadow: 0 0 60px rgba(254, 240, 138, 0.35);
+}
+
+.profile-button--primary:active {
+  background: var(--color-yellow-active);
 }
 
 .profile-button--secondary {
-  box-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
-  color : var(--color-text-bright);
+  color: var(--color-yellow-hover);
+  border-color: var(--color-yellow-hover);
 }
 
 .profile-button--secondary:hover {
-  background: linear-gradient(
-    270deg,
-    rgba(29, 78, 216, 0.7) 0%,
-    rgba(59, 130, 246, 0.88) 60%
-  );
-  color: var(--color-text-dark);
-  box-shadow: 0 0 60px rgba(59, 130, 246, 0.4);
+  background: transparent;
+  color: var(--color-yellow-hover);
+  border-color: var(--color-yellow-hover);
 }
 
 
 .profile-button--ghost {
   background-color: transparent;
-  box-shadow: 0 0 20px rgba(148, 163, 184, 0.1);
+  box-shadow: none;
   -webkit-box-reflect: none;
 }
 
 .profile-button--ghost:hover {
-  background: rgba(255, 255, 255, 0.06);
-  box-shadow: 0 0 30px rgba(148, 163, 184, 0.15);
+  background: var(--color-yellow-primary);
+  color: var(--color-text-dark);
 }
 
 .profile-settings-form .profile-action-row {
@@ -275,16 +260,11 @@
   aspect-ratio: 1;
   margin: 0 auto;
   padding: 0.45rem;
-  border-radius: 2rem;
-  background: linear-gradient(
-    135deg,
-    rgba(254, 240, 138, 0.9),
-    rgba(59, 130, 246, 0.7)
-  );
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.04),
-    0 18px 45px rgba(0, 0, 0, 0.28);
-    justify-self: center;
+  border-radius: var(--radius-gaming);
+  background: var(--color-card-bg);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+  justify-self: center;
 }
 
 .profile-upload-preview-frame {
@@ -294,9 +274,9 @@
 .profile-avatar {
   width: 100%;
   height: 100%;
-  border-radius: 1.65rem;
+  border-radius: var(--radius-gaming);
   object-fit: cover;
-  background: #08101f;
+  background: var(--color-card-bg);
 }
 
 .profile-stats-grid,
@@ -321,9 +301,9 @@
   display: grid;
   gap: 0.55rem;
   padding: 1.2rem;
-  border: 1px solid rgba(148, 163, 184, 0.14);
-  border-radius: 1.25rem;
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: var(--radius-gaming);
+  background: var(--color-card-bg);
 }
 
 .profile-stat-card__value,
@@ -356,26 +336,23 @@
   width: 100%;
   min-height: 1rem;
   padding: 0.95rem 1rem;
-  border: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 1rem;
-  background: rgba(8, 15, 31, 0.9);
+  border: 1px solid var(--color-blue-primary);
+  border-radius: var(--radius-gaming);
+  background: var(--color-card-bg);
   color: var(--color-text-bright);
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
+  transition: border-color 0.2s ease;
 }
 
 .profile-text-input::placeholder {
-  color: rgba(148, 163, 184, 0.7);
+  color: var(--color-text-dim);
 }
 
 .profile-text-input:focus,
 .profile-file-input:focus {
   outline: none;
-  border-color: rgba(96, 165, 250, 0.7);
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
-  transform: translateY(-1px);
+  border-color: var(--color-yellow-hover);
+  box-shadow: none;
+  transform: none;
 }
 
 .profile-file-input {
@@ -386,40 +363,31 @@
   margin-right: 0.9rem;
   min-height: 2.3rem;
   padding: 0.68rem 1rem;
-  border: 0;
-  border-radius: 0.72rem;
-  background: linear-gradient(
-    270deg,
-    rgba(29, 78, 216, 0.7) 0%,
-    rgba(59, 130, 246, 0.88) 60%
-  );
-  color: var(--color-text-bright);
+  border: 1.5px solid var(--color-yellow-hover);
+  border-radius: var(--radius-gaming);
+  background: transparent;
+  color: var(--color-yellow-hover);
   font-family: var(--font-orbitron);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 0 24px rgba(59, 130, 246, 0.18);
-  transition:
-    background 0.7s ease,
-    color 0.7s ease,
-    transform 0.2s ease,
-    box-shadow 0.7s ease;
+  box-shadow: none;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 
 .profile-file-input:hover::file-selector-button {
-  background: linear-gradient(
-    270deg,
-    rgba(234, 179, 8, 0.7) 0%,
-    rgba(254, 240, 138, 0.9) 60%
-  );
-  color: var(--color-text-dark);
-  box-shadow: 0 0 30px rgba(254, 240, 138, 0.24);
+  background: transparent;
+  color: var(--color-yellow-hover);
+  border-color: var(--color-yellow-hover);
 }
 
 .profile-file-input:active::file-selector-button {
-  transform: scale(0.97);
+  background: transparent;
+  color: var(--color-yellow-active);
+  border-color: var(--color-yellow-active);
+  transform: none;
 }
 
 .profile-upload-card,
@@ -430,7 +398,7 @@
 }
 
 .profile-settings-form__error {
-  color: #fca5a5;
+  color: var(--color-yellow-active);
   font-size: 0.85rem;
 }
 
@@ -440,11 +408,11 @@
 }
 
 .profile-upload-feedback--success {
-  color: #22c55e;
+  color: var(--color-blue-primary);
 }
 
 .profile-upload-feedback--error {
-  color: #ef4444;
+  color: var(--color-yellow-active);
 }
 
 .profile-empty-action {
@@ -483,7 +451,7 @@
   gap: 1rem;
   padding: 0;
   border: none;
-  border-radius: 0;
+  border-radius: var(--radius-gaming);
   background: transparent;
   box-shadow: none;
 }
@@ -525,7 +493,7 @@
   gap: 0.8rem;
   align-items: baseline;
   padding: 0.65rem 0;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.15);
 }
 
 .profile-meta-row:last-child {
@@ -538,7 +506,7 @@
   font-size: 0.66rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: rgba(148, 163, 184, 0.95);
+  color: var(--color-text-dim);
 }
 
 .profile-meta-row__value {
@@ -559,24 +527,24 @@
 }
 
 .profile-collection {
-  --collection-accent: 56, 189, 248;
+  --collection-accent: 59, 130, 246;
 
   display: grid;
   gap: 0.9rem;
   align-content: start;
   padding: 0;
   border: none;
-  border-radius: 0;
+  border-radius: var(--radius-gaming);
   background: transparent;
   box-shadow: none;
 }
 
 .profile-collection--favorites {
-  --collection-accent: 248, 113, 113;
+  --collection-accent: 254, 240, 138;
 }
 
 .profile-collection--wishlist {
-  --collection-accent: 251, 191, 36;
+  --collection-accent: 254, 240, 138;
 }
 
 .profile-collection__header {
@@ -585,7 +553,7 @@
   justify-content: space-between;
   gap: 0.8rem;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.22);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.15);
 }
 
 .profile-collection__title {
@@ -623,8 +591,8 @@
   gap: 0.8rem;
   padding: 0.8rem 0;
   border: none;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 0;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: var(--radius-gaming);
   background: transparent;
   transition:
     border-color 0.25s ease,
@@ -653,9 +621,9 @@
   flex-shrink: 0;
   width: 4.55rem;
   aspect-ratio: 16 / 10;
-  border-radius: 0.72rem;
-  border: 1px solid rgba(148, 163, 184, 0.26);
-  background: #0b1527;
+  border-radius: var(--radius-gaming);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  background: var(--color-card-bg);
   box-shadow: 0 6px 18px rgba(2, 6, 23, 0.45);
 }
 
@@ -683,21 +651,21 @@
   place-items: center;
   width: 2.2rem;
   aspect-ratio: 1;
-  border-radius: 0.72rem;
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  background: rgba(148, 163, 184, 0.1);
+  border-radius: var(--radius-gaming);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  background: rgba(59, 130, 246, 0.1);
 }
 
 .profile-game-item__icon--favorites {
-  color: #f87171;
-  border-color: rgba(248, 113, 113, 0.3);
-  background: rgba(248, 113, 113, 0.12);
+  color: var(--color-yellow-primary);
+  border-color: rgba(254, 240, 138, 0.3);
+  background: rgba(254, 240, 138, 0.12);
 }
 
 .profile-game-item__icon--wishlist {
-  color: #fbbf24;
-  border-color: rgba(251, 191, 36, 0.3);
-  background: rgba(251, 191, 36, 0.12);
+  color: var(--color-yellow-primary);
+  border-color: rgba(254, 240, 138, 0.3);
+  background: rgba(254, 240, 138, 0.12);
 }
 
 .profile-game-item__content {
@@ -724,7 +692,7 @@
   font-family: var(--font-exo2);
   font-size: 0.78rem;
   font-weight: 600;
-  color: rgba(125, 211, 252, 0.95);
+  color: var(--color-blue-primary);
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -738,9 +706,9 @@
   place-items: center;
   width: 2rem;
   aspect-ratio: 1;
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  border-radius: 0.62rem;
-  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: var(--radius-gaming);
+  background: rgba(59, 130, 246, 0.08);
   color: var(--color-text-dim);
   cursor: pointer;
   transition:
@@ -751,16 +719,16 @@
 }
 
 .profile-icon-button:hover {
-  color: #fbbf24;
-  border-color: rgba(251, 191, 36, 0.45);
-  background: rgba(251, 191, 36, 0.12);
+  color: var(--color-yellow-primary);
+  border-color: rgba(254, 240, 138, 0.45);
+  background: rgba(254, 240, 138, 0.12);
   transform: translateY(-1px);
 }
 
 .profile-icon-button--danger:hover {
-  color: #f87171;
-  border-color: rgba(248, 113, 113, 0.45);
-  background: rgba(248, 113, 113, 0.12);
+  color: var(--color-yellow-primary);
+  border-color: rgba(254, 240, 138, 0.45);
+  background: rgba(254, 240, 138, 0.12);
 }
 
 .profile-empty-list {
@@ -768,7 +736,7 @@
   justify-items: center;
   gap: 0.6rem;
   padding: 1.1rem 0;
-  border-radius: 0;
+  border-radius: var(--radius-gaming);
   border: none;
   background: transparent;
   text-align: center;
@@ -776,7 +744,7 @@
 
 .profile-empty-list__icon {
   font-size: 1.3rem;
-  color: rgba(148, 163, 184, 0.8);
+  color: var(--color-text-dim);
 }
 
 .profile-empty-list p {
@@ -801,7 +769,7 @@
   }
 
   .profile-panel {
-    border-radius: 1.5rem;
+    border-radius: var(--radius-gaming);
   }
 
   .profile-summary .profile-avatar-frame {
@@ -922,16 +890,10 @@
 
   .profile-summary {
     padding: 1rem;
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    border-radius: 1.2rem;
-    background: linear-gradient(
-      180deg,
-      rgba(8, 15, 31, 0.84),
-      rgba(10, 22, 44, 0.7)
-    );
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.04),
-      0 12px 32px rgba(2, 6, 23, 0.35);
+    border: 1px solid rgba(59, 130, 246, 0.15);
+    border-radius: var(--radius-gaming);
+    background: var(--color-card-bg);
+    box-shadow: 0 12px 32px rgba(2, 6, 23, 0.35);
     text-align: center;
   }
 
@@ -951,16 +913,10 @@
 
   .profile-collection {
     padding: 1rem;
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    border-radius: 1.2rem;
-    background: linear-gradient(
-      180deg,
-      rgba(8, 15, 31, 0.84),
-      rgba(10, 22, 44, 0.7)
-    );
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.04),
-      0 12px 32px rgba(2, 6, 23, 0.35);
+    border: 1px solid rgba(59, 130, 246, 0.15);
+    border-radius: var(--radius-gaming);
+    background: var(--color-card-bg);
+    box-shadow: 0 12px 32px rgba(2, 6, 23, 0.35);
   }
 
   .profile-collection__header {
@@ -1012,16 +968,10 @@
 
   .profile-shell--settings .profile-card {
     padding: 1rem;
-    border: 1px solid rgba(148, 163, 184, 0.2);
-    border-radius: 1.2rem;
-    background: linear-gradient(
-      180deg,
-      rgba(8, 15, 31, 0.84),
-      rgba(10, 22, 44, 0.7)
-    );
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.04),
-      0 12px 32px rgba(2, 6, 23, 0.35);
+    border: 1px solid rgba(59, 130, 246, 0.15);
+    border-radius: var(--radius-gaming);
+    background: var(--color-card-bg);
+    box-shadow: 0 12px 32px rgba(2, 6, 23, 0.35);
     backdrop-filter: blur(10px);
   }
 

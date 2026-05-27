@@ -1,5 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import './css/base/index.css'
+import './css/base/design-tokens.css'
 import App from './App.jsx'
 
 function mountCursorGlow() {

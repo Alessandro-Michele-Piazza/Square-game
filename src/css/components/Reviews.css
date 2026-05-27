@@ -27,22 +27,22 @@
   font-weight: 600;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: #7dd3fc;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.05);
+  color: var(--color-blue-primary);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  border-radius: var(--radius-gaming);
+  background: var(--color-card-bg);
 }
 
 .reviews-title {
   font-family: var(--font-orbitron);
   font-size: 1.25rem;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--color-text-bright);
 }
 
 .reviews-count {
   font-size: 0.8rem;
-  color: #94a3b8;
+  color: var(--color-text-dim);
 }
 
 /* ── Form ── */
@@ -52,9 +52,9 @@
   gap: 0.875rem;
   padding: 1.25rem;
   margin-bottom: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 1.5rem;
-  background: rgba(7, 17, 33, 0.65);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: var(--radius-gaming);
+  background: var(--color-card-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
@@ -66,10 +66,10 @@
   flex-shrink: 0;
   width: 2.5rem;
   height: 2.5rem;
-  border-radius: 50%;
-  border: 1px solid rgba(125, 211, 252, 0.3);
-  background: rgba(56, 189, 248, 0.1);
-  color: #7dd3fc;
+  border-radius: var(--radius-gaming);
+  border: 1px solid rgba(59, 130, 246, 0.2);
+  background: var(--color-card-bg);
+  color: var(--color-blue-primary);
   font-size: 1rem;
   padding-top: 0.6rem;
 }
@@ -88,22 +88,22 @@
   font-family: var(--font-exo2);
   font-size: 0.875rem;
   line-height: 1.75;
-  color: #cbd5e1;
-  background: rgba(7, 17, 33, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
+  color: var(--color-text-bright);
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-blue-primary);
+  border-radius: var(--radius-gaming);
   resize: vertical;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: border-color 0.25s ease;
 }
 
 .reviews-form__textarea::placeholder {
-  color: #475569;
+  color: var(--color-text-dim);
 }
 
 .reviews-form__textarea:focus {
   outline: none;
-  border-color: rgba(125, 211, 252, 0.4);
-  box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.08);
+  border-color: var(--color-yellow-primary);
+  box-shadow: none;
 }
 
 .reviews-form__footer {
@@ -115,7 +115,7 @@
 
 .reviews-form__chars {
   font-size: 0.7rem;
-  color: #475569;
+  color: var(--color-text-dim);
   letter-spacing: 0.04em;
 }
 
@@ -128,11 +128,11 @@
 }
 
 .reviews-form__submit:hover {
-  transform: translateY(-1px);
+  transform: none;
 }
 
 .reviews-form__submit:active {
-  transform: scale(0.97);
+  transform: none;
 }
 
 .reviews-form__submit:disabled {
@@ -148,9 +148,9 @@
   padding: 1.5rem;
   margin-bottom: 2rem;
   font-size: 0.875rem;
-  color: #94a3b8;
-  border: 1px dashed rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
+  color: var(--color-text-dim);
+  border: 1px dashed rgba(59, 130, 246, 0.2);
+  border-radius: var(--radius-gaming);
 }
 
 /* ── Review list ── */
@@ -166,10 +166,10 @@
 .reviews-empty {
   text-align: center;
   padding: 2.5rem 1rem;
-  color: #64748b;
+  color: var(--color-text-dim);
   font-size: 0.9rem;
-  border: 1px dashed rgba(255, 255, 255, 0.06);
-  border-radius: 1.5rem;
+  border: 1px dashed rgba(59, 130, 246, 0.2);
+  border-radius: var(--radius-gaming);
 }
 
 /* ── Single review card ── */
@@ -178,17 +178,17 @@
   display: flex;
   gap: 0.875rem;
   padding: 1.25rem;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 1.25rem;
-  background: rgba(7, 17, 33, 0.45);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: var(--radius-gaming);
+  background: var(--color-card-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.2s ease;
 }
 
 .review-card:hover {
-  border-color: rgba(125, 211, 252, 0.15);
-  box-shadow: 0 4px 24px rgba(56, 189, 248, 0.04);
+  border-color: rgba(254, 240, 138, 0.3);
+  box-shadow: none;
 }
 
 .review-card__avatar {
@@ -198,10 +198,10 @@
   flex-shrink: 0;
   width: 2.25rem;
   height: 2.25rem;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
-  color: #94a3b8;
+  border-radius: var(--radius-gaming);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  background: var(--color-card-bg);
+  color: var(--color-text-dim);
   font-size: 0.85rem;
 }
 
@@ -226,19 +226,19 @@
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #7dd3fc;
+  color: var(--color-blue-primary);
 }
 
 .review-card__date {
   font-size: 0.68rem;
-  color: #64748b;
+  color: var(--color-text-dim);
   letter-spacing: 0.02em;
 }
 
 .review-card__text {
   font-size: 0.875rem;
   line-height: 1.75;
-  color: #cbd5e1;
+  color: var(--color-text-bright);
   word-break: break-word;
 }
 
@@ -250,10 +250,10 @@
   align-self: flex-start;
   width: 2rem;
   height: 2rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 0.625rem;
-  background: rgba(255, 255, 255, 0.03);
-  color: #64748b;
+  border: 1.5px solid var(--color-yellow-primary);
+  border-radius: var(--radius-gaming);
+  background: transparent;
+  color: var(--color-yellow-primary);
   font-size: 0.7rem;
   cursor: pointer;
   opacity: 0;
@@ -265,9 +265,9 @@
 }
 
 .review-card__delete:hover {
-  color: #f87171;
-  border-color: rgba(239, 68, 68, 0.3);
-  background: rgba(239, 68, 68, 0.1);
+  color: var(--color-text-dark);
+  border-color: var(--color-yellow-primary);
+  background: var(--color-yellow-primary);
 }
 
 /* ── Avatar image ── */
@@ -276,7 +276,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 50%;
+  border-radius: var(--radius-gaming);
 }
 
 /* ── Responsive ── */

@@ -74,8 +74,7 @@
 
 .scritta_gialla_neon {
   color: var(--color-yellow-primary);
-  text-shadow: 0 0 5px var(--color-yellow-primary), 0 0 10px var(--color-yellow-primary),
-    0 0 20px var(--color-yellow-primary), 0 0 40px var(--color-yellow-primary);
+  text-shadow: none;
 }
 
 /* APPLICAZIONE STILI BASE */
@@ -201,30 +200,6 @@ h3,
   letter-spacing: 2px;
 }
 
-/* ESEMPIO CLASSI PER PULSANTI "FULMINE" */
-.btn-lightning {
-  font-family: var(--font-orbitron);
-  background-color: var(--color-yellow-primary);
-  color: #000; /* Nero per contrasto su giallo */
-  padding: 10px 20px;
-  border: none;
-  border-radius: var(--radius-gaming);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: var(--shadow-lightning);
-}
-
-.btn-lightning:hover {
-  background-color: var(--color-yellow-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 0 20px var(--color-yellow-primary);
-}
-
-.btn-lightning:active {
-  background-color: var(--color-yellow-active);
-  transform: translateY(0);
-}
-
 /* ESEMPIO CLASSI PER CARD DEI GIOCHI */
 .card-game {
   background-color: var(--color-card-bg);
@@ -261,14 +236,12 @@ h3,
 /* EFFETTI NEON PER ELEMENTI VARI */
 .neon-yellow {
   color: var(--color-yellow-primary);
-  text-shadow: 0 0 5px var(--color-yellow-primary), 0 0 10px var(--color-yellow-primary),
-    0 0 20px var(--color-yellow-primary), 0 0 40px var(--color-yellow-primary);
+  text-shadow: none;
 }
 
 .neon-blue {
   color: var(--color-blue-primary);
-  text-shadow: 0 0 5px var(--color-blue-primary), 0 0 10px var(--color-blue-primary),
-    0 0 20px var(--color-blue-primary), 0 0 40px var(--color-blue-primary);
+  text-shadow: none;
 }
 
 .Profile-navbar-custom-link {
@@ -290,131 +263,41 @@ h3,
   display: none; /* Chrome/Safari */
 }
 
-/* ============================
-   HOVER-TEXT LINK (Detail page)
-   Adapted from Uiverse.io/satyamchaudharydev
-   ============================ */
 .detail-link {
-  --border-right: 4px;
-  --text-stroke-color: rgba(255, 255, 255, 0.6);
-  --animation-color: var(--color-yellow-primary);
-  position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--font-orbitron);
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 2px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
-  color: transparent;
-  
-  /* Bordo grigio iniziale */
-  -webkit-text-stroke: 1px var(--text-stroke-color);
-  
+  color: var(--color-yellow-primary);
   cursor: pointer;
-  background: none;
-  border: none;
-  
-  /* Allineamento */
-  padding-left: 13px; /* Spazio prima della scritta */
-  margin-left: 0px;
-  box-sizing: border-box; /* Importante per la simmetria */
-
-  /* AGGIUNGI QUESTA TRANSIZIONE: rende fluido il passaggio a trasparente */
-  transition: -webkit-text-stroke-color 0.5s ease;
+  background: transparent;
+  border: 1.5px solid var(--color-yellow-primary);
+  border-radius: var(--radius-gaming);
+  padding: 0.6rem 1.4rem;
+  transition: all 0.2s ease;
 }
 
 .detail-link .detail-link__hover {
-  position: absolute;
-  inset: 0;
-  width: 0%;
-  overflow: hidden;
-  color: var(--animation-color);
-  border-right: var(--border-right) solid var(--animation-color);
-  -webkit-text-stroke: 1px var(--animation-color);
-  transition: width 0.5s ease;
-  white-space: nowrap;
-
-  /* AGGIUNGI QUESTO: per far combaciare le lettere gialle a quelle grigie */
-  padding-left: 5px; 
-  box-sizing: border-box;
+  display: none;
 }
 
-
-/* AZIONI ALL'HOVER */
 .detail-link:hover {
-  /* La scritta grigia sotto diventa trasparente */
-  -webkit-text-stroke-color: transparent;
+  background: var(--color-yellow-primary);
+  color: var(--color-text-dark);
 }
 
 .detail-link:hover .detail-link__hover {
-  width: 100%;
-  filter: drop-shadow(0 0 18px var(--animation-color));
+  width: auto;
+  filter: none;
 }
 
 aside .detail-link {
   white-space: nowrap;
-}
-
-/* ============================
-   BTN GLOW (Global buttons)
-   Adapted from Uiverse.io/ShrinilDhorda
-   ============================ */
-.btn-glow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  font-family: var(--font-orbitron);
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-decoration: none;
-  padding: 0.85rem 1.6rem;
-  border: none;
-  outline: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  color: var(--color-text-bright);
-  background-color: var(--color-card-bg);
-  box-shadow: 0 0 40px rgba(59, 130, 246, 0.25);
-  -webkit-box-reflect: below 10px linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.25));
-  transition: background 0.5s ease, color 0.5s ease, transform 0.2s ease, box-shadow 0.5s ease;
-}
-
-.btn-glow:hover {
-  background: linear-gradient(270deg, rgba(29, 78, 216, 0.7) 0%, rgba(59, 130, 246, 0.88) 60%);
-  color: var(--color-text-bright);
-  box-shadow: 0 0 60px rgba(59, 130, 246, 0.4);
-}
-
-.btn-glow:active {
-  transform: scale(0.95);
-}
-
-.btn-glow--yellow {
-  box-shadow: 0 0 40px rgba(254, 240, 138, 0.2);
-}
-
-.btn-glow--yellow:hover {
-  background: linear-gradient(270deg, rgba(234, 179, 8, 0.7) 0%, rgba(254, 240, 138, 0.9) 60%);
-  color: var(--color-text-dark);
-  box-shadow: 0 0 60px rgba(254, 240, 138, 0.35);
-}
-
-.btn-glow--danger {
-  box-shadow: 0 0 40px rgba(239, 68, 68, 0.2);
-}
-
-.btn-glow--danger:hover {
-  background: linear-gradient(270deg, rgba(185, 28, 28, 0.7) 0%, rgba(239, 68, 68, 0.88) 60%);
-  color: var(--color-text-bright);
-  box-shadow: 0 0 60px rgba(239, 68, 68, 0.35);
-}
-
-.btn-glow--no-reflect {
-  -webkit-box-reflect: none;
 }
 
 .navbar-home-link {
@@ -423,36 +306,36 @@ aside .detail-link {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: #3b82f6;
+  color: var(--color-blue-primary);
   transition: color 0.25s ease;
 }
 
 .navbar-home-link:hover {
-  color: #fef08a;
+  color: var(--color-yellow-primary);
 }
 
 
 
 .topbar-search-input {
   width: 100%;
-  border-radius: 999px;
+  border-radius: var(--radius-gaming);
   border: 1px solid rgba(59, 130, 246, 0.32);
-  background: rgba(2, 6, 23, 0.44);
+  background: var(--color-card-bg);
   padding: 0.65rem 1rem;
   color: var(--color-text-bright);
   font-size: 0.88rem;
-  transition: border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
+  transition: border-color 0.22s ease, background 0.22s ease;
 }
 
 .topbar-search-input::placeholder {
-  color: #64748b;
+  color: var(--color-text-dim);
 }
 
 .topbar-search-input:focus {
   outline: none;
-  border-color: rgba(254, 240, 138, 0.65);
-  background: rgba(2, 6, 23, 0.62);
-  box-shadow: 0 0 0 3px rgba(254, 240, 138, 0.16);
+  border-color: var(--color-yellow-primary);
+  background: var(--color-card-bg);
+  box-shadow: none;
 }
 
 .topbar-genre-trigger {
@@ -461,14 +344,12 @@ aside .detail-link {
   justify-content: center;
   height: 2.45rem;
   width: 2.45rem;
-  border-radius: 999px;
-  border: 1px solid rgba(125, 211, 252, 0.4);
-  background:
-    radial-gradient(circle at 30% 20%, rgba(125, 211, 252, 0.24), transparent 62%),
-    rgba(15, 23, 42, 0.82);
-  color: #7dd3fc;
-  box-shadow: 0 8px 20px rgba(2, 6, 23, 0.35);
-  transition: border-color 0.22s ease, color 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+  border-radius: var(--radius-gaming);
+  border: 1.5px solid var(--color-yellow-primary);
+  background: transparent;
+  color: var(--color-yellow-primary);
+  box-shadow: none;
+  transition: border-color 0.22s ease, color 0.22s ease, transform 0.22s ease;
 }
 
 .topbar-genre-trigger svg {
@@ -476,16 +357,16 @@ aside .detail-link {
 }
 
 .topbar-genre-trigger:hover {
-  border-color: rgba(254, 240, 138, 0.5);
-  color: #fef08a;
-  box-shadow: 0 0 24px rgba(125, 211, 252, 0.25);
+  border-color: var(--color-yellow-primary);
+  color: var(--color-text-dark);
+  background: var(--color-yellow-primary);
   transform: translateY(-1px) scale(1.02);
 }
 
 .topbar-genre-trigger:focus-visible {
   outline: none;
-  border-color: rgba(254, 240, 138, 0.6);
-  box-shadow: 0 0 0 3px rgba(254, 240, 138, 0.22);
+  border-color: var(--color-yellow-primary);
+  box-shadow: none;
 }
 
 .topbar-pill-link {
@@ -493,53 +374,53 @@ aside .detail-link {
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  border-radius: 999px;
-  border: 1px solid rgba(59, 130, 246, 0.32);
-  background: rgba(0, 0, 0, 0.64);
-  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius-gaming);
+  border: 1.5px solid var(--color-yellow-primary);
+  background: transparent;
+  padding: 0.6rem 1.4rem;
   font-family: var(--font-orbitron);
-  font-size: 0.67rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #7dd3fc;
+  color: var(--color-yellow-primary);
   text-decoration: none;
-  transition: border-color 0.22s ease, color 0.22s ease, background 0.22s ease,
-    transform 0.22s ease;
+  transition: border-color 0.22s ease, color 0.22s ease, background 0.22s ease;
 }
 
 .topbar-pill-link:hover {
-  border-color: rgba(254, 240, 138, 0.42);
-  color: #fef08a;
-  background: rgba(0, 0, 0, 0.9);
-  transform: translateY(-1px);
+  border-color: var(--color-yellow-primary);
+  color: var(--color-text-dark);
+  background: var(--color-yellow-primary);
 }
 
 .topbar-pill-link--accent {
-  border-color: rgba(254, 240, 138, 0.35);
-  color: #fef08a;
+  border-color: var(--color-yellow-primary);
+  color: var(--color-text-dark);
+  background: var(--color-yellow-primary);
+  font-weight: 700;
 }
 
 .topbar-pill-link--danger {
-  border-color: rgba(239, 68, 68, 0.3);
-  color: #fca5a5;
+  border-color: var(--color-yellow-primary);
+  color: var(--color-yellow-primary);
 }
 
 .topbar-pill-link--danger:hover {
-  border-color: rgba(239, 68, 68, 0.6);
-  color: #fda4af;
+  border-color: var(--color-yellow-primary);
+  color: var(--color-text-dark);
 }
 
 .topbar-profile-chip {
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  border-radius: 999px;
-  border: 1px solid rgba(148, 163, 184, 0.3);
-  background: rgba(0, 0, 0, 0.72);
+  border-radius: var(--radius-gaming);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  background: var(--color-card-bg);
   padding: 0.42rem 0.75rem;
   text-decoration: none;
-  color: #e2e8f0;
+  color: var(--color-text-bright);
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 
@@ -551,8 +432,8 @@ aside .detail-link {
 }
 
 .topbar-profile-chip:hover {
-  border-color: rgba(125, 211, 252, 0.5);
-  color: #7dd3fc;
+  border-color: var(--color-yellow-primary);
+  color: var(--color-yellow-primary);
 }
 
 .topbar-icon-button {
@@ -560,25 +441,24 @@ aside .detail-link {
   width: 2.3rem;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
-  border: 1px solid rgba(254, 240, 138, 0.32);
-  background: rgba(0, 0, 0, 0.74);
-  color: #fef08a;
+  border-radius: var(--radius-gaming);
+  border: 1.5px solid var(--color-yellow-primary);
+  background: transparent;
+  color: var(--color-yellow-primary);
   font-size: 1.1rem;
   transition: border-color 0.2s ease, color 0.2s ease;
 }
 
 .topbar-icon-button:hover {
-  border-color: rgba(125, 211, 252, 0.55);
-  color: #7dd3fc;
+  border-color: var(--color-yellow-primary);
+  color: var(--color-text-dark);
+  background: var(--color-yellow-primary);
 }
 
 .topbar-mobile-panel {
-  border-radius: 1rem;
+  border-radius: var(--radius-gaming);
   border: 1px solid rgba(148, 163, 184, 0.22);
-  background:
-    radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 50%),
-    linear-gradient(160deg, rgba(0, 0, 0, 0.88), rgba(0, 0, 0, 0.76));
+  background: var(--color-card-bg);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   box-shadow: 0 20px 45px rgba(2, 6, 23, 0.42);
@@ -591,11 +471,11 @@ aside .detail-link {
   font-size: 0.66rem;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: #64748b;
+  color: var(--color-text-dim);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .topbar-subtle-link:hover {
-  color: #7dd3fc;
+  color: var(--color-blue-primary);
 }

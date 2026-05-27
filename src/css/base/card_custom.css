@@ -1,42 +1,41 @@
 .rating_badge_custom {
-  background: linear-gradient(135deg, rgba(244, 63, 94, 0.25), rgba(251, 113, 133, 0.15));
-  border: 1px solid rgba(244, 63, 94, 0.45);
-  color: #fb7185;
+  background: var(--color-card-bg);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  color: var(--color-yellow-primary);
   padding: 0.3rem 0.75rem;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.04em;
-  border-radius: 9999px;
+  border-radius: var(--radius-gaming);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 0 10px rgba(244, 63, 94, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  text-shadow: 0 0 8px rgba(251, 113, 133, 0.6);
-  transition: box-shadow 0.25s ease, transform 0.2s ease;
-    
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.26);
+  text-shadow: none;
+  transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
 .rating_badge_custom:hover {
-  box-shadow: 0 0 18px rgba(244, 63, 94, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border-color: rgba(254, 240, 138, 0.3);
   transform: scale(1.05);
 }
 
 .metascore_badge_custom {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.25), rgba(29, 78, 216, 0.15));
-  border: 1px solid rgba(59, 130, 246, 0.45);
-  color: #ffffff;
+  background: var(--color-card-bg);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  color: var(--color-text-bright);
   padding: 0.3rem 0.75rem;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.04em;
-  border-radius: 9999px;
+  border-radius: var(--radius-gaming);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 0 10px rgba(59, 130, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  text-shadow: 0 0 8px rgba(59, 130, 246, 0.6);
-  transition: box-shadow 0.25s ease, transform 0.2s ease;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.26);
+  text-shadow: none;
+  transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
 .metascore_badge_custom:hover {
-  box-shadow: 0 0 18px rgba(59, 130, 246, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border-color: rgba(254, 240, 138, 0.3);
   transform: scale(1.05);
 }

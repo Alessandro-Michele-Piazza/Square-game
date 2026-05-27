@@ -173,7 +173,7 @@ export default function BodySection({ game }) {
               </span>
               <button
                 type="submit"
-                className="btn-glow btn-glow--yellow btn-glow--no-reflect reviews-form__submit"
+                className="btn-primary reviews-form__submit"
                 disabled={submitting || !description.trim()}
               >
                 <FaPaperPlane />
