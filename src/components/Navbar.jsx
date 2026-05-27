@@ -138,7 +138,7 @@ export default function Navbar({
               </button>
             )}
 
-            <Link className="topbar-brand-link" to={routes.home}>
+            <Link className="topbar-brand-link" to={routes.landing}>
               <img
                 src="/media/favicon.svg"
                 alt="Square Games logo"

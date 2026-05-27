@@ -2,9 +2,9 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import {
   FaApple,
+  FaChevronDown,
   FaGamepad,
   FaLayerGroup,
-  FaLinux,
   FaPlaystation,
   FaSliders,
   FaWindows,
@@ -15,69 +15,96 @@ import { BsNintendoSwitch } from "react-icons/bs";
 import { SiAtari, SiSega } from "react-icons/si";
 import "../css/components/Sidebar.css";
 
-const PLATFORM_FAMILIES = [
+const PLATFORM_HIERARCHY = [
   {
-    id: "sony",
-    label: "Sony / PlayStation",
-    shortLabel: "PS",
-    Icon: FaPlaystation,
-    toneClass: "sidebar-platforms__icon-tone--sony",
+    id: "console",
+    label: "Console",
+    Icon: FaGamepad,
   },
   {
-    id: "xbox",
-    label: "Xbox",
-    shortLabel: "Xbox",
-    Icon: FaXbox,
-    toneClass: "sidebar-platforms__icon-tone--xbox",
+    id: "pc",
+    label: "PC",
+    Icon: FaWindows,
+  },
+  {
+    id: "mobile",
+    label: "Mobile",
+    Icon: FaApple,
+  },
+];
+
+const CONSOLE_BRAND_HIERARCHY = [
+  {
+    id: "sony",
+    label: "Sony",
+    Icon: FaPlaystation,
+    match: /playstation|(^|\s)ps[1-5](\s|$)|ps vita|psp/,
+    chronology: [
+      { id: "ps1", match: /playstation 1|(^|\s)ps1(\s|$)|(^|\s)playstation(\s|$)/ },
+      { id: "ps2", match: /playstation 2|(^|\s)ps2(\s|$)/ },
+      { id: "ps3", match: /playstation 3|(^|\s)ps3(\s|$)/ },
+      { id: "ps4", match: /playstation 4|(^|\s)ps4(\s|$)/ },
+      { id: "ps5", match: /playstation 5|(^|\s)ps5(\s|$)/ },
+    ],
   },
   {
     id: "microsoft",
-    label: "Windows / PC",
-    shortLabel: "PC",
-    Icon: FaWindows,
-    toneClass: "sidebar-platforms__icon-tone--microsoft",
+    label: "Microsoft",
+    Icon: FaXbox,
+    match: /xbox/,
+    chronology: [
+      { id: "xbox", match: /(^|\s)xbox(?!\s*(360|one|series))(\s|$)/ },
+      { id: "xbox-360", match: /xbox 360/ },
+      { id: "xbox-one", match: /xbox one/ },
+      { id: "xbox-series", match: /xbox series|xbox series x|xbox series s|xbox sx/ },
+    ],
   },
   {
     id: "nintendo",
     label: "Nintendo",
-    shortLabel: "Nintendo",
     Icon: BsNintendoSwitch,
-    toneClass: "sidebar-platforms__icon-tone--nintendo",
+    match:
+      /nintendo|switch|wii|game boy|gameboy|game cube|gamecube|virtual boy|famicom|nintendo 64|n64|3ds|nds|(^|\s)snes(\s|$)|(^|\s)nes(\s|$)/,
+    chronology: [
+      { id: "nes", match: /nintendo entertainment system|famicom|(^|\s)nes(\s|$)/ },
+      { id: "snes", match: /super nintendo|(^|\s)snes(\s|$)/ },
+      { id: "n64", match: /nintendo 64|(^|\s)n64(\s|$)/ },
+      { id: "gamecube", match: /game cube|gamecube/ },
+      { id: "wii", match: /(^|\s)wii(?!\s*u)(\s|$)/ },
+      { id: "wii-u", match: /wii u/ },
+      { id: "switch", match: /switch/ },
+    ],
   },
   {
     id: "sega",
     label: "Sega",
-    shortLabel: "Sega",
     Icon: SiSega,
-    toneClass: "sidebar-platforms__icon-tone--sega",
+    match: /sega|mega drive|genesis|dreamcast|saturn|game gear|master system|sega cd|32x/,
+    chronology: [
+      { id: "mega-drive", match: /mega drive|genesis/ },
+      { id: "saturn", match: /saturn/ },
+      { id: "dreamcast", match: /dreamcast/ },
+    ],
   },
   {
     id: "atari",
     label: "Atari",
-    shortLabel: "Atari",
     Icon: SiAtari,
-    toneClass: "sidebar-platforms__icon-tone--atari",
-  },
-  {
-    id: "apple",
-    label: "Apple",
-    shortLabel: "Apple",
-    Icon: FaApple,
-    toneClass: "sidebar-platforms__icon-tone--apple",
-  },
-  {
-    id: "linux",
-    label: "Linux / Steam",
-    shortLabel: "Linux",
-    Icon: FaLinux,
-    toneClass: "sidebar-platforms__icon-tone--linux",
+    match: /atari|jaguar|lynx|atari 2600|atari 5200|atari 7800|atari st/,
+    chronology: [
+      { id: "atari-2600", match: /atari 2600/ },
+      { id: "atari-5200", match: /atari 5200/ },
+      { id: "atari-7800", match: /atari 7800/ },
+      { id: "atari-jaguar", match: /jaguar/ },
+      { id: "atari-lynx", match: /lynx/ },
+    ],
   },
   {
     id: "other",
-    label: "Altri",
-    shortLabel: "Altro",
+    label: "Altri Brand",
     Icon: FaLayerGroup,
-    toneClass: "sidebar-platforms__icon-tone--other",
+    match: /./,
+    chronology: [],
   },
 ];
 
@@ -111,56 +138,47 @@ function getNormalizedPlatformName({ id, name, slug }) {
   return name;
 }
 
-function resolvePlatformFamilyId(option, slug = "") {
+function resolvePlatformMacroCategoryId(option, slug = "") {
   const value = normalizePlatformText(option, slug);
 
-  if (/playstation|ps[0-9]?|sony/.test(value)) {
-    return "sony";
+  if (/android|ios|iphone|ipad|mobile|windows phone|blackberry|fire os/.test(value)) {
+    return "mobile";
   }
 
-  if (/xbox/.test(value)) {
-    return "xbox";
+  if (/windows|microsoft|pc|linux|mac|os x|steam os|steam deck|dos|amiga|commodore/.test(value)) {
+    return "pc";
   }
 
-  if (/sega|mega drive|genesis|dreamcast|saturn|game gear|master system|sega cd|32x/.test(value)) {
-    return "sega";
-  }
-
-  if (/atari|jaguar|lynx|atari 2600|atari 5200|atari 7800|atari st/.test(value)) {
-    return "atari";
-  }
-
-  if (/windows|microsoft|pc/.test(value)) {
-    return "microsoft";
-  }
-
-  if (
-    /nintendo|switch|wii|game boy|gameboy|game cube|gamecube|virtual boy|famicom|nintendo 64|n64|3ds|nds|snes/.test(value)
-    || /(^|\s)nes(\s|$)/.test(value)
-  ) {
-    return "nintendo";
-  }
-
-  if (/linux|steam/.test(value)) {
-    return "linux";
-  }
-
-  if (/mac|apple|ios/.test(value)) {
-    return "apple";
-  }
-
-  return "other";
+  return "console";
 }
 
-function resolvePlatformVisual(option, slug = "") {
-  const familyId = resolvePlatformFamilyId(option, slug);
-  const family = PLATFORM_FAMILIES.find((item) => item.id === familyId);
+function resolveConsoleBrandId(option, slug = "") {
+  const value = normalizePlatformText(option, slug);
 
-  if (family) {
-    return { Icon: family.Icon, toneClass: family.toneClass };
+  const matchedBrand = CONSOLE_BRAND_HIERARCHY.find((brand) => {
+    if (brand.id === "other") {
+      return false;
+    }
+
+    return brand.match.test(value);
+  });
+
+  return matchedBrand?.id || "other";
+}
+
+function resolveConsoleChronologyIndex(brand, option, slug = "") {
+  if (!brand || !Array.isArray(brand.chronology) || brand.chronology.length === 0) {
+    return Number.MAX_SAFE_INTEGER;
   }
 
-  return { Icon: FaGamepad, toneClass: "sidebar-platforms__icon-tone--other" };
+  const value = normalizePlatformText(option, slug);
+  const index = brand.chronology.findIndex((entry) => entry.match.test(value));
+
+  if (index === -1) {
+    return Number.MAX_SAFE_INTEGER;
+  }
+
+  return index;
 }
 
 function buildPlatformOption(rawPlatform) {
@@ -334,11 +352,16 @@ function buildFilterSearch(
 }
 
 export default function Sidebar({ genres, isOpen, onClose }) {
-  const [openFamilyId, setOpenFamilyId] = useState(null);
+  const [isPlatformsExpanded, setIsPlatformsExpanded] = useState(false);
+  const [isGenresExpanded, setIsGenresExpanded] = useState(false);
+  const [openMacroCategoryId, setOpenMacroCategoryId] = useState(null);
+  const [openConsoleBrandId, setOpenConsoleBrandId] = useState(null);
   const [globalPlatforms, setGlobalPlatforms] = useState([]);
   const [isLoadingPlatforms, setIsLoadingPlatforms] = useState(false);
+
   const { pathname, search } = useLocation();
   const navigate = useNavigate();
+
   const pathFilters = useMemo(() => parsePathFilters(pathname), [pathname]);
   const queryFilters = useMemo(() => parseOptionalFiltersFromSearch(search), [search]);
 
@@ -429,33 +452,59 @@ export default function Sidebar({ genres, isOpen, onClose }) {
     };
   }, []);
 
-  const groupedPlatforms = useMemo(() => {
-    const groups = PLATFORM_FAMILIES.reduce((accumulator, family) => {
-      accumulator[family.id] = [];
+  const groupedPlatformsByMacro = useMemo(() => {
+    const groups = PLATFORM_HIERARCHY.reduce((accumulator, macroCategory) => {
+      accumulator[macroCategory.id] = [];
       return accumulator;
     }, {});
 
     globalPlatforms.forEach((platform) => {
-      const familyId = resolvePlatformFamilyId(platform.name, platform.slug);
-      groups[familyId].push(platform);
+      const macroCategoryId = resolvePlatformMacroCategoryId(platform.name, platform.slug);
+      groups[macroCategoryId].push(platform);
     });
 
-    Object.keys(groups).forEach((familyId) => {
-      groups[familyId].sort((left, right) => left.name.localeCompare(right.name));
+    Object.keys(groups).forEach((macroCategoryId) => {
+      groups[macroCategoryId].sort((left, right) => left.name.localeCompare(right.name));
     });
 
     return groups;
   }, [globalPlatforms]);
 
-  const visiblePlatformFamilies = useMemo(() => {
-    if (isLoadingPlatforms) {
-      return PLATFORM_FAMILIES;
-    }
+  const consolePlatformsByBrand = useMemo(() => {
+    const groupedByBrand = CONSOLE_BRAND_HIERARCHY.reduce((accumulator, brand) => {
+      accumulator[brand.id] = [];
+      return accumulator;
+    }, {});
 
-    return PLATFORM_FAMILIES.filter((family) => {
-      return (groupedPlatforms[family.id] || []).length > 0;
+    const consolePlatforms = groupedPlatformsByMacro.console || [];
+
+    consolePlatforms.forEach((platform) => {
+      const brandId = resolveConsoleBrandId(platform.name, platform.slug);
+      groupedByBrand[brandId].push(platform);
     });
-  }, [groupedPlatforms, isLoadingPlatforms]);
+
+    CONSOLE_BRAND_HIERARCHY.forEach((brand) => {
+      groupedByBrand[brand.id].sort((left, right) => {
+        const leftChronology = resolveConsoleChronologyIndex(brand, left.name, left.slug);
+        const rightChronology = resolveConsoleChronologyIndex(brand, right.name, right.slug);
+
+        if (leftChronology !== rightChronology) {
+          return leftChronology - rightChronology;
+        }
+
+        return left.name.localeCompare(right.name);
+      });
+    });
+
+    return groupedByBrand;
+  }, [groupedPlatformsByMacro]);
+
+  const visibleConsoleBrands = useMemo(() => {
+    return CONSOLE_BRAND_HIERARCHY.filter((brand) => {
+      const platforms = consolePlatformsByBrand[brand.id] || [];
+      return platforms.length > 0;
+    });
+  }, [consolePlatformsByBrand]);
 
   useEffect(() => {
     if (!isOpen || !activePlatformId || globalPlatforms.length === 0) {
@@ -468,8 +517,25 @@ export default function Sidebar({ genres, isOpen, onClose }) {
       return;
     }
 
-    setOpenFamilyId(resolvePlatformFamilyId(currentPlatform.name, currentPlatform.slug));
+    const currentMacroCategoryId = resolvePlatformMacroCategoryId(currentPlatform.name, currentPlatform.slug);
+
+    setIsPlatformsExpanded(true);
+    setOpenMacroCategoryId(currentMacroCategoryId);
+
+    if (currentMacroCategoryId === "console") {
+      setOpenConsoleBrandId(resolveConsoleBrandId(currentPlatform.name, currentPlatform.slug));
+    } else {
+      setOpenConsoleBrandId(null);
+    }
   }, [activePlatformId, globalPlatforms, isOpen]);
+
+  useEffect(() => {
+    if (!isOpen || !activeGenreSlug) {
+      return;
+    }
+
+    setIsGenresExpanded(true);
+  }, [activeGenreSlug, isOpen]);
 
   useEffect(() => {
     if (pendingMetacriticMin === activeMetacriticMin) {
@@ -515,12 +581,12 @@ export default function Sidebar({ genres, isOpen, onClose }) {
     search,
   ]);
 
-  const openedFamilyPlatforms = openFamilyId ? groupedPlatforms[openFamilyId] || [] : [];
-  const activeFiltersCount =
-    Number(activeMetacriticMin > 0) +
-    Number(Boolean(activeGenreSlug)) +
-    Number(Boolean(activePlatformId));
-  const hasAnyActiveFilters = activeFiltersCount > 0;
+  const hasAnyGlobalPlatforms = globalPlatforms.length > 0;
+  const hasAnyActiveFilters =
+    activeMetacriticMin > 0
+    || Boolean(activeGenreSlug)
+    || Boolean(activePlatformId);
+
   const preventDragStart = (event) => {
     event.preventDefault();
   };
@@ -554,7 +620,7 @@ export default function Sidebar({ genres, isOpen, onClose }) {
       aria-hidden={!isOpen}
     >
       <button
-        aria-label="Chiudi menu generi"
+        aria-label="Chiudi menu filtri"
         className="sidebar-panel__scrim"
         onClick={onClose}
       />
@@ -567,7 +633,7 @@ export default function Sidebar({ genres, isOpen, onClose }) {
         <div className="sidebar-panel__head">
           <div className="sidebar-panel__head-row">
             <div className="sidebar-panel__title-wrap">
-              <h2 className="sidebar-panel__title">Filters</h2>
+              <h2 className="sidebar-panel__title">Filtri</h2>
             </div>
 
             <button
@@ -590,20 +656,8 @@ export default function Sidebar({ genres, isOpen, onClose }) {
             }`}
           >
             <span className="sidebar-panel__reset-left">
-              <span className="sidebar-panel__reset-icon-box">
-                <FaSliders className="sidebar-panel__reset-icon" />
-              </span>
-              Filter reset
-            </span>
-
-            <span
-              className={`sidebar-panel__reset-count ${
-                hasAnyActiveFilters
-                  ? "sidebar-panel__reset-count--active"
-                  : "sidebar-panel__reset-count--inactive"
-              }`}
-            >
-              {activeFiltersCount}
+              <FaSliders className="sidebar-panel__reset-icon" />
+              Reset filtri
             </span>
           </button>
         </div>
@@ -611,110 +665,234 @@ export default function Sidebar({ genres, isOpen, onClose }) {
         <div className="sidebar-panel__body">
           <div className="sidebar-panel__sections">
             <section className="sidebar-panel__section">
-              <h3 className="sidebar-panel__section-title">
-                <FaGamepad className="sidebar-panel__section-title-icon" />
-                Piattaforme
-              </h3>
+              <button
+                type="button"
+                className={`sidebar-accordion__toggle ${
+                  isPlatformsExpanded ? "sidebar-accordion__toggle--open" : ""
+                }`}
+                aria-expanded={isPlatformsExpanded}
+                aria-controls="sidebar-platforms-accordion"
+                onClick={() => setIsPlatformsExpanded((previousState) => !previousState)}
+              >
+                <span className="sidebar-accordion__toggle-main">
+                  <FaGamepad className="sidebar-panel__section-title-icon" />
+                  <span className="sidebar-accordion__toggle-title">Piattaforme</span>
+                </span>
 
-              <div className="sidebar-platforms__families">
-                {visiblePlatformFamilies.map((family) => {
-                  const familyOptions = groupedPlatforms[family.id] || [];
-                  const hasOptions = familyOptions.length > 0 || isLoadingPlatforms;
-                  const isOpenFamily = openFamilyId === family.id;
-                  const FamilyIcon = family.Icon;
+                <span className="sidebar-accordion__toggle-meta">
+                  <FaChevronDown
+                    className={`sidebar-accordion__chevron ${
+                      isPlatformsExpanded ? "sidebar-accordion__chevron--open" : ""
+                    }`}
+                  />
+                </span>
+              </button>
 
-                  return (
-                    <button
-                      key={family.id}
-                      type="button"
-                      disabled={!hasOptions}
-                      draggable={false}
-                      onDragStart={preventDragStart}
-                      onClick={() => setOpenFamilyId((previousId) => (previousId === family.id ? null : family.id))}
-                      className={`sidebar-platforms__family ${
-                        !hasOptions
-                          ? "sidebar-platforms__family--disabled"
-                          : isOpenFamily
-                            ? "sidebar-platforms__family--open"
-                            : "sidebar-platforms__family--idle"
-                      }`}
-                    >
-                      <span className="sidebar-platforms__family-row">
-                        <FamilyIcon className={family.toneClass} />
-                        <span className="sidebar-platforms__family-count">{familyOptions.length}</span>
-                      </span>
-                      <span className="sidebar-platforms__family-label">
-                        {family.shortLabel}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              {openFamilyId && (
-                <div className="sidebar-platforms__list-shell">
+              <div
+                id="sidebar-platforms-accordion"
+                className={`sidebar-accordion__content ${
+                  isPlatformsExpanded ? "sidebar-accordion__content--open" : ""
+                }`}
+              >
+                <div className="sidebar-accordion__inner">
                   {isLoadingPlatforms ? (
                     <div className="sidebar-platforms__message">
                       Caricamento piattaforme...
                     </div>
-                  ) : openedFamilyPlatforms.length === 0 ? (
+                  ) : !hasAnyGlobalPlatforms ? (
                     <div className="sidebar-platforms__message">
                       Nessuna piattaforma disponibile.
                     </div>
                   ) : (
-                    <div className="sidebar-platforms__list">
-                      {openedFamilyPlatforms.map((platform) => {
-                        const optionVisual = resolvePlatformVisual(platform.name, platform.slug);
-                        const OptionIcon = optionVisual.Icon;
+                    <div className="sidebar-platforms__macros">
+                      {PLATFORM_HIERARCHY.map((macroCategory) => {
+                        const macroPlatforms = groupedPlatformsByMacro[macroCategory.id] || [];
+                        const hasPlatforms = macroPlatforms.length > 0;
+                        const isMacroOpen = openMacroCategoryId === macroCategory.id;
+                        const isMacroDisabled = !hasPlatforms;
+                        const MacroIcon = macroCategory.Icon;
                         const platformSearch = buildFilterSearch(search, {
                           metacriticMin: activeMetacriticMin,
                           genreSlug: activeGenreSlug,
                           includeGenre: Boolean(activeGenreSlug),
                           includePlatform: false,
                         });
-                        const platformIdentityKey = `${platform.id}-${platform.slug}`;
-                        const isPlatformActive =
-                          activePlatformId === platform.id
-                          && (!activePlatformSlug || activePlatformSlug === platform.slug);
 
                         return (
-                          <Link
-                            key={platformIdentityKey}
-                            to={`/platform/${platform.id}/${platform.slug}${platformSearch}`}
-                            onClick={onClose}
-                            draggable={false}
-                            onDragStart={preventDragStart}
-                            className={`sidebar-platforms__item ${
-                              isPlatformActive
-                                ? "sidebar-platforms__item--active"
-                                : "sidebar-platforms__item--idle"
-                            }`}
-                          >
-                            <span className="sidebar-platforms__item-icon-box">
-                              <OptionIcon className={optionVisual.toneClass} />
-                            </span>
+                          <div key={macroCategory.id} className="sidebar-platforms__macro">
+                            <button
+                              type="button"
+                              disabled={isMacroDisabled}
+                              draggable={false}
+                              onDragStart={preventDragStart}
+                              className={`sidebar-platforms__macro-toggle ${
+                                isMacroDisabled
+                                  ? "sidebar-platforms__macro-toggle--disabled"
+                                  : isMacroOpen
+                                    ? "sidebar-platforms__macro-toggle--open"
+                                    : "sidebar-platforms__macro-toggle--idle"
+                              }`}
+                              aria-expanded={isMacroOpen}
+                              aria-controls={`sidebar-platforms-macro-${macroCategory.id}`}
+                              onClick={() => {
+                                const willOpen = openMacroCategoryId !== macroCategory.id;
+                                setOpenMacroCategoryId(willOpen ? macroCategory.id : null);
 
-                            <span className="sidebar-platforms__item-name">{platform.name}</span>
-                          </Link>
+                                if (!willOpen || macroCategory.id !== "console") {
+                                  setOpenConsoleBrandId(null);
+                                }
+                              }}
+                            >
+                              <span className="sidebar-platforms__macro-label-wrap">
+                                <MacroIcon className="sidebar-platforms__macro-icon" />
+                                <span className="sidebar-platforms__macro-label">{macroCategory.label}</span>
+                              </span>
+
+                              <span className="sidebar-platforms__macro-meta">
+                                <FaChevronDown
+                                  className={`sidebar-platforms__macro-chevron ${
+                                    isMacroOpen ? "sidebar-platforms__macro-chevron--open" : ""
+                                  }`}
+                                />
+                              </span>
+                            </button>
+
+                            <div
+                              id={`sidebar-platforms-macro-${macroCategory.id}`}
+                              className={`sidebar-nested__content ${
+                                isMacroOpen ? "sidebar-nested__content--open" : ""
+                              }`}
+                            >
+                              <div className="sidebar-nested__inner">
+                                {macroCategory.id === "console" ? (
+                                  visibleConsoleBrands.length === 0 ? (
+                                    <div className="sidebar-platforms__message">
+                                      Nessuna console disponibile.
+                                    </div>
+                                  ) : (
+                                    <div className="sidebar-platforms__brands">
+                                      {visibleConsoleBrands.map((brand) => {
+                                        const brandPlatforms = consolePlatformsByBrand[brand.id] || [];
+                                        const isBrandOpen = openConsoleBrandId === brand.id;
+                                        const BrandIcon = brand.Icon;
+
+                                        return (
+                                          <div key={brand.id} className="sidebar-platforms__brand">
+                                            <button
+                                              type="button"
+                                              className={`sidebar-platforms__brand-toggle ${
+                                                isBrandOpen
+                                                  ? "sidebar-platforms__brand-toggle--open"
+                                                  : "sidebar-platforms__brand-toggle--idle"
+                                              }`}
+                                              aria-expanded={isBrandOpen}
+                                              aria-controls={`sidebar-brand-${brand.id}`}
+                                              onClick={() => {
+                                                setOpenConsoleBrandId((previousId) => {
+                                                  return previousId === brand.id ? null : brand.id;
+                                                });
+                                              }}
+                                            >
+                                              <span className="sidebar-platforms__brand-label-wrap">
+                                                <BrandIcon className="sidebar-platforms__brand-icon" />
+                                                <span className="sidebar-platforms__brand-label">{brand.label}</span>
+                                              </span>
+
+                                              <FaChevronDown
+                                                className={`sidebar-platforms__brand-chevron ${
+                                                  isBrandOpen ? "sidebar-platforms__brand-chevron--open" : ""
+                                                }`}
+                                              />
+                                            </button>
+
+                                            <div
+                                              id={`sidebar-brand-${brand.id}`}
+                                              className={`sidebar-nested__content ${
+                                                isBrandOpen ? "sidebar-nested__content--open" : ""
+                                              }`}
+                                            >
+                                              <div className="sidebar-nested__inner">
+                                                <div className="sidebar-platforms__list">
+                                                  {brandPlatforms.map((platform) => {
+                                                    const platformIdentityKey = `${platform.id}-${platform.slug}`;
+                                                    const isPlatformActive =
+                                                      activePlatformId === platform.id
+                                                      && (!activePlatformSlug || activePlatformSlug === platform.slug);
+
+                                                    return (
+                                                      <Link
+                                                        key={platformIdentityKey}
+                                                        to={`/platform/${platform.id}/${platform.slug}${platformSearch}`}
+                                                        onClick={onClose}
+                                                        draggable={false}
+                                                        onDragStart={preventDragStart}
+                                                        className={`sidebar-platforms__item ${
+                                                          isPlatformActive
+                                                            ? "sidebar-platforms__item--active"
+                                                            : "sidebar-platforms__item--idle"
+                                                        }`}
+                                                      >
+                                                        <span className="sidebar-platforms__item-name">{platform.name}</span>
+                                                      </Link>
+                                                    );
+                                                  })}
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        );
+                                      })}
+                                    </div>
+                                  )
+                                ) : (
+                                  <div className="sidebar-platforms__list">
+                                    {macroPlatforms.map((platform) => {
+                                      const platformIdentityKey = `${platform.id}-${platform.slug}`;
+                                      const isPlatformActive =
+                                        activePlatformId === platform.id
+                                        && (!activePlatformSlug || activePlatformSlug === platform.slug);
+
+                                      return (
+                                        <Link
+                                          key={platformIdentityKey}
+                                          to={`/platform/${platform.id}/${platform.slug}${platformSearch}`}
+                                          onClick={onClose}
+                                          draggable={false}
+                                          onDragStart={preventDragStart}
+                                          className={`sidebar-platforms__item ${
+                                            isPlatformActive
+                                              ? "sidebar-platforms__item--active"
+                                              : "sidebar-platforms__item--idle"
+                                          }`}
+                                        >
+                                          <span className="sidebar-platforms__item-name">{platform.name}</span>
+                                        </Link>
+                                      );
+                                    })}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
                         );
                       })}
                     </div>
                   )}
                 </div>
-              )}
+              </div>
             </section>
 
-            <section className="sidebar-panel__section">
+            <section className="sidebar-panel__section sidebar-panel__section--metascore">
               <h3 className="sidebar-panel__section-title">
                 <FaSliders className="sidebar-panel__section-title-icon" />
-                  Metacritic
+                Metascore
               </h3>
 
               <div className="sidebar-mc__box">
                 <div className="sidebar-mc__scale">
-                    <span>0</span>
-                    <span className="sidebar-mc__value">{pendingMetacriticMin}</span>
-                    <span>100</span>
+                  <span>0</span>
+                  <span className="sidebar-mc__value">{pendingMetacriticMin}</span>
+                  <span>100</span>
                 </div>
 
                 <input
@@ -734,54 +912,72 @@ export default function Sidebar({ genres, isOpen, onClose }) {
             </section>
 
             <section className="sidebar-panel__section">
-              <h3 className="sidebar-panel__section-title">
-                <FaLayerGroup className="sidebar-panel__section-title-icon" />
-                Generi ({genreLinks.length})
-              </h3>
+              <button
+                type="button"
+                className={`sidebar-accordion__toggle ${
+                  isGenresExpanded ? "sidebar-accordion__toggle--open" : ""
+                }`}
+                aria-expanded={isGenresExpanded}
+                aria-controls="sidebar-genres-accordion"
+                onClick={() => setIsGenresExpanded((previousState) => !previousState)}
+              >
+                <span className="sidebar-accordion__toggle-main">
+                  <FaLayerGroup className="sidebar-panel__section-title-icon" />
+                  <span className="sidebar-accordion__toggle-title">Generi</span>
+                </span>
 
-              <ul className="sidebar-genres__list">
-                {genreLinks.map((genre) => {
-                  const genreSearch = buildFilterSearch(search, {
-                    metacriticMin: activeMetacriticMin,
-                    platformId: activePlatformId,
-                    platformSlug: activePlatformSlug,
-                    includeGenre: false,
-                    includePlatform: Boolean(activePlatformId),
-                  });
-                  const isGenreActive = activeGenreSlug === genre.slug;
+                <span className="sidebar-accordion__toggle-meta">
+                  <FaChevronDown
+                    className={`sidebar-accordion__chevron ${
+                      isGenresExpanded ? "sidebar-accordion__chevron--open" : ""
+                    }`}
+                  />
+                </span>
+              </button>
 
-                  return (
-                    <li key={genre.slug}>
-                      <Link
-                        to={`/genre/${genre.slug}${genreSearch}`}
-                        className={`sidebar-genres__item-link ${
-                          isGenreActive
-                            ? "sidebar-genres__item-link--active"
-                            : "sidebar-genres__item-link--idle"
-                        }`}
-                        onClick={onClose}
-                      >
-                        <span>{genre.name}</span>
-                        <span
-                          className={`sidebar-genres__status ${
-                            isGenreActive
-                              ? "sidebar-genres__status--active"
-                              : "sidebar-genres__status--idle"
-                          }`}
-                        >
-                          {isGenreActive ? "active" : "open"}
-                        </span>
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
+              <div
+                id="sidebar-genres-accordion"
+                className={`sidebar-accordion__content ${
+                  isGenresExpanded ? "sidebar-accordion__content--open" : ""
+                }`}
+              >
+                <div className="sidebar-accordion__inner">
+                  {genreLinks.length === 0 ? (
+                    <div className="sidebar-genres__empty">
+                      Nessun genere disponibile al momento.
+                    </div>
+                  ) : (
+                    <ul className="sidebar-genres__list">
+                      {genreLinks.map((genre) => {
+                        const genreSearch = buildFilterSearch(search, {
+                          metacriticMin: activeMetacriticMin,
+                          platformId: activePlatformId,
+                          platformSlug: activePlatformSlug,
+                          includeGenre: false,
+                          includePlatform: Boolean(activePlatformId),
+                        });
+                        const isGenreActive = activeGenreSlug === genre.slug;
 
-              {genreLinks.length === 0 && (
-                <div className="sidebar-genres__empty">
-                  Nessun genere disponibile al momento.
+                        return (
+                          <li key={genre.slug}>
+                            <Link
+                              to={`/genre/${genre.slug}${genreSearch}`}
+                              className={`sidebar-genres__item-link ${
+                                isGenreActive
+                                  ? "sidebar-genres__item-link--active"
+                                  : "sidebar-genres__item-link--idle"
+                              }`}
+                              onClick={onClose}
+                            >
+                              <span>{genre.name}</span>
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
                 </div>
-              )}
+              </div>
             </section>
           </div>
         </div>

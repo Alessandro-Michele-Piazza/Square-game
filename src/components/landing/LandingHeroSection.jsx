@@ -4,14 +4,12 @@ import "../../css/components/LandingHeroSection.css";
 export default function LandingHeroSection({
   title,
   description,
-  backgroundImage,
   primaryAction,
   secondaryAction,
 }) {
   return (
     <section
       className="landing-hero"
-      style={{ "--landing-hero-image": `url(${backgroundImage})` }}
       aria-label="Hero landing"
       data-aos="zoom-out"
       data-aos-duration="760"

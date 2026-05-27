@@ -97,7 +97,6 @@ export default function LandingPage() {
       <LandingHeroSection
         title="Final Fantasy VII Remake"
         description="Una leggenda ritorna. La storia che ha cambiato per sempre il GDR adesso ti aspetta in una veste cinematografica."
-        backgroundImage="/media/ff7_remake_wallpaper.webp"
         primaryAction={{
           label: "Entra nella libreria",
           to: routes.home,

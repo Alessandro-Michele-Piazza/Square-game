@@ -826,13 +826,39 @@
     flex-direction: column;
   }
 
+  .profile-panel--profile .profile-overview__content {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .profile-panel--profile .profile-overview__eyebrow {
+    width: fit-content;
+  }
+
+  .profile-panel--profile .profile-lead {
+    margin-inline: auto;
+  }
+
+  .profile-panel--profile .profile-action-row {
+    align-items: center;
+  }
+
   .profile-summary {
     text-align: center;
+  }
+
+  .profile-panel--profile .profile-summary {
+    justify-items: center;
   }
 
   .profile-meta-row {
     grid-template-columns: 1fr;
     gap: 0.35rem;
+  }
+
+  .profile-panel--profile .profile-meta-row__label,
+  .profile-panel--profile .profile-meta-row__value {
+    text-align: center;
   }
 
   .profile-collection {
@@ -844,8 +870,73 @@
     flex-direction: column;
   }
 
+  .profile-panel--profile .profile-collection__header {
+    align-items: center;
+    text-align: center;
+  }
+
+  .profile-panel--profile .profile-collection__title,
+  .profile-panel--profile .profile-collection__count {
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+  }
+
   .profile-game-item {
     padding: 0.72rem 0.8rem;
+  }
+
+  .profile-panel--profile .profile-game-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .profile-panel--profile .profile-game-item__main {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .profile-panel--profile .profile-game-item__content {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .profile-panel--profile .profile-game-item__name {
+    white-space: normal;
+  }
+
+  .profile-shell--settings .profile-settings-header {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .profile-shell--settings .profile-lead {
+    margin-inline: auto;
+  }
+
+  .profile-shell--settings .profile-settings-form .profile-action-row {
+    align-items: center;
+  }
+
+  .profile-shell--settings .profile-upload-card,
+  .profile-shell--settings .profile-upload-copy {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .profile-shell--settings .profile-upload-form {
+    width: 100%;
+  }
+
+  .profile-shell--settings .profile-upload-form .profile-input-group {
+    width: 100%;
+    text-align: left;
+  }
+
+  .profile-shell--settings .profile-upload-feedback {
+    text-align: center;
   }
 
   .profile-game-item__poster-frame {
