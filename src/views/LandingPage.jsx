@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import LandingHeroSection from "../components/landing/LandingHeroSection";
 import LandingTrendingSection from "../components/landing/LandingTrendingSection";
 import LandingCategoriesSection from "../components/landing/LandingCategoriesSection";
+import { UserContext } from "../context/user-context";
 import useRouteScrollReset from "../hooks/useRouteScrollReset";
 import routes from "../router/routes";
 import "../css/views/LandingPage.css";
@@ -80,6 +81,8 @@ const CATEGORY_CARDS = [
 ];
 
 export default function LandingPage() {
+  const { user } = useContext(UserContext);
+
   useRouteScrollReset();
 
   useEffect(() => {
@@ -102,10 +105,14 @@ export default function LandingPage() {
           label: "Entra nella libreria",
           to: routes.home,
         }}
-        secondaryAction={{
-          label: "Registrati",
-          to: routes.register,
-        }}
+        secondaryAction={
+          !user
+            ? {
+              label: "Registrati",
+              to: routes.register,
+            }
+            : null
+        }
       />
 
       <LandingTrendingSection cards={TRENDING_GAMES} />

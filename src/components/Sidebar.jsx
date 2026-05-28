@@ -13,6 +13,7 @@ import {
 } from "react-icons/fa6";
 import { BsNintendoSwitch } from "react-icons/bs";
 import { SiAtari, SiSega } from "react-icons/si";
+import routes from "../router/routes";
 import "../css/components/Sidebar.css";
 
 const PLATFORM_HIERARCHY = [
@@ -371,10 +372,37 @@ export default function Sidebar({ genres, isOpen, onClose }) {
 
   const activeMetacriticMin = useMemo(() => parseMetacriticMinFromSearch(search), [search]);
   const [pendingMetacriticMin, setPendingMetacriticMin] = useState(activeMetacriticMin);
+  const [pendingGenreSlug, setPendingGenreSlug] = useState(activeGenreSlug);
+  const [pendingPlatformId, setPendingPlatformId] = useState(activePlatformId);
+  const [pendingPlatformSlug, setPendingPlatformSlug] = useState(activePlatformSlug);
+  const [pendingPrimaryFilter, setPendingPrimaryFilter] = useState(
+    pathFilters.isPlatformRoute
+      ? "platform"
+      : pathFilters.isGenreRoute
+        ? "genre"
+        : null,
+  );
 
   useEffect(() => {
     setPendingMetacriticMin(activeMetacriticMin);
-  }, [activeMetacriticMin]);
+    setPendingGenreSlug(activeGenreSlug);
+    setPendingPlatformId(activePlatformId);
+    setPendingPlatformSlug(activePlatformSlug);
+    setPendingPrimaryFilter(
+      pathFilters.isPlatformRoute
+        ? "platform"
+        : pathFilters.isGenreRoute
+          ? "genre"
+          : null,
+    );
+  }, [
+    activeGenreSlug,
+    activeMetacriticMin,
+    activePlatformId,
+    activePlatformSlug,
+    pathFilters.isGenreRoute,
+    pathFilters.isPlatformRoute,
+  ]);
 
   const genreLinks = useMemo(() => {
     const uniqueGenres = new Map();
@@ -537,73 +565,140 @@ export default function Sidebar({ genres, isOpen, onClose }) {
     setIsGenresExpanded(true);
   }, [activeGenreSlug, isOpen]);
 
-  useEffect(() => {
-    if (pendingMetacriticMin === activeMetacriticMin) {
-      return;
-    }
-
-    const nextSearch = buildFilterSearch(search, {
-      metacriticMin: pendingMetacriticMin,
-      genreSlug: activeGenreSlug,
-      platformId: activePlatformId,
-      platformSlug: activePlatformSlug,
-      includeGenre: !pathFilters.isGenreRoute,
-      includePlatform: !pathFilters.isPlatformRoute,
-    });
-
-    if (nextSearch === search) {
-      return;
-    }
-
-    const timeoutId = setTimeout(() => {
-      navigate(
-        {
-          pathname,
-          search: nextSearch,
-        },
-        { replace: true },
-      );
-    }, 220);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [
-    activeGenreSlug,
-    activeMetacriticMin,
-    activePlatformId,
-    activePlatformSlug,
-    navigate,
-    pathFilters.isGenreRoute,
-    pathFilters.isPlatformRoute,
-    pathname,
-    pendingMetacriticMin,
-    search,
-  ]);
-
   const hasAnyGlobalPlatforms = globalPlatforms.length > 0;
   const hasAnyActiveFilters =
     activeMetacriticMin > 0
     || Boolean(activeGenreSlug)
     || Boolean(activePlatformId);
+  const hasAnyPendingFilters =
+    pendingMetacriticMin > 0
+    || Boolean(pendingGenreSlug)
+    || Boolean(pendingPlatformId);
+  const canResetFilters =
+    hasAnyPendingFilters
+    || hasAnyActiveFilters
+    || pathname !== routes.home
+    || Boolean(search);
+  const resolvedPendingPlatformSlug = pendingPlatformSlug
+    || globalPlatforms.find((platform) => platform.id === pendingPlatformId)?.slug
+    || "";
+  const selectedPendingFilters = useMemo(() => {
+    const pendingFilters = [];
+    const selectedGenre = genreLinks.find((genre) => genre.slug === pendingGenreSlug);
+    const selectedPlatform = globalPlatforms.find((platform) => {
+      if (platform.id !== pendingPlatformId) {
+        return false;
+      }
+
+      if (!pendingPlatformSlug) {
+        return true;
+      }
+
+      return platform.slug === pendingPlatformSlug;
+    });
+
+    if (selectedGenre?.name) {
+      pendingFilters.push(`Genere: ${selectedGenre.name}`);
+    }
+
+    if (selectedPlatform?.name) {
+      pendingFilters.push(`Piattaforma: ${selectedPlatform.name}`);
+    }
+
+    if (pendingMetacriticMin > 0) {
+      pendingFilters.push(`Metascore: >= ${pendingMetacriticMin}`);
+    }
+
+    return pendingFilters;
+  }, [
+    genreLinks,
+    globalPlatforms,
+    pendingGenreSlug,
+    pendingMetacriticMin,
+    pendingPlatformId,
+    pendingPlatformSlug,
+  ]);
+  const effectivePrimaryFilter =
+    pendingPrimaryFilter === "platform" && pendingPlatformId
+      ? "platform"
+      : pendingPrimaryFilter === "genre" && pendingGenreSlug
+        ? "genre"
+        : pendingPlatformId
+          ? "platform"
+          : pendingGenreSlug
+            ? "genre"
+            : null;
+  const applyTargetPathname =
+    effectivePrimaryFilter === "platform"
+      ? `/platform/${pendingPlatformId}/${resolvedPendingPlatformSlug || pendingPlatformId}`
+      : effectivePrimaryFilter === "genre"
+        ? `/genre/${pendingGenreSlug}`
+        : pathname;
+  const applyTargetSearch =
+    effectivePrimaryFilter === "platform"
+      ? buildFilterSearch(search, {
+        metacriticMin: pendingMetacriticMin,
+        genreSlug: pendingGenreSlug,
+        includeGenre: Boolean(pendingGenreSlug),
+        includePlatform: false,
+      })
+      : effectivePrimaryFilter === "genre"
+        ? buildFilterSearch(search, {
+          metacriticMin: pendingMetacriticMin,
+          platformId: pendingPlatformId,
+          platformSlug: resolvedPendingPlatformSlug,
+          includeGenre: false,
+          includePlatform: Boolean(pendingPlatformId),
+        })
+        : buildFilterSearch(search, {
+          metacriticMin: pendingMetacriticMin,
+          genreSlug: pendingGenreSlug,
+          platformId: pendingPlatformId,
+          platformSlug: resolvedPendingPlatformSlug,
+          includeGenre: !pathFilters.isGenreRoute,
+          includePlatform: !pathFilters.isPlatformRoute,
+        });
+  const canApplyFilters =
+    applyTargetPathname !== pathname
+    || applyTargetSearch !== search;
 
   const preventDragStart = (event) => {
     event.preventDefault();
   };
 
-  const resetAllFilters = () => {
-    const nextPathname = pathname.startsWith("/search/") ? pathname : "/";
-
-    setPendingMetacriticMin(0);
-
-    if (nextPathname === pathname && !search) {
+  const applyPendingFilters = () => {
+    if (!canApplyFilters) {
       return;
     }
 
-    navigate({
-      pathname: nextPathname,
-      search: "",
-    });
+    navigate(
+      {
+        pathname: applyTargetPathname,
+        search: applyTargetSearch,
+      },
+      { replace: true },
+    );
+
+    if (typeof onClose === "function") {
+      onClose();
+    }
+  };
+
+  const resetPendingFilters = () => {
+    setPendingMetacriticMin(0);
+    setPendingGenreSlug("");
+    setPendingPlatformId(null);
+    setPendingPlatformSlug("");
+    setPendingPrimaryFilter(null);
+  };
+
+  const handleResetFilters = (event) => {
+    if (!canResetFilters) {
+      event.preventDefault();
+      return;
+    }
+
+    resetPendingFilters();
 
     if (typeof onClose === "function") {
       onClose();
@@ -645,21 +740,54 @@ export default function Sidebar({ genres, isOpen, onClose }) {
             </button>
           </div>
 
-          <button
-            type="button"
-            onClick={resetAllFilters}
-            disabled={!hasAnyActiveFilters}
-            className={`sidebar-panel__reset ${
-              hasAnyActiveFilters
-                ? "sidebar-panel__reset--active"
-                : "sidebar-panel__reset--inactive"
-            }`}
-          >
-            <span className="sidebar-panel__reset-left">
-              <FaSliders className="sidebar-panel__reset-icon" />
-              Reset filtri
-            </span>
-          </button>
+          <div className="sidebar-panel__filter-actions">
+            <button
+              type="button"
+              onClick={applyPendingFilters}
+              disabled={!canApplyFilters}
+              className={`sidebar-panel__apply ${
+                canApplyFilters
+                  ? "sidebar-panel__apply--active"
+                  : "sidebar-panel__apply--inactive"
+              }`}
+            >
+              Applica filtri
+            </button>
+
+            <Link
+              to={routes.home}
+              onClick={handleResetFilters}
+              aria-disabled={!canResetFilters}
+              className={`sidebar-panel__reset ${
+                canResetFilters
+                  ? "sidebar-panel__reset--active"
+                  : "sidebar-panel__reset--inactive"
+              }`}
+            >
+              <span className="sidebar-panel__reset-left">
+                <FaSliders className="sidebar-panel__reset-icon" />
+                Reset filtri
+              </span>
+            </Link>
+          </div>
+
+          <div className="sidebar-panel__selected-filters" aria-live="polite">
+            <p className="sidebar-panel__selected-filters-title">Filtri selezionati</p>
+
+            {selectedPendingFilters.length === 0 ? (
+              <p className="sidebar-panel__selected-filters-empty">Nessun filtro selezionato</p>
+            ) : (
+              <ul className="sidebar-panel__selected-filters-list">
+                {selectedPendingFilters.map((pendingFilterLabel) => {
+                  return (
+                    <li key={pendingFilterLabel} className="sidebar-panel__selected-filters-item">
+                      {pendingFilterLabel}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
         </div>
 
         <div className="sidebar-panel__body">
@@ -711,12 +839,6 @@ export default function Sidebar({ genres, isOpen, onClose }) {
                         const isMacroOpen = openMacroCategoryId === macroCategory.id;
                         const isMacroDisabled = !hasPlatforms;
                         const MacroIcon = macroCategory.Icon;
-                        const platformSearch = buildFilterSearch(search, {
-                          metacriticMin: activeMetacriticMin,
-                          genreSlug: activeGenreSlug,
-                          includeGenre: Boolean(activeGenreSlug),
-                          includePlatform: false,
-                        });
 
                         return (
                           <div key={macroCategory.id} className="sidebar-platforms__macro">
@@ -816,16 +938,20 @@ export default function Sidebar({ genres, isOpen, onClose }) {
                                                   {brandPlatforms.map((platform) => {
                                                     const platformIdentityKey = `${platform.id}-${platform.slug}`;
                                                     const isPlatformActive =
-                                                      activePlatformId === platform.id
-                                                      && (!activePlatformSlug || activePlatformSlug === platform.slug);
+                                                      pendingPlatformId === platform.id
+                                                      && (!pendingPlatformSlug || pendingPlatformSlug === platform.slug);
 
                                                     return (
-                                                      <Link
+                                                      <button
+                                                        type="button"
                                                         key={platformIdentityKey}
-                                                        to={`/platform/${platform.id}/${platform.slug}${platformSearch}`}
-                                                        onClick={onClose}
                                                         draggable={false}
                                                         onDragStart={preventDragStart}
+                                                        onClick={() => {
+                                                          setPendingPlatformId(platform.id);
+                                                          setPendingPlatformSlug(platform.slug);
+                                                          setPendingPrimaryFilter("platform");
+                                                        }}
                                                         className={`sidebar-platforms__item ${
                                                           isPlatformActive
                                                             ? "sidebar-platforms__item--active"
@@ -833,7 +959,7 @@ export default function Sidebar({ genres, isOpen, onClose }) {
                                                         }`}
                                                       >
                                                         <span className="sidebar-platforms__item-name">{platform.name}</span>
-                                                      </Link>
+                                                      </button>
                                                     );
                                                   })}
                                                 </div>
@@ -849,16 +975,20 @@ export default function Sidebar({ genres, isOpen, onClose }) {
                                     {macroPlatforms.map((platform) => {
                                       const platformIdentityKey = `${platform.id}-${platform.slug}`;
                                       const isPlatformActive =
-                                        activePlatformId === platform.id
-                                        && (!activePlatformSlug || activePlatformSlug === platform.slug);
+                                        pendingPlatformId === platform.id
+                                        && (!pendingPlatformSlug || pendingPlatformSlug === platform.slug);
 
                                       return (
-                                        <Link
+                                        <button
+                                          type="button"
                                           key={platformIdentityKey}
-                                          to={`/platform/${platform.id}/${platform.slug}${platformSearch}`}
-                                          onClick={onClose}
                                           draggable={false}
                                           onDragStart={preventDragStart}
+                                          onClick={() => {
+                                            setPendingPlatformId(platform.id);
+                                            setPendingPlatformSlug(platform.slug);
+                                            setPendingPrimaryFilter("platform");
+                                          }}
                                           className={`sidebar-platforms__item ${
                                             isPlatformActive
                                               ? "sidebar-platforms__item--active"
@@ -866,7 +996,7 @@ export default function Sidebar({ genres, isOpen, onClose }) {
                                           }`}
                                         >
                                           <span className="sidebar-platforms__item-name">{platform.name}</span>
-                                        </Link>
+                                        </button>
                                       );
                                     })}
                                   </div>
@@ -906,7 +1036,7 @@ export default function Sidebar({ genres, isOpen, onClose }) {
                 />
 
                 <div className="sidebar-mc__footer">
-                  <span className="sidebar-mc__live">Aggiornamento live</span>
+                  <span className="sidebar-mc__live">Si applica con Applica filtri</span>
                 </div>
               </div>
             </section>
@@ -949,28 +1079,24 @@ export default function Sidebar({ genres, isOpen, onClose }) {
                   ) : (
                     <ul className="sidebar-genres__list">
                       {genreLinks.map((genre) => {
-                        const genreSearch = buildFilterSearch(search, {
-                          metacriticMin: activeMetacriticMin,
-                          platformId: activePlatformId,
-                          platformSlug: activePlatformSlug,
-                          includeGenre: false,
-                          includePlatform: Boolean(activePlatformId),
-                        });
-                        const isGenreActive = activeGenreSlug === genre.slug;
+                        const isGenreActive = pendingGenreSlug === genre.slug;
 
                         return (
                           <li key={genre.slug}>
-                            <Link
-                              to={`/genre/${genre.slug}${genreSearch}`}
+                            <button
+                              type="button"
                               className={`sidebar-genres__item-link ${
                                 isGenreActive
                                   ? "sidebar-genres__item-link--active"
                                   : "sidebar-genres__item-link--idle"
                               }`}
-                              onClick={onClose}
+                              onClick={() => {
+                                setPendingGenreSlug(genre.slug);
+                                setPendingPrimaryFilter("genre");
+                              }}
                             >
                               <span>{genre.name}</span>
-                            </Link>
+                            </button>
                           </li>
                         );
                       })}

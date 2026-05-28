@@ -44,14 +44,16 @@ export default function LandingHeroSection({
             {primaryAction.label}
           </Link>
 
-          <Link
-            to={secondaryAction.to}
-            className="landing-hero__button_2"
-            // data-aos="zoom-in"
-            // data-aos-delay="420"
-          >
-            {secondaryAction.label}
-          </Link>
+          {secondaryAction ? (
+            <Link
+              to={secondaryAction.to}
+              className="landing-hero__button_2"
+              // data-aos="zoom-in"
+              // data-aos-delay="420"
+            >
+              {secondaryAction.label}
+            </Link>
+          ) : null}
         </div>
       </div>
     </section>
