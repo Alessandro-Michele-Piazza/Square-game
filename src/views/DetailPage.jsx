@@ -129,9 +129,7 @@ function DetailLinks({ items, emptyLabel, toBuilder, iconForItem }) {
           className="detail-links-item"
         >
           {iconForItem && (
-            <span className="detail-links-icon">
-              {iconForItem(item)}
-            </span>
+            <span className="detail-links-icon">{iconForItem(item)}</span>
           )}
           {item.name}
         </Link>
@@ -305,7 +303,11 @@ export default function DetailPage() {
                 Torna indietro
               </span>
             </button>
-            <Link to={routes.home} className="btn-secondary detail-link" data-text="Vai alla home">
+            <Link
+              to={routes.home}
+              className="btn-secondary detail-link"
+              data-text="Vai alla home"
+            >
               Vai alla home
               <span className="detail-link__hover" aria-hidden="true">
                 Vai alla home
@@ -341,11 +343,7 @@ export default function DetailPage() {
   return (
     <div className="detail-page">
       <div className="detail-page__backdrop">
-        <img
-          src={accentImage}
-          alt=""
-          className="detail-page__backdrop-image"
-        />
+        <img src={accentImage} alt="" className="detail-page__backdrop-image" />
         <div className="detail-page__backdrop-overlay" />
       </div>
 
@@ -355,7 +353,11 @@ export default function DetailPage() {
         <div className="detail-page__orb" />
 
         <section className="detail-page__content" data-aos="fade-up">
-          <div className="detail-page__actions" data-aos="fade-up" data-aos-delay="60">
+          <div
+            className="detail-page__actions"
+            data-aos="fade-up"
+            data-aos-delay="60"
+          >
             <button
               onClick={() => navigate(-1)}
               className="btn-secondary detail-link"
@@ -381,8 +383,16 @@ export default function DetailPage() {
             </div>
           </div>
 
-          <div className="detail-page__grid" data-aos="fade-up" data-aos-delay="100">
-            <section className="detail-page__media" data-aos="fade-right" data-aos-delay="140">
+          <div
+            className="detail-page__grid"
+            data-aos="fade-up"
+            data-aos-delay="100"
+          >
+            <section
+              className="detail-page__media"
+              data-aos="fade-right"
+              data-aos-delay="140"
+            >
               <GameCarousel
                 screenshots={screenshots}
                 trailers={trailers}
@@ -392,26 +402,18 @@ export default function DetailPage() {
 
               <dl className="detail-page__stats">
                 <div>
-                  <dt className="detail-page__stat-label">
-                    Metacritic
-                  </dt>
+                  <dt className="detail-page__stat-label">Metacritic</dt>
                   <dd className="detail-page__stat-value detail-page__stat-value--icon">
                     <FaStar className="detail-page__stat-star" />
                     {metacritic}
                   </dd>
                 </div>
                 <div>
-                  <dt className="detail-page__stat-label">
-                    Reviews
-                  </dt>
-                  <dd className="detail-page__stat-value">
-                    {ratingsCount}
-                  </dd>
+                  <dt className="detail-page__stat-label">Reviews</dt>
+                  <dd className="detail-page__stat-value">{ratingsCount}</dd>
                 </div>
                 <div className="detail-page__genre-block">
-                  <dt className="detail-page__stat-label">
-                    Generi
-                  </dt>
+                  <dt className="detail-page__stat-label">Generi</dt>
                   {genres.length > 0 ? (
                     <div className="detail-page__genre-links">
                       {genres.map((genre) => (
@@ -431,41 +433,6 @@ export default function DetailPage() {
                   )}
                 </div>
               </dl>
-
-              <div className="detail-page__cta-row">
-                {game?.website && (
-                  <a
-                    href={game.website}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="btn-primary"
-                  >
-                    Visita sito ufficiale
-                    <FaArrowUpRightFromSquare className="detail-page__cta-icon" />
-                  </a>
-                )}
-              </div>
-            </section>
-
-            <section className="detail-page__info" data-aos="fade-left" data-aos-delay="160">
-              <h1 className="detail-page__title">
-                {game?.name || "Titolo sconosciuto"}
-              </h1>
-
-              <div className="detail-page__meta-row">
-                <span className="detail-page__meta-item">
-                  <FaCalendarDays className="detail-page__meta-icon" />
-                  Release: {releaseDate}
-                </span>
-                <span className="detail-page__meta-item">
-                  <FaGamepad className="detail-page__meta-icon" />
-                  Rating: {rating}
-                </span>
-              </div>
-
-              <p className="detail-page__description">
-                {game?.description_raw || "Descrizione non disponibile"}
-              </p>
 
               <div className="detail-page__collection-actions">
                 {ownerId && (
@@ -506,11 +473,57 @@ export default function DetailPage() {
                   </>
                 )}
               </div>
+              <div className="detail-page__cta-row">
+                {game?.website && (
+                  <a
+                    href={game.website}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="btn-primary"
+                  >
+                    Visita sito ufficiale
+                    <FaArrowUpRightFromSquare className="detail-page__cta-icon" />
+                  </a>
+                )}
+              </div>
+            </section>
+
+            <section
+              className="detail-page__info"
+              data-aos="fade-left"
+              data-aos-delay="160"
+            >
+              <h1 className="detail-page__title">
+                {game?.name || "Titolo sconosciuto"}
+              </h1>
+
+              <div className="detail-page__meta-row">
+                <span className="detail-page__meta-item">
+                  <FaCalendarDays className="detail-page__meta-icon" />
+                  Release: {releaseDate}
+                </span>
+                <span className="detail-page__meta-item">
+                  <FaGamepad className="detail-page__meta-icon" />
+                  Rating: {rating}
+                </span>
+              </div>
+
+              <p className="detail-page__description">
+                {game?.description_raw || "Descrizione non disponibile"}
+              </p>
             </section>
           </div>
 
-          <section className="detail-page__cards" data-aos="fade-up" data-aos-delay="200">
-            <article className="detail-page__card" data-aos="zoom-in" data-aos-delay="240">
+          <section
+            className="detail-page__cards"
+            data-aos="fade-up"
+            data-aos-delay="200"
+          >
+            <article
+              className="detail-page__card"
+              data-aos="zoom-in"
+              data-aos-delay="240"
+            >
               <h2 className="detail-page__card-title">
                 <FaGamepad className="detail-page__card-title-icon" />
                 Piattaforme
@@ -525,10 +538,12 @@ export default function DetailPage() {
               />
             </article>
 
-            <article className="detail-page__card" data-aos="zoom-in" data-aos-delay="280">
-              <h2 className="detail-page__card-title">
-                Developers
-              </h2>
+            <article
+              className="detail-page__card"
+              data-aos="zoom-in"
+              data-aos-delay="280"
+            >
+              <h2 className="detail-page__card-title">Developers</h2>
               <DetailLinks
                 items={developers}
                 emptyLabel="Non disponibili"
@@ -536,10 +551,12 @@ export default function DetailPage() {
               />
             </article>
 
-            <article className="detail-page__card" data-aos="zoom-in" data-aos-delay="320">
-              <h2 className="detail-page__card-title">
-                Publishers
-              </h2>
+            <article
+              className="detail-page__card"
+              data-aos="zoom-in"
+              data-aos-delay="320"
+            >
+              <h2 className="detail-page__card-title">Publishers</h2>
               <DetailLinks
                 items={publishers}
                 emptyLabel="Non disponibili"
@@ -548,7 +565,11 @@ export default function DetailPage() {
             </article>
           </section>
 
-          <div className="detail-page__reviews-wrap" data-aos="fade-up" data-aos-delay="360">
+          <div
+            className="detail-page__reviews-wrap"
+            data-aos="fade-up"
+            data-aos-delay="360"
+          >
             <BodySection game={game} />
           </div>
         </section>
