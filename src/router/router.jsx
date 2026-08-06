@@ -12,6 +12,7 @@ import {
 } from "./loader";
 import Layout from "../layouts/Layout";
 import AuthLayout from "../layouts/AuthLayout";
+import RouterErrorBoundary from "../components/RouterErrorBoundary";
 import routes from "./routes";
 
 const loadingFallback = (
@@ -25,6 +26,7 @@ const router = createBrowserRouter([
     path: routes.landing,
     Component: Layout,
     loader: getAllGenres,
+    errorElement: <RouterErrorBoundary />,
     children: [
       {
         index: true,
@@ -71,6 +73,7 @@ const router = createBrowserRouter([
   {
     path: "/auth",
     Component: AuthLayout,
+    errorElement: <RouterErrorBoundary />,
     children: [
       {
         path: routes.login,
@@ -95,6 +98,7 @@ const router = createBrowserRouter([
   {
     path: routes.detail,
     loader: getGameFullDetails,
+    errorElement: <RouterErrorBoundary />,
     lazy: () => import("../views/DetailPage").then((m) => ({ Component: m.default })),
     hydrateFallbackElement: loadingFallback,
   },
